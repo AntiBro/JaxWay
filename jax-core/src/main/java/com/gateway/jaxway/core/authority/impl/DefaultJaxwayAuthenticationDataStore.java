@@ -8,7 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * @Author huaili
  * @Date 2019/4/17 20:25
- * @Description CopyOnWriteJaxwayAuthenticationService
+ * @Description DefaultJaxwayAuthenticationDataStore
  **/
 public class DefaultJaxwayAuthenticationDataStore implements JaxwayAuthenticationDataStore {
 
