@@ -15,6 +15,10 @@ public interface JaxwayAuthenticationDataStore {
      */
     void updateAppAuthentications(Map<String,String> newAppAppAuthenticationMap);
 
+    /**
+     * 获取所有的 请求认证信息
+     * @return
+     */
     Map<String,String> getAllAppAuthentications();
 
     default boolean contains(String url,String token){
