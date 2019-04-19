@@ -29,16 +29,20 @@ public class AuthorWebFluxFilter implements WebFilter {
     public Mono<Void> filter(ServerWebExchange serverWebExchange, WebFilterChain webFilterChain) {
         ServerHttpRequest request =  serverWebExchange.getRequest();
         ServerHttpResponse response = serverWebExchange.getResponse();
+        String url  = request.getURI().getPath();
 
-        String token = request.getHeaders().getFirst("test-flux");
-        if(token == null){
-            DataBuffer wrap = serverWebExchange.getResponse().bufferFactory().wrap(UNAUTHORIZED_INFO);
-          //  ServerHttpRequest authErrorReq = request.mutate().path("/auth/error").build();
-            //ServerHttpResponse authFailedRep = response.
-            //erverWebExchange.mutate类似，构建一个新的ServerWebExchange
-          //  ServerWebExchange authErrorExchange = serverWebExchange.mutate().request(authErrorReq).re.build();
-            return  response.writeWith(Flux.just(wrap));
-        }
+        System.out.println("请求 url:"+url);
+
+        System.out.println("header uri="+JSON.toJSONString(request.getHeaders()));
+//        String token = request.getHeaders().getFirst("test-flux");
+//        if(token == null){
+//            DataBuffer wrap = serverWebExchange.getResponse().bufferFactory().wrap(UNAUTHORIZED_INFO);
+//          //  ServerHttpRequest authErrorReq = request.mutate().path("/auth/error").build();
+//            //ServerHttpResponse authFailedRep = response.
+//            //erverWebExchange.mutate类似，构建一个新的ServerWebExchange
+//          //  ServerWebExchange authErrorExchange = serverWebExchange.mutate().request(authErrorReq).re.build();
+//            return  response.writeWith(Flux.just(wrap));
+//        }
         return webFilterChain.filter(serverWebExchange);
     }
 }

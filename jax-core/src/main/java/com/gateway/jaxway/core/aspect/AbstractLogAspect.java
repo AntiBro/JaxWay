@@ -87,6 +87,7 @@ public abstract class AbstractLogAspect {
             logger.info(getInternalApiCallInfoTemplate(), apiName.toString(), timeUsed, apiArgs);
             return returnValue;
         } catch (Throwable throwable) {
+            logger.error(getIllegalDetailsRequestExceptionTemplate(),throwable.getCause(),throwable.getMessage());
             throw throwable;
         }
     }

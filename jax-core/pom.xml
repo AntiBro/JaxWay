@@ -10,6 +10,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>jax-core</artifactId>
-
+    <dependencies>
+        <dependency>
+            <groupId>com.gateway</groupId>
+            <artifactId>jax-log</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 
 </project>

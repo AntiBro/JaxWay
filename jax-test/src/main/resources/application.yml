@@ -1,0 +1,74 @@
+server:
+  port: 8620
+  compression:
+    enabled: true
+
+spring:
+  application:
+    name: jax-way-test
+  cloud:
+    gateway:
+      proxy:
+        headers: {my:123}
+      routes:
+        - id: sohu
+          uri: https://m.sohu.com
+          predicates:
+          - Path=/sohu
+          filters:
+          - StripPrefix=1
+  profiles:
+    active: dev
+  freemarker:
+    cache: false
+    charset: utf-8
+    settings:
+      classic_compatible: false
+      whitespace_stripping: true
+      template_update_delay: 1
+      number_format: 0.######
+      date_format: yyyy-MM-dd
+      template_exception_handler: rethrow
+      #template_exception_handler: com.sohu.wap.exception.FreemarkerExceptionHandler
+  http:
+    encoding:
+      charset: UTF-8
+
+
+
+
+#开启feign的GZIP压缩
+feign:
+  compression:
+    request:
+      enabled: true
+    response:
+      enabled: true
+  hystrix:
+    enabled: true
+  httpclient:
+    enabled: true
+
+
+---
+spring:
+  profiles: dev
+
+
+---
+
+spring:
+  profiles: test
+
+
+
+---
+
+
+spring:
+  profiles: prod-bx
+
+
+
+
+---
