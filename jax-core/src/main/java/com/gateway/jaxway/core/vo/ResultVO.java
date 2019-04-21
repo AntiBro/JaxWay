@@ -13,6 +13,8 @@ public class ResultVO {
     private String code;
     private Object content;
 
+    public static ResultVO NOT_AUTHORIZED_REQUEST = ResultVO.notAuthoried("jaxway found not legal request");
+
     public ResultVO(){
 
     }
