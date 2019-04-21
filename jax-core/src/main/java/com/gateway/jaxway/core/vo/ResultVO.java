@@ -13,6 +13,9 @@ public class ResultVO {
     private String code;
     private Object content;
 
+    /**
+     * 未授权的 请求应用
+     */
     public static ResultVO NOT_AUTHORIZED_REQUEST = ResultVO.notAuthoried("jaxway found not legal request");
 
     public ResultVO(){
