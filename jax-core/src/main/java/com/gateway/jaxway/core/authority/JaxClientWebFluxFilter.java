@@ -29,7 +29,7 @@ public class JaxClientWebFluxFilter implements WebFilter {
     private JaxwayClientValidator jaxwayClientValidator;
 
     public JaxClientWebFluxFilter(){
-        jaxwayClientValidator = new DefaultJaxwayClientValidator(new Base64JaxwayTokenCoder(),new DefaultJaxwayAuthenticationDataStore());
+        jaxwayClientValidator = new DefaultJaxwayClientValidator(new Base64JaxwayTokenCoder(),DefaultJaxwayAuthenticationDataStore.instance());
     }
 
     @Override

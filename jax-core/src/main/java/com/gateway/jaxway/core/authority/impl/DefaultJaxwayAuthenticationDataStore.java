@@ -12,6 +12,14 @@ import java.util.concurrent.ConcurrentHashMap;
  **/
 public class DefaultJaxwayAuthenticationDataStore implements JaxwayAuthenticationDataStore {
 
+    private static JaxwayAuthenticationDataStore INSTANCE = new DefaultJaxwayAuthenticationDataStore();
+
+    private DefaultJaxwayAuthenticationDataStore(){ }
+
+    public static JaxwayAuthenticationDataStore instance(){
+        return INSTANCE;
+    }
+
     private Map<String, String> whiteAppSets = new ConcurrentHashMap<>();
 
     @Override

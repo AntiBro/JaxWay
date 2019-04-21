@@ -29,7 +29,7 @@ public class JaxClientServletFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         if(jaxwayClientValidator == null){
-            jaxwayClientValidator = new DefaultJaxwayClientValidator(new Base64JaxwayTokenCoder(),new DefaultJaxwayAuthenticationDataStore());
+            jaxwayClientValidator = new DefaultJaxwayClientValidator(new Base64JaxwayTokenCoder(),DefaultJaxwayAuthenticationDataStore.instance());
         }
 
     }
