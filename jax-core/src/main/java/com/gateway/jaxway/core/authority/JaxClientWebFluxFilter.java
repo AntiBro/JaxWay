@@ -3,7 +3,7 @@ package com.gateway.jaxway.core.authority;
 import com.alibaba.fastjson.JSON;
 import com.gateway.jaxway.core.authority.bean.JaxRequest;
 import com.gateway.jaxway.core.authority.impl.Base64JaxwayTokenCoder;
-import com.gateway.jaxway.core.authority.impl.DefaultJaxwayAuthenticationDataStore;
+import com.gateway.jaxway.core.authority.impl.LocalJaxwayAuthenticationDataStore;
 import com.gateway.jaxway.core.authority.impl.DefaultJaxwayClientValidator;
 import com.gateway.jaxway.core.vo.ResultVO;
 import com.gateway.jaxway.log.Log;
@@ -29,7 +29,7 @@ public class JaxClientWebFluxFilter implements WebFilter {
     private JaxwayClientValidator jaxwayClientValidator;
 
     public JaxClientWebFluxFilter(){
-        jaxwayClientValidator = new DefaultJaxwayClientValidator(new Base64JaxwayTokenCoder(),DefaultJaxwayAuthenticationDataStore.instance());
+        jaxwayClientValidator = new DefaultJaxwayClientValidator(new Base64JaxwayTokenCoder(), LocalJaxwayAuthenticationDataStore.instance());
     }
 
     @Override

@@ -8,13 +8,13 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * @Author huaili
  * @Date 2019/4/17 20:25
- * @Description DefaultJaxwayAuthenticationDataStore
+ * @Description LocalJaxwayAuthenticationDataStore
  **/
-public class DefaultJaxwayAuthenticationDataStore implements JaxwayAuthenticationDataStore {
+public class LocalJaxwayAuthenticationDataStore implements JaxwayAuthenticationDataStore {
 
-    private static JaxwayAuthenticationDataStore INSTANCE = new DefaultJaxwayAuthenticationDataStore();
+    private static JaxwayAuthenticationDataStore INSTANCE = new LocalJaxwayAuthenticationDataStore();
 
-    private DefaultJaxwayAuthenticationDataStore(){ }
+    private LocalJaxwayAuthenticationDataStore(){ }
 
     public static JaxwayAuthenticationDataStore instance(){
         return INSTANCE;
