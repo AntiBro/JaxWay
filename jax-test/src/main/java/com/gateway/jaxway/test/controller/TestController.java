@@ -2,7 +2,6 @@ package com.gateway.jaxway.test.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import reactor.core.publisher.Mono;
 
 /**
  * @Author huaili
@@ -11,9 +10,14 @@ import reactor.core.publisher.Mono;
  **/
 @RestController
 public class TestController {
+//    @RequestMapping("/testflux")
+//    public Mono<String> getTest(){
+//        return Mono.just("测试安全过滤器");
+//    }
+
     @RequestMapping("/testflux")
-    public Mono<String> getTest(){
-        return Mono.just("测试安全过滤器");
+    public String getTest(){
+        return "测试安全过滤器";
     }
 //
 //    @GetMapping("/test")

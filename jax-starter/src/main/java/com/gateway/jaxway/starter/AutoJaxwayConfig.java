@@ -53,7 +53,7 @@ public class AutoJaxwayConfig {
         log.log("loading for JaxClientServletFilter");
         FilterRegistrationBean registration = new FilterRegistrationBean();
         registration.setFilter(new JaxClientServletFilter(log));
-        registration.addUrlPatterns("/**");
+        registration.addUrlPatterns("/*");
         registration.setName("JaxClientServletFilter");
         registration.setOrder(Integer.MIN_VALUE);
         return registration;
