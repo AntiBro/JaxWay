@@ -13,8 +13,35 @@ import org.springframework.stereotype.Service;
 @Service
 public class DefaultLogImpl implements Log {
     Logger logger = LoggerFactory.getLogger(getClass());
+
+
     @Override
-    public void log(Object msg) {
-        logger.info(msg.toString());
+    public void log(Object msg, Object... params) {
+        log(LogType.INFO,msg,params);
+    }
+
+    @Override
+    public void log(LogType logType, Object msg, Object... params) {
+        switch (logType) {
+            case TRACE:
+                logger.trace(msg.toString(), params);
+                break;
+            case DEBUG:
+                logger.debug(msg.toString(), params);
+                break;
+            case INFO:
+                logger.info(msg.toString(), params);
+                break;
+            case ERROR:
+                logger.error(msg.toString(), params);
+                break;
+            case WARN:
+                logger.warn(msg.toString(), params);
+                break;
+            default:
+                logger.info(msg.toString(), params);
+                break;
+
+        }
     }
 }

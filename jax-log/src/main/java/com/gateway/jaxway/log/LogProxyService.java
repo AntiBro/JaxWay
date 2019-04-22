@@ -29,14 +29,6 @@ public class LogProxyService implements Log, InitializingBean, ApplicationContex
 
     private String LOG_PROXY_CLASS_NAME = "LogProxyService";
 
-
-    @Override
-    public void log(Object msg) {
-        if(!CollectionUtils.isEmpty(logs)){
-            logs.stream().forEach(e->e.log(msg));
-        }
-    }
-
     @Override
     public void afterPropertiesSet() throws Exception {
         if(CollectionUtils.isEmpty(logs)) {
@@ -49,5 +41,19 @@ public class LogProxyService implements Log, InitializingBean, ApplicationContex
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
+    }
+
+    @Override
+    public void log(Object msg, Object... params) {
+        if(!CollectionUtils.isEmpty(logs)){
+            logs.stream().forEach(e->e.log(msg,params));
+        }
+    }
+
+    @Override
+    public void log(LogType logType, Object msg, Object... params) {
+        if(!CollectionUtils.isEmpty(logs)){
+            logs.stream().forEach(e->e.log(logType,msg,params));
+        }
     }
 }
