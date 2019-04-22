@@ -32,9 +32,7 @@ import java.util.Map;
 @ConditionalOnProperty(name = "spring.jaxway.filter.enable", havingValue = "true")
 public class AutoJaxwayConfig {
 
-    @Autowired
-    private Log log;
-
+    private Log log = new DefaultLogImpl(AutoJaxwayConfig.class);
 
     @Bean
     @Primary
@@ -42,17 +40,13 @@ public class AutoJaxwayConfig {
         return new LogProxyService();
     }
 
-    @Bean
-    public Log JaxWayDefaultLog(){
-        return new DefaultLogImpl(AutoJaxwayConfig.class);
-    }
 
     @Bean
     @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
-    public FilterRegistrationBean someFilterRegistration(Log log) {
+    public FilterRegistrationBean someFilterRegistration() {
         log.log("loading for JaxClientServletFilter");
         FilterRegistrationBean registration = new FilterRegistrationBean();
-        registration.setFilter(new JaxClientServletFilter(log));
+        registration.setFilter(new JaxClientServletFilter(new DefaultLogImpl(JaxClientServletFilter.class)));
         registration.addUrlPatterns("/*");
         registration.setName("JaxClientServletFilter");
         registration.setOrder(Integer.MIN_VALUE);
@@ -63,9 +57,9 @@ public class AutoJaxwayConfig {
     @Bean
     @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
     @Order(Integer.MIN_VALUE)
-    public WebFilter JaxWayWebFilter(Log log){
+    public WebFilter JaxWayWebFilter(){
         log.log("loading for JaxClientWebFluxFilter");
-        return new JaxClientWebFluxFilter(log);
+        return new JaxClientWebFluxFilter(new DefaultLogImpl(JaxClientWebFluxFilter.class));
     }
 
     @PostConstruct

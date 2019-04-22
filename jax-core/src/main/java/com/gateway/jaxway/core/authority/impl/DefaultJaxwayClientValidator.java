@@ -22,7 +22,7 @@ public class DefaultJaxwayClientValidator implements JaxwayClientValidator {
     public DefaultJaxwayClientValidator(JaxwayTokenCoder jaxwayTokenCoder,JaxwayAuthenticationDataStore jaxwayAuthenticationDataStore){
         this.jaxwayTokenCoder = jaxwayTokenCoder;
         this.jaxwayAuthenticationDataStore = jaxwayAuthenticationDataStore;
-        this.log = new DefaultLogImpl();
+        this.log = new DefaultLogImpl(DefaultJaxwayClientValidator.class);
     }
 
     public DefaultJaxwayClientValidator(JaxwayTokenCoder jaxwayTokenCoder, Log log){
@@ -32,9 +32,9 @@ public class DefaultJaxwayClientValidator implements JaxwayClientValidator {
 
     @Override
     public boolean validate(JaxRequest jaxRequest) {
-        log.log("origin token= "+jaxRequest.getToken());
+        log.log(Log.LogType.DEBUG,"origin token= "+jaxRequest.getToken());
         jaxRequest.setToken(jaxwayTokenCoder.decode(jaxRequest.getToken()));
-        log.log("decoder token= "+jaxRequest.getToken());
+        log.log(Log.LogType.DEBUG,"decoder token= "+jaxRequest.getToken());
         return jaxwayAuthenticationDataStore.contains(jaxRequest.getUrl(),jaxRequest.getToken());
     }
 }
