@@ -1,5 +1,7 @@
 package com.gateway.jaxway.test.controller;
 
+import com.gateway.jaxway.log.Log;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -10,6 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
  **/
 @RestController
 public class TestController {
+
+    @Autowired
+    private Log log;
 //    @RequestMapping("/testflux")
 //    public Mono<String> getTest(){
 //        return Mono.just("测试安全过滤器");
@@ -17,6 +22,7 @@ public class TestController {
 
     @RequestMapping("/testflux")
     public String getTest(){
+        log.log("调用testflux");
         return "测试安全过滤器";
     }
 //

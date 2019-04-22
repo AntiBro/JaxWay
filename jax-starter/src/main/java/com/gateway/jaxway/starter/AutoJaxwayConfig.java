@@ -7,8 +7,6 @@ import com.gateway.jaxway.core.authority.impl.LocalJaxwayAuthenticationDataStore
 import com.gateway.jaxway.log.Log;
 import com.gateway.jaxway.log.LogProxyService;
 import com.gateway.jaxway.log.impl.DefaultLogImpl;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -16,7 +14,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.annotation.Order;
-import org.springframework.web.reactive.DispatcherHandler;
 import org.springframework.web.server.WebFilter;
 
 import javax.annotation.PostConstruct;
