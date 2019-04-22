@@ -16,8 +16,6 @@ import java.util.stream.Collectors;
  * @Date 2019/4/3 18:11
  * @Description log代理类
  **/
-@Service
-@Primary
 public class LogProxyService implements Log, InitializingBean, ApplicationContextAware {
 
     /**
@@ -34,7 +32,7 @@ public class LogProxyService implements Log, InitializingBean, ApplicationContex
         if(CollectionUtils.isEmpty(logs)) {
             // 从容器中获取所有的 实现类, 过滤掉自己
             logs =  applicationContext.getBeansOfType(Log.class).values().stream().filter(e-> !e.getClass().getName().endsWith(LOG_PROXY_CLASS_NAME)).collect(Collectors.toList());
-            logs.stream().forEach(e->System.out.println("get jax-way log class:"+e.getClass().getName()));
+            logs.stream().forEach(e->System.out.println(" jax-way log implements class: "+e.getClass().getName()));
         }
     }
 

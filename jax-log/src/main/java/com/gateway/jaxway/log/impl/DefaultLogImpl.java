@@ -10,10 +10,15 @@ import org.springframework.stereotype.Service;
  * @Date 2019/4/3 18:48
  * @Description default log service for jax-way
  **/
-@Service
 public class DefaultLogImpl implements Log {
     Logger logger = LoggerFactory.getLogger(getClass());
 
+    public DefaultLogImpl(){
+
+    }
+    public DefaultLogImpl(Class<?> clazz){
+        logger = LoggerFactory.getLogger(clazz);
+    }
 
     @Override
     public void log(Object msg, Object... params) {

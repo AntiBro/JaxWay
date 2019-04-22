@@ -1,0 +1,3 @@
+# Auto Configure Jaxway
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.gateway.jaxway.starter.AutoJaxwayConfig

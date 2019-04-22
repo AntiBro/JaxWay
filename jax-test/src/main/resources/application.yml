@@ -1,5 +1,5 @@
 server:
-  port: 8620
+  port: 8720
   compression:
     enabled: true
 
@@ -35,7 +35,7 @@ spring:
       charset: UTF-8
 
 
-
+spring.jaxway.filter.enable: true
 
 #开启feign的GZIP压缩
 feign:

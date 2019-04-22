@@ -19,11 +19,11 @@
             <appender-ref ref="accessLog" />
         </appender>
 
-        <logger name="reactor.netty.http.server.AccessLog" level="INFO" additivity="false">
+        <logger name="reactor.netty.http.server.AccessLog" level="debug" additivity="false">
             <appender-ref ref="async"/>
             <appender-ref ref="Console"/>
         </logger>
-        <root level="INFO">
+        <root level="info">
             <appender-ref ref="Console"/>
         </root>
         <logger name="com.sohu.media.mobile.clients.feignclients" level="DEBUG" additivity="false">

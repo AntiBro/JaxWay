@@ -10,11 +10,18 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>jax-core</artifactId>
+    <packaging>jar</packaging>
     <dependencies>
         <dependency>
             <groupId>com.gateway</groupId>
             <artifactId>jax-log</artifactId>
             <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
+            <scope>provided</scope>
         </dependency>
         <!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
         <dependency>
@@ -25,5 +32,6 @@
         </dependency>
 
     </dependencies>
+
 
 </project>
