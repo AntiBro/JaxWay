@@ -35,7 +35,7 @@ spring:
       charset: UTF-8
 
 
-spring.jaxway.filter.enable: true
+spring.jaxway.filter.enable: false
 
 #开启feign的GZIP压缩
 feign:

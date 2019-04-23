@@ -1,9 +1,16 @@
 package com.gateway.jaxway.test.controller;
 
+import com.gateway.jaxway.core.utils.http.JaxAuthentication;
+import com.gateway.jaxway.core.utils.http.OpType;
+import com.gateway.jaxway.core.vo.ResultVO;
 import com.gateway.jaxway.log.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @Author huaili
@@ -24,6 +31,25 @@ public class TestController {
     public String getTest(){
         log.log("调用testflux");
         return "测试安全过滤器";
+    }
+
+
+
+    @RequestMapping("/testAuthor")
+    public ResultVO getTestFor(){
+        log.log("调用testflux");
+
+        JaxAuthentication jaxAuthentication = new JaxAuthentication();
+        jaxAuthentication.setOpType(OpType.ADD);
+        jaxAuthentication.setUrl("/test");
+        jaxAuthentication.setPublishDate(new Date());
+        jaxAuthentication.setPublisher("lili");
+
+        List<JaxAuthentication> list = new ArrayList<>();
+        for(int i=0;i<8;i++){
+            list.add(jaxAuthentication);
+        }
+        return ResultVO.success(list);
     }
 //
 //    @GetMapping("/test")

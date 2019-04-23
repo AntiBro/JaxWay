@@ -11,20 +11,20 @@ import org.springframework.http.HttpStatus;
 public class ResultVO {
     private String status;
     private String code;
-    private Object content;
+    private Object body;
 
     /**
      * 未授权的 请求应用
      */
-    public static ResultVO NOT_AUTHORIZED_REQUEST = ResultVO.notAuthoried("jaxway found not legal request");
+    public static ResultVO NOT_AUTHORIZED_REQUEST = ResultVO.notAuthoried("JaxWay found illegal request");
 
     public ResultVO(){
 
     }
-    public ResultVO(String code, String status, Object content){
+    public ResultVO(String code, String status, Object body){
         this.code = code;
         this.status = status;
-        this.content = content;
+        this.body = body;
     }
 
     public String getStatus() {
@@ -43,15 +43,19 @@ public class ResultVO {
         this.code = code;
     }
 
-    public Object getContent() {
-        return content;
+    public Object getBody() {
+        return body;
     }
 
-    public void setContent(Object content) {
-        this.content = content;
+    public void setBody(Object body) {
+        this.body = body;
     }
 
     public static ResultVO notAuthoried(Object content){
         return new ResultVO(HttpStatus.UNAUTHORIZED.value()+"",HttpStatus.UNAUTHORIZED.getReasonPhrase(),content);
+    }
+
+    public static ResultVO success(Object content){
+        return new ResultVO(HttpStatus.OK.value()+"",HttpStatus.OK.getReasonPhrase(),content);
     }
 }

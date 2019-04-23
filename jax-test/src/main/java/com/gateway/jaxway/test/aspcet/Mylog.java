@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 public class Mylog implements Log {
     @Override
     public void log(Object msg, Object... params) {
-        System.out.println("自定义的实现"+msg.toString());
+        System.out.println("自定义的实现 log 实现 msg="+msg.toString());
     }
 
     @Override
