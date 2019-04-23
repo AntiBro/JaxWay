@@ -10,7 +10,7 @@ import org.springframework.http.HttpStatus;
  **/
 public class ResultVO {
     private String status;
-    private String code;
+    private Integer code;
     private Object body;
 
     /**
@@ -21,7 +21,7 @@ public class ResultVO {
     public ResultVO(){
 
     }
-    public ResultVO(String code, String status, Object body){
+    public ResultVO(Integer code, String status, Object body){
         this.code = code;
         this.status = status;
         this.body = body;
@@ -35,11 +35,11 @@ public class ResultVO {
         this.status = status;
     }
 
-    public String getCode() {
+    public Integer getCode() {
         return code;
     }
 
-    public void setCode(String code) {
+    public void setCode(Integer code) {
         this.code = code;
     }
 
@@ -52,10 +52,10 @@ public class ResultVO {
     }
 
     public static ResultVO notAuthoried(Object content){
-        return new ResultVO(HttpStatus.UNAUTHORIZED.value()+"",HttpStatus.UNAUTHORIZED.getReasonPhrase(),content);
+        return new ResultVO(HttpStatus.UNAUTHORIZED.value(),HttpStatus.UNAUTHORIZED.getReasonPhrase(),content);
     }
 
     public static ResultVO success(Object content){
-        return new ResultVO(HttpStatus.OK.value()+"",HttpStatus.OK.getReasonPhrase(),content);
+        return new ResultVO(HttpStatus.OK.value(),HttpStatus.OK.getReasonPhrase(),content);
     }
 }

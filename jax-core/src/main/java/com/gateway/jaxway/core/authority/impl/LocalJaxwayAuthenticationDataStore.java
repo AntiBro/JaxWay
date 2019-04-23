@@ -1,8 +1,14 @@
 package com.gateway.jaxway.core.authority.impl;
 
 import com.gateway.jaxway.core.authority.JaxwayAuthenticationDataStore;
+import com.gateway.jaxway.core.authority.JaxwayTokenCoder;
+import com.gateway.jaxway.core.common.JaxwayConstant;
+import com.gateway.jaxway.core.utils.http.JaxAuthentication;
+import org.springframework.util.CollectionUtils;
 
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -14,21 +20,53 @@ public class LocalJaxwayAuthenticationDataStore implements JaxwayAuthenticationD
 
     private static JaxwayAuthenticationDataStore INSTANCE = new LocalJaxwayAuthenticationDataStore();
 
-    private LocalJaxwayAuthenticationDataStore(){ }
+    private JaxwayTokenCoder jaxwayTokenCoder;
+
+    private LocalJaxwayAuthenticationDataStore(){
+        this(new Base64JaxwayTokenCoder());
+    }
+
+    private LocalJaxwayAuthenticationDataStore(JaxwayTokenCoder jaxwayTokenCoder){
+        this.jaxwayTokenCoder = jaxwayTokenCoder;
+    }
 
     public static JaxwayAuthenticationDataStore instance(){
         return INSTANCE;
     }
 
-    private static Map<String, String> whiteAppSets = new ConcurrentHashMap<>();
+    private static Map<String, Set<String>> whiteAppSets = new ConcurrentHashMap<>();
 
     @Override
-    public void updateAppAuthentications(Map<String, String> newAppAppAuthenticationMap) {
+    public void updateAppAuthentications(Map<String, Set<String>> newAppAppAuthenticationMap) {
         whiteAppSets.putAll(newAppAppAuthenticationMap);
     }
 
     @Override
-    public Map<String, String> getAllAppAuthentications() {
+    public void updateAppAuthentications(JaxAuthentication jaxAuthentication) {
+        switch (jaxAuthentication.getOpType()){
+            case ADD:
+                Set<String> toAddTokenSet = whiteAppSets.get(jaxAuthentication.getUrl());
+                if(CollectionUtils.isEmpty(toAddTokenSet)){
+                    toAddTokenSet = new HashSet<>();
+                }
+                toAddTokenSet.add(getRealToken(jaxAuthentication.getToken()));
+                break;
+            case DELETE:
+                Set<String> toDeleTokenSet = whiteAppSets.get(jaxAuthentication.getUrl());
+                if(!CollectionUtils.isEmpty(toDeleTokenSet)){
+                    toDeleTokenSet.remove(getRealToken(jaxAuthentication.getToken()));
+                }
+                break;
+        }
+    }
+
+    @Override
+    public Map<String, Set<String>> getAllAppAuthentications() {
         return whiteAppSets;
+    }
+
+
+    private String getRealToken(String encodeToken){
+       return jaxwayTokenCoder.decode(encodeToken.substring(JaxwayConstant.JAXWAY_CLIENT_VALIDATOR_PREFIXX.length()));
     }
 }

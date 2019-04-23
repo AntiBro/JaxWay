@@ -37,6 +37,8 @@ spring:
 
 spring.jaxway.filter.enable: false
 
+
+
 #开启feign的GZIP压缩
 feign:
   compression:

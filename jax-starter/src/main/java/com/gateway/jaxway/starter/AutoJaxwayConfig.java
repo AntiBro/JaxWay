@@ -4,6 +4,8 @@ import com.gateway.jaxway.core.authority.JaxClientServletFilter;
 import com.gateway.jaxway.core.authority.JaxClientWebFluxFilter;
 import com.gateway.jaxway.core.authority.JaxwayAuthenticationDataStore;
 import com.gateway.jaxway.core.authority.impl.LocalJaxwayAuthenticationDataStore;
+import com.gateway.jaxway.core.utils.DefaultLongPollService;
+import com.gateway.jaxway.core.utils.LongPollService;
 import com.gateway.jaxway.log.Log;
 import com.gateway.jaxway.log.LogProxyService;
 import com.gateway.jaxway.log.impl.DefaultLogImpl;
@@ -14,6 +16,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.annotation.Order;
+import org.springframework.core.env.Environment;
 import org.springframework.web.server.WebFilter;
 
 import javax.annotation.PostConstruct;
@@ -62,10 +65,16 @@ public class AutoJaxwayConfig {
     @PostConstruct
     public void setWhiteMaps(){
         log.log("loading for test setWhiteMaps,白名单测试");
-        JaxwayAuthenticationDataStore jaxwayAuthenticationDataStore = LocalJaxwayAuthenticationDataStore.instance();
-        Map<String,String> map = new HashMap<String,String>();
-        map.put("/testflux","123");
-        jaxwayAuthenticationDataStore.updateAppAuthentications(map);
+//        JaxwayAuthenticationDataStore jaxwayAuthenticationDataStore = LocalJaxwayAuthenticationDataStore.instance();
+//        Map<String,String> map = new HashMap<String,String>();
+//        map.put("/testflux","123");
+//        jaxwayAuthenticationDataStore.updateAppAuthentications(map);
+    }
+
+
+    @Bean
+    public LongPollService longPollService(Environment env){
+        return new DefaultLongPollService(env);
     }
 
 }

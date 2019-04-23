@@ -7,13 +7,13 @@ package com.gateway.jaxway.core.utils.http;
  **/
 public class JaxHttpResponseWrapper<T> {
     private String status;
-    private String code;
+    private Integer code;
     private T body;
 
     public JaxHttpResponseWrapper(){
 
     }
-    public JaxHttpResponseWrapper(String status,String code,T body){
+    public JaxHttpResponseWrapper(String status,Integer code,T body){
         this.status = status;
         this.code = code;
         this.body = body;
@@ -26,11 +26,11 @@ public class JaxHttpResponseWrapper<T> {
         this.status = status;
     }
 
-    public String getCode() {
+    public Integer getCode() {
         return code;
     }
 
-    public void setCode(String code) {
+    public void setCode(Integer code) {
         this.code = code;
     }
 

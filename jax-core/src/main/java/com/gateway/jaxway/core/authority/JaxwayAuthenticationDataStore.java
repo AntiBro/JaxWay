@@ -1,6 +1,9 @@
 package com.gateway.jaxway.core.authority;
 
+import com.gateway.jaxway.core.utils.http.JaxAuthentication;
+
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @Author huaili
@@ -10,18 +13,25 @@ import java.util.Map;
 public interface JaxwayAuthenticationDataStore {
 
     /**
-     * 更新 本地的请求认证信息
+     * 全量 更新 本地的请求认证信息
      * @param newAppAppAuthenticationMap
      */
-    void updateAppAuthentications(Map<String,String> newAppAppAuthenticationMap);
+    void updateAppAuthentications(Map<String,Set<String>> newAppAppAuthenticationMap);
+
+
+    /**
+     * 增量更新
+     * @param jaxAuthentication
+     */
+    void updateAppAuthentications(JaxAuthentication jaxAuthentication);
 
     /**
      * 获取所有的 请求认证信息
      * @return
      */
-    Map<String,String> getAllAppAuthentications();
+    Map<String, Set<String>> getAllAppAuthentications();
 
     default boolean contains(String url,String token){
-        return getAllAppAuthentications().get(url).equals(token);
+        return getAllAppAuthentications().get(url).contains(token);
     }
 }
