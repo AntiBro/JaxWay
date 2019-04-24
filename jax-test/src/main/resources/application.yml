@@ -35,7 +35,7 @@ spring:
       charset: UTF-8
 
 
-spring.jaxway.filter.enable: false
+spring.jaxway.filter.enable: true
 
 
 

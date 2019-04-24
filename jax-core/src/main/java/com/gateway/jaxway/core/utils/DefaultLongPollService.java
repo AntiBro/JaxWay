@@ -11,6 +11,8 @@ import org.springframework.beans.factory.DisposableBean;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.core.env.Environment;
+import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -55,6 +57,9 @@ public class DefaultLongPollService implements LongPollService, DisposableBean{
     private int readTimeOut = 10;
 
     public DefaultLongPollService(Environment env,LoadBalanceService loadBalanceService){
+        Assert.notNull(env.getProperty(JAX_PORTAL_HOST_PROPERTIES_NAME),"jaxway.host has not set");
+        Assert.notNull(env.getProperty(JAX_APP_ID_PROPERTIES_NAME),"jaxway.appid has not set");
+
         this.loadBalanceService = loadBalanceService;
         this.env = env;
         this.hosts = Arrays.asList(this.env.getProperty(JAX_PORTAL_HOST_PROPERTIES_NAME).split(","));
@@ -85,11 +90,15 @@ public class DefaultLongPollService implements LongPollService, DisposableBean{
                         }
 
                         JaxHttpRequest jaxHttpRequest = JaxHttpRequest.newBuilder().requestUrl(requestUrl).connectionTimeOut(connectTimeout).readTimeOut(readTimeOut).build();
-                        JaxHttpResponseWrapper<JaxAuthentication> responseWrapper = httpUtil.doGet(jaxHttpRequest);
+                      try {
+                          JaxHttpResponseWrapper<JaxAuthentication> responseWrapper = httpUtil.doGet(jaxHttpRequest);
 
-                        if(responseWrapper.getCode() == 200){
-                            jaxwayAuthenticationDataStore.updateAppAuthentications(responseWrapper.getBody());
-                        }
+                          if (responseWrapper.getCode() == 200) {
+                              jaxwayAuthenticationDataStore.updateAppAuthentications(responseWrapper.getBody());
+                          }
+                      }catch (Exception e){
+
+                      }
 
                     }
                 }

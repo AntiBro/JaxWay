@@ -9,6 +9,7 @@ import com.gateway.jaxway.core.utils.LongPollService;
 import com.gateway.jaxway.log.Log;
 import com.gateway.jaxway.log.LogProxyService;
 import com.gateway.jaxway.log.impl.DefaultLogImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -73,7 +74,7 @@ public class AutoJaxwayConfig {
 
 
     @Bean
-    public LongPollService longPollService(Environment env){
+    public LongPollService longPollService(Environment env) {
         return new DefaultLongPollService(env);
     }
 
