@@ -39,6 +39,10 @@ public class AppInfoController {
         jaxAuthentication.setToken(jaxwayTokenCoder.encode("123456789"));
 
         System.out.println(jaxAuthentication.getToken());
+
+        if(appid.equals("test1")){
+            return ResultVO.success(JaxAuthentication.NONE);
+        }
         return ResultVO.success(jaxAuthentication);
     }
 }

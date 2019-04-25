@@ -6,6 +6,7 @@ package com.gateway.jaxway.core.utils.http;
  * @Description OpType
  **/
 public enum OpType {
-    DELETE,
-    ADD;
+    NONE,
+    ADD,
+    DELETE;
 }

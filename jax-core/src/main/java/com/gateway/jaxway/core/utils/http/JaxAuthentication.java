@@ -11,6 +11,16 @@ import java.util.Date;
  **/
 public class JaxAuthentication {
 
+    public static JaxAuthentication NONE = new JaxAuthentication(OpType.NONE);
+
+
+    public JaxAuthentication(){
+
+    }
+    public JaxAuthentication(OpType opType){
+        this.opType = opType;
+    }
+
     private String url;
 
     private String token;
@@ -62,5 +72,8 @@ public class JaxAuthentication {
     public void setOpType(OpType opType) {
         this.opType = opType;
     }
+
+
+
 
 }
