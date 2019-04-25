@@ -63,13 +63,16 @@ public class AutoJaxwayConfig {
         return new JaxClientWebFluxFilter(new DefaultLogImpl(JaxClientWebFluxFilter.class));
     }
 
-    @PostConstruct
-    public void setWhiteMaps(){
-        log.log("loading for test setWhiteMaps,白名单测试");
+
+    public void initApp(){
+        log.log("LongPollService init for get appInfo");
+       // longPollService.doLongPoll(LocalJaxwayAuthenticationDataStore.instance());
 //        JaxwayAuthenticationDataStore jaxwayAuthenticationDataStore = LocalJaxwayAuthenticationDataStore.instance();
 //        Map<String,String> map = new HashMap<String,String>();
 //        map.put("/testflux","123");
 //        jaxwayAuthenticationDataStore.updateAppAuthentications(map);
+
+      //  longPollService.doLongPoll(LocalJaxwayAuthenticationDataStore.instance());
     }
 
 

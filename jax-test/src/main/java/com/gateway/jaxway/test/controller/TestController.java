@@ -7,6 +7,7 @@ import com.gateway.jaxway.log.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,10 +23,10 @@ public class TestController {
 
     @Autowired
     private Log log;
-//    @RequestMapping("/testflux")
-//    public Mono<String> getTest(){
-//        return Mono.just("测试安全过滤器");
-//    }
+    @RequestMapping("/test")
+    public Mono<String> getTestA(){
+        return Mono.just("测试安全过滤器");
+    }
 
     @RequestMapping("/testflux")
     public String getTest(){

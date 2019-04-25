@@ -5,7 +5,7 @@ package com.gateway.jaxway.core.utils.http;
  * @Date 2019/4/22 21:15
  * @Description JaxHttpResponseWrapper
  **/
-public class JaxHttpResponseWrapper<T> {
+public class JaxHttpResponseWrapper<T extends JaxAuthentication> {
     private String status;
     private Integer code;
     private T body;

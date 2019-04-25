@@ -1,8 +1,11 @@
 package com.gateway.jaxway.core.authority.impl;
 
 import com.gateway.jaxway.core.authority.JaxwayTokenCoder;
-import com.gateway.jaxway.core.common.JaxwayConstant;
 import org.apache.commons.codec.binary.Base64;
+
+import java.io.UnsupportedEncodingException;
+
+import static com.gateway.jaxway.core.common.JaxwayConstant.JAXWAY_CLIENT_VALIDATOR_PREFIXX;
 
 /**
  * @Author huaili
@@ -11,15 +14,17 @@ import org.apache.commons.codec.binary.Base64;
  **/
 public class Base64JaxwayTokenCoder implements JaxwayTokenCoder {
 
+    private static String  UTF_8 = "UTF-8";
 
     @Override
-    public String encode(String appName) {
-        String toEncodeAppName = JaxwayConstant.JAXWAY_CLIENT_VALIDATOR_PREFIXX+appName;
-        return new String(Base64.encodeBase64(toEncodeAppName.getBytes()));
+    public String encode(String appName) throws UnsupportedEncodingException {
+        String toEncodeAppName = JAXWAY_CLIENT_VALIDATOR_PREFIXX+appName;
+        return new String(Base64.encodeBase64(toEncodeAppName.getBytes(UTF_8)));
     }
 
     @Override
-    public String decode(String token) {
-        return new String(Base64.decodeBase64(token.getBytes()));
+    public String decode(String token) throws UnsupportedEncodingException {
+        String decodeBase64 = new String(Base64.decodeBase64(token.getBytes(UTF_8)));
+        return decodeBase64.substring(JAXWAY_CLIENT_VALIDATOR_PREFIXX.length());
     }
 }

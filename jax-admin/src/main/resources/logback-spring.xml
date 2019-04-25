@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+    <property name="defaultPattern"
+              value="%d{YYYY-MM-dd HH:mm:ss.SSS} %5p [%t] %c - %m%replace(%ex){'\n', '\t\t'}%nopex%n"/>
+    <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>${defaultPattern}</pattern>
+        </encoder>
+    </appender>
+    <springProfile name="dev,test">
+        <appender name="accessLog" class="ch.qos.logback.core.FileAppender">
+            <file>access_log.log</file>
+            <encoder>
+                <pattern>%msg%n</pattern>
+            </encoder>
+        </appender>
+        <appender name="async" class="ch.qos.logback.classic.AsyncAppender">
+            <appender-ref ref="accessLog" />
+        </appender>
+
+        <logger name="reactor.netty.http.server.AccessLog" level="debug" additivity="false">
+            <appender-ref ref="async"/>
+            <appender-ref ref="Console"/>
+        </logger>
+        <root level="info">
+            <appender-ref ref="Console"/>
+        </root>
+
+    </springProfile>
+    <springProfile name="prd">
+        <appender name="RunLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>/tmp/jaxway-admin.log</file>
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <fileNamePattern>/tmp/jaxway-admin.log.%d{yyyyMMdd}</fileNamePattern>
+                <maxHistory>7</maxHistory>
+            </rollingPolicy>
+            <encoder>
+                <charset>utf-8</charset>
+                <pattern>${defaultPattern}</pattern>
+            </encoder>
+        </appender>
+        <root level="WARN">
+            <appender-ref ref="RunLog"/>
+        </root>
+        <logger name="com.gateway.jaxway" level="INFO" additivity="false">
+            <appender-ref ref="RunLog"/>
+        </logger>
+    </springProfile>
+</configuration>

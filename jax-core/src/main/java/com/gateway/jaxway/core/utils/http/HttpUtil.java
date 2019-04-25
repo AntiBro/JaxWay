@@ -1,5 +1,7 @@
 package com.gateway.jaxway.core.utils.http;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
@@ -26,13 +28,13 @@ public class HttpUtil {
         simpleClientHttpRequestFactory.setReadTimeout(jaxHttpRequest.getReadTimeOut());
 
         restTemplate.setRequestFactory(simpleClientHttpRequestFactory);
-        ResponseEntity<T> responseEntity = restTemplate.getForEntity(jaxHttpRequest.getRequestUrl(),clazz);
+        T responseEntity = restTemplate.getForObject(jaxHttpRequest.getRequestUrl(),clazz);
 
-        return responseEntity.getBody();
+        return responseEntity;
     }
 
     public JaxHttpResponseWrapper doGet(JaxHttpRequest jaxHttpRequest){
-        return doGet(jaxHttpRequest, JaxHttpResponseWrapper.class);
+        return doGet(jaxHttpRequest,JaxHttpResponseWrapper.class);
     }
 
 }

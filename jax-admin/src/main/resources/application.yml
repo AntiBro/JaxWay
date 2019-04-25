@@ -1,5 +1,5 @@
 server:
-  port: 8720
+  port: 8920
   compression:
     enabled: true
 
@@ -37,8 +37,7 @@ spring:
 
 spring.jaxway.filter.enable: true
 
-jaxway.host: http://127.0.0.1:8920
-jaxway.appid: test1
+
 
 #开启feign的GZIP压缩
 feign:

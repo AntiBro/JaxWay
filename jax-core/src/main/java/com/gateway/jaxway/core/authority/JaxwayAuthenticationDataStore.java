@@ -1,6 +1,7 @@
 package com.gateway.jaxway.core.authority;
 
 import com.gateway.jaxway.core.utils.http.JaxAuthentication;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Map;
 import java.util.Set;
@@ -32,6 +33,9 @@ public interface JaxwayAuthenticationDataStore {
     Map<String, Set<String>> getAllAppAuthentications();
 
     default boolean contains(String url,String token){
+        if(CollectionUtils.isEmpty(getAllAppAuthentications().get(url))){
+            return false;
+        }
         return getAllAppAuthentications().get(url).contains(token);
     }
 }

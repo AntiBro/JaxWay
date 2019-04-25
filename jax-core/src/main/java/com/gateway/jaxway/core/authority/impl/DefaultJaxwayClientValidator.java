@@ -6,6 +6,9 @@ import com.gateway.jaxway.core.authority.JaxwayTokenCoder;
 import com.gateway.jaxway.core.authority.bean.JaxRequest;
 import com.gateway.jaxway.log.Log;
 import com.gateway.jaxway.log.impl.DefaultLogImpl;
+import org.springframework.util.StringUtils;
+
+import java.io.UnsupportedEncodingException;
 
 /**
  * @Author huaili
@@ -31,7 +34,10 @@ public class DefaultJaxwayClientValidator implements JaxwayClientValidator {
     }
 
     @Override
-    public boolean validate(JaxRequest jaxRequest) {
+    public boolean validate(JaxRequest jaxRequest) throws UnsupportedEncodingException {
+        if(StringUtils.isEmpty(jaxRequest.getToken())){
+            return false;
+        }
         log.log(Log.LogType.DEBUG,"origin token= "+jaxRequest.getToken());
         jaxRequest.setToken(jaxwayTokenCoder.decode(jaxRequest.getToken()));
         log.log(Log.LogType.DEBUG,"decoder token= "+jaxRequest.getToken());

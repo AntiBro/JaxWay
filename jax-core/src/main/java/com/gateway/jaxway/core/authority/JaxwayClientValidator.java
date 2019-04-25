@@ -2,6 +2,8 @@ package com.gateway.jaxway.core.authority;
 
 import com.gateway.jaxway.core.authority.bean.JaxRequest;
 
+import java.io.UnsupportedEncodingException;
+
 /**
  * @Author huaili
  * @Date 2019/4/17 17:19
@@ -14,5 +16,5 @@ public interface JaxwayClientValidator {
      * @param jaxRequest
      * @return
      */
-    boolean validate(JaxRequest jaxRequest);
+    boolean validate(JaxRequest jaxRequest) throws UnsupportedEncodingException;
 }

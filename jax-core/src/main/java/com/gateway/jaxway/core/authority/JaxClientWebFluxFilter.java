@@ -16,6 +16,8 @@ import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.UnsupportedEncodingException;
+
 import static com.gateway.jaxway.core.common.JaxwayConstant.JAXWAY_REQUEST_TOKEN_HEADER_KEY;
 
 /**
@@ -37,9 +39,13 @@ public class JaxClientWebFluxFilter implements WebFilter {
         ServerHttpRequest request =  serverWebExchange.getRequest();
         ServerHttpResponse response = serverWebExchange.getResponse();
         JaxRequest jaxRequest = JaxRequest.newBuilder().url(request.getURI().getPath()).token(request.getHeaders().getFirst(JAXWAY_REQUEST_TOKEN_HEADER_KEY)).build();
-        if(jaxwayClientValidator.validate(jaxRequest)){
-            log.log("legal webflux request jaxRequest={}",JSON.toJSON(jaxRequest));
-            return webFilterChain.filter(serverWebExchange);
+        try {
+            if(jaxwayClientValidator.validate(jaxRequest)){
+                log.log("legal webflux request jaxRequest={}",JSON.toJSONString(jaxRequest));
+                return webFilterChain.filter(serverWebExchange);
+            }
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
         }
         log.log("found illegal webflux request ip="+request.getRemoteAddress()+" uri="+request.getURI().getPath());
 
