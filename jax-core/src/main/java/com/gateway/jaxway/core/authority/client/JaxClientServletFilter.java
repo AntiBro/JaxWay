@@ -1,6 +1,7 @@
-package com.gateway.jaxway.core.authority;
+package com.gateway.jaxway.core.authority.client;
 
 import com.alibaba.fastjson.JSON;
+import com.gateway.jaxway.core.authority.JaxwayClientValidator;
 import com.gateway.jaxway.core.authority.bean.JaxRequest;
 import com.gateway.jaxway.core.authority.impl.Base64JaxwayTokenCoder;
 import com.gateway.jaxway.core.authority.impl.DefaultJaxwayClientValidator;

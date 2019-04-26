@@ -1,15 +1,12 @@
 package com.gateway.jaxway.starter;
 
-import com.gateway.jaxway.core.authority.JaxClientServletFilter;
-import com.gateway.jaxway.core.authority.JaxClientWebFluxFilter;
-import com.gateway.jaxway.core.authority.JaxwayAuthenticationDataStore;
-import com.gateway.jaxway.core.authority.impl.LocalJaxwayAuthenticationDataStore;
+import com.gateway.jaxway.core.authority.client.JaxClientServletFilter;
+import com.gateway.jaxway.core.authority.client.JaxClientWebFluxFilter;
 import com.gateway.jaxway.core.utils.DefaultLongPollService;
 import com.gateway.jaxway.core.utils.LongPollService;
 import com.gateway.jaxway.log.Log;
 import com.gateway.jaxway.log.LogProxyService;
 import com.gateway.jaxway.log.impl.DefaultLogImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -19,10 +16,6 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 import org.springframework.web.server.WebFilter;
-
-import javax.annotation.PostConstruct;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @Author huaili

@@ -1,5 +1,7 @@
 package com.gateway.jaxway.core.utils;
 
+import org.springframework.util.CollectionUtils;
+
 import java.util.List;
 import java.util.Random;
 
@@ -14,6 +16,9 @@ public interface LoadBalanceService {
     LoadBalanceService RandomLoadBalanceService = new LoadBalanceService() {
         @Override
         public String selectServer(List<String> servers) {
+            if(CollectionUtils.isEmpty(servers)){
+                throw new NullPointerException("Jaxway admin potral server list can not be null");
+            }
             Random random = new Random();
             if(servers.size() == 1){
                 return servers.get(0);

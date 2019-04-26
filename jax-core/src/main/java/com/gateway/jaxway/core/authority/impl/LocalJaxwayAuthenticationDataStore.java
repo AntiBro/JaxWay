@@ -38,7 +38,7 @@ public class LocalJaxwayAuthenticationDataStore implements JaxwayAuthenticationD
         return INSTANCE;
     }
 
-    private static Map<String, Set<String>> whiteAppSets = new ConcurrentHashMap<>();
+    private static volatile Map<String, Set<String>> whiteAppSets = new ConcurrentHashMap<>();
 
     @Override
     public void updateAppAuthentications(Map<String, Set<String>> newAppAppAuthenticationMap) {
