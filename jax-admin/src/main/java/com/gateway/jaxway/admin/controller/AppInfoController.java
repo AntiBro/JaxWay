@@ -18,7 +18,7 @@ import java.util.Date;
 /**
  * @Author huaili
  * @Date 2019/4/24 20:39
- * @Description TODO
+ * @Description AppInfoController
  **/
 @RestController
 public class AppInfoController {
@@ -40,7 +40,7 @@ public class AppInfoController {
 
         System.out.println(jaxAuthentication.getToken());
 
-        if(appid.equals("test1")){
+        if(appid.equals("test2")){
             return ResultVO.success(JaxAuthentication.NONE);
         }
         return ResultVO.success(jaxAuthentication);

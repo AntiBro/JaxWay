@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeSet;
 
 /**
  * @Author huaili
@@ -19,6 +20,7 @@ import java.util.List;
 public class JaxTestMain {
     public static void main(String[] ags){
         SpringApplication.run(JaxTestMain.class);
+        TreeSet s = new TreeSet();
 
 //        JaxHttpRequest jaxHttpRequest = JaxHttpRequest.newBuilder().requestUrl("http://10.16.57.182:8011").build();
 //
