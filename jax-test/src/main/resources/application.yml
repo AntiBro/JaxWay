@@ -6,17 +6,17 @@ server:
 spring:
   application:
     name: jax-way-test
-  cloud:
-    gateway:
-      proxy:
-        headers: {my:123}
-      routes:
-        - id: sohu
-          uri: https://m.sohu.com
-          predicates:
-          - Path=/sohu
-          filters:
-          - StripPrefix=1
+#  cloud:
+#    gateway:
+#      proxy:
+#        headers: {my:123}
+#      routes:
+#        - id: sohu
+#          uri: https://m.sohu.com
+#          predicates:
+#          - Path=/sohu
+#          filters:
+#          - StripPrefix=1
   profiles:
     active: dev
   freemarker:
@@ -35,7 +35,7 @@ spring:
       charset: UTF-8
 
 
-spring.jaxway.filter.enable: true
+spring.jaxway.filter.enable: false
 
 jaxway.host: http://127.0.0.1:8920
 jaxway.appid: test1

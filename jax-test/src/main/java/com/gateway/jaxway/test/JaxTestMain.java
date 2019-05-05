@@ -1,13 +1,7 @@
 package com.gateway.jaxway.test;
 
-import com.gateway.jaxway.core.utils.http.HttpUtil;
-import com.gateway.jaxway.core.utils.http.JaxHttpRequest;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.TreeSet;
 
 /**
  * @Author huaili
@@ -20,7 +14,7 @@ import java.util.TreeSet;
 public class JaxTestMain {
     public static void main(String[] ags){
         SpringApplication.run(JaxTestMain.class);
-        TreeSet s = new TreeSet();
+      //  TreeSet s = new TreeSet();
 
 //        JaxHttpRequest jaxHttpRequest = JaxHttpRequest.newBuilder().requestUrl("http://10.16.57.182:8011").build();
 //
