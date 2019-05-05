@@ -1,6 +1,5 @@
 package com.gateway.jaxway.core.utils;
 
-import com.alibaba.fastjson.JSON;
 import com.gateway.jaxway.core.authority.JaxwayAuthenticationDataStore;
 import com.gateway.jaxway.core.authority.impl.LocalJaxwayAuthenticationDataStore;
 import com.gateway.jaxway.core.utils.http.HttpUtil;
@@ -9,15 +8,11 @@ import com.gateway.jaxway.core.utils.http.JaxHttpRequest;
 import com.gateway.jaxway.core.utils.http.JaxHttpResponseWrapper;
 import com.google.common.util.concurrent.RateLimiter;
 import org.springframework.beans.factory.DisposableBean;
-import org.springframework.cloud.client.loadbalancer.LoadBalanced;
-import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.core.env.Environment;
 import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
