@@ -1,6 +1,6 @@
 package com.gateway.jaxway.core.utils;
 
-import com.gateway.jaxway.core.authority.JaxwayAuthenticationDataStore;
+import com.gateway.jaxway.core.authority.JaxwayClientAuthenticationDataStore;
 
 /**
  * @Author huaili
@@ -9,6 +9,6 @@ import com.gateway.jaxway.core.authority.JaxwayAuthenticationDataStore;
  **/
 public interface LongPollService {
 
-    void doLongPoll(JaxwayAuthenticationDataStore jaxwayAuthenticationDataStore);
+    void doLongPoll(JaxwayClientAuthenticationDataStore jaxwayAuthenticationDataStore);
 
 }

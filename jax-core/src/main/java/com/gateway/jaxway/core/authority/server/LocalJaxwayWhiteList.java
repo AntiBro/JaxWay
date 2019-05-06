@@ -45,7 +45,7 @@ public class LocalJaxwayWhiteList implements JaxwayWhiteList {
             return ;
         }
         if(!cachedWhiteList.contains(uriRegx)){
-            log.log(Log.LogType.INFO,"add white url regx, value="+uriRegx);
+            log.log("add white url regx, value="+uriRegx);
             cachedWhiteList.add(uriRegx);
         }
     }
@@ -58,7 +58,7 @@ public class LocalJaxwayWhiteList implements JaxwayWhiteList {
             e.printStackTrace();
             return;
         }
-        log.log(Log.LogType.INFO,"remove white url regx, value="+uriRegx);
+        log.log("remove white url regx, value="+uriRegx);
         cachedWhiteList.remove(uriRegx);
     }
 

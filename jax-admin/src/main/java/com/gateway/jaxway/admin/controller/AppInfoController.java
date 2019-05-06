@@ -1,8 +1,8 @@
 package com.gateway.jaxway.admin.controller;
 
 import com.gateway.jaxway.core.authority.JaxwayCoder;
-import com.gateway.jaxway.core.utils.http.JaxAuthentication;
 import com.gateway.jaxway.core.utils.http.OpType;
+import com.gateway.jaxway.core.vo.JaxClientAuthentication;
 import com.gateway.jaxway.core.vo.ResultVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +29,7 @@ public class AppInfoController {
     public ResultVO getTestAppInfo(String appid) throws UnsupportedEncodingException {
         log.debug("getAppInfo appid={}",appid);
 
-        JaxAuthentication jaxAuthentication = new JaxAuthentication();
+        JaxClientAuthentication jaxAuthentication = new JaxClientAuthentication();
         jaxAuthentication.setOpType(OpType.ADD);
         jaxAuthentication.setUrl("/test");
         jaxAuthentication.setPublishDate(new Date());
@@ -39,7 +39,7 @@ public class AppInfoController {
         System.out.println(jaxAuthentication.getToken());
 
         if(appid.equals("test2")){
-            return ResultVO.success(JaxAuthentication.NONE);
+            return ResultVO.success(JaxClientAuthentication.NONE);
         }
         return ResultVO.success(jaxAuthentication);
     }

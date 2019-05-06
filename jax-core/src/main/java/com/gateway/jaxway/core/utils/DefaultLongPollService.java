@@ -1,11 +1,13 @@
 package com.gateway.jaxway.core.utils;
 
 import com.gateway.jaxway.core.authority.JaxwayAuthenticationDataStore;
-import com.gateway.jaxway.core.authority.impl.LocalJaxwayAuthenticationDataStore;
+import com.gateway.jaxway.core.authority.JaxwayClientAuthenticationDataStore;
+import com.gateway.jaxway.core.authority.client.LocalJaxwayAuthenticationClientDataStore;
 import com.gateway.jaxway.core.utils.http.HttpUtil;
-import com.gateway.jaxway.core.utils.http.JaxAuthentication;
 import com.gateway.jaxway.core.utils.http.JaxHttpRequest;
 import com.gateway.jaxway.core.utils.http.JaxHttpResponseWrapper;
+import com.gateway.jaxway.core.vo.JaxAuthentication;
+import com.gateway.jaxway.core.vo.JaxClientAuthentication;
 import com.google.common.util.concurrent.RateLimiter;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.core.env.Environment;
@@ -62,12 +64,12 @@ public class DefaultLongPollService implements LongPollService, DisposableBean {
         this.appId = this.env.getProperty(JAX_APP_ID_PROPERTIES_NAME);
         this.executorService = Executors.newSingleThreadExecutor(JaxwayThreadFactory.create(GROUP_NAME, true));
         this.longPollRateLimiter = RateLimiter.create(longPullQPS);
-        this.jaxwayAuthenticationDataStore = LocalJaxwayAuthenticationDataStore.instance();
+        this.jaxwayAuthenticationDataStore = LocalJaxwayAuthenticationClientDataStore.instance();
 
         /**
          * begin long pull for appinfo
          */
-        doLongPoll(LocalJaxwayAuthenticationDataStore.instance());
+        doLongPoll(LocalJaxwayAuthenticationClientDataStore.instance());
     }
 
     public DefaultLongPollService(Environment env) {
@@ -76,7 +78,7 @@ public class DefaultLongPollService implements LongPollService, DisposableBean {
 
 
     @Override
-    public void doLongPoll(JaxwayAuthenticationDataStore jaxwayAuthenticationDataStore) {
+    public void doLongPoll(JaxwayClientAuthenticationDataStore jaxwayAuthenticationDataStore) {
         HttpUtil httpUtil = HttpUtil.newInstance();
         String requestUrl = generateUrl(selectPortalHost());
         executorService.submit(new Runnable() {
@@ -93,7 +95,7 @@ public class DefaultLongPollService implements LongPollService, DisposableBean {
 
                     JaxHttpRequest jaxHttpRequest = JaxHttpRequest.newBuilder().requestUrl(requestUrl).connectionTimeOut(connectTimeout).readTimeOut(readTimeOut).build();
                     try {
-                        JaxHttpResponseWrapper<JaxAuthentication> responseWrapper = httpUtil.doGet(jaxHttpRequest);
+                        JaxHttpResponseWrapper<JaxClientAuthentication> responseWrapper = httpUtil.doGet(jaxHttpRequest);
 
                         if (responseWrapper.getCode() == 200) {
                             jaxwayAuthenticationDataStore.updateAppAuthentications(responseWrapper.getBody());

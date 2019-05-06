@@ -53,19 +53,19 @@ public class AutoJaxwayConfig {
     @Order(Integer.MIN_VALUE)
     public WebFilter JaxWayWebFilter(){
         log.log("loading for JaxClientWebFluxFilter");
-        return new JaxClientWebFluxFilter(new DefaultLogImpl(JaxClientWebFluxFilter.class));
+        return new JaxClientWebFluxFilter();
     }
 
 
     public void initApp(){
         log.log("LongPollService init for get appInfo");
-       // longPollService.doLongPoll(LocalJaxwayAuthenticationDataStore.instance());
-//        JaxwayAuthenticationDataStore jaxwayAuthenticationDataStore = LocalJaxwayAuthenticationDataStore.instance();
+       // longPollService.doLongPoll(LocalJaxwayAuthenticationClientDataStore.instance());
+//        JaxwayAuthenticationDataStore jaxwayAuthenticationDataStore = LocalJaxwayAuthenticationClientDataStore.instance();
 //        Map<String,String> map = new HashMap<String,String>();
 //        map.put("/testflux","123");
 //        jaxwayAuthenticationDataStore.updateAppAuthentications(map);
 
-      //  longPollService.doLongPoll(LocalJaxwayAuthenticationDataStore.instance());
+      //  longPollService.doLongPoll(LocalJaxwayAuthenticationClientDataStore.instance());
     }
 
 

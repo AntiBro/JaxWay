@@ -1,5 +1,7 @@
 package com.gateway.jaxway.core.utils.http;
 
+import com.gateway.jaxway.core.vo.JaxAuthentication;
+
 /**
  * @Author huaili
  * @Date 2019/4/22 21:15

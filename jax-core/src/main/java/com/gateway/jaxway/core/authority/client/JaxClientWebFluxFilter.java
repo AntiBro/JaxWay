@@ -5,9 +5,9 @@ import com.gateway.jaxway.core.authority.JaxwayClientValidator;
 import com.gateway.jaxway.core.authority.bean.JaxRequest;
 import com.gateway.jaxway.core.authority.impl.Base64JaxwayCoder;
 import com.gateway.jaxway.core.authority.impl.DefaultJaxwayClientValidator;
-import com.gateway.jaxway.core.authority.impl.LocalJaxwayAuthenticationDataStore;
 import com.gateway.jaxway.core.vo.ResultVO;
 import com.gateway.jaxway.log.Log;
+import com.gateway.jaxway.log.impl.DefaultLogImpl;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
@@ -33,7 +33,11 @@ public class JaxClientWebFluxFilter implements WebFilter {
 
     public JaxClientWebFluxFilter(Log log){
         this.log = log;
-        this.jaxwayClientValidator = new DefaultJaxwayClientValidator(new Base64JaxwayCoder(), LocalJaxwayAuthenticationDataStore.instance());
+        this.jaxwayClientValidator = new DefaultJaxwayClientValidator(new Base64JaxwayCoder(), LocalJaxwayAuthenticationClientDataStore.instance());
+    }
+
+    public JaxClientWebFluxFilter(){
+        this(new DefaultLogImpl(JaxClientWebFluxFilter.class));
     }
 
     @Override
@@ -50,7 +54,7 @@ public class JaxClientWebFluxFilter implements WebFilter {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        log.log("found illegal webflux request ip="+request.getRemoteAddress()+" uri="+request.getURI().getPath());
+        log.log(Log.LogType.WARN,"found illegal webflux request ip="+request.getRemoteAddress()+" uri="+request.getURI().getPath());
 
         DataBuffer wrap = serverWebExchange.getResponse().bufferFactory().wrap(JSON.toJSONString(ResultVO.NOT_AUTHORIZED_REQUEST).getBytes());
         return  response.writeWith(Flux.just(wrap));

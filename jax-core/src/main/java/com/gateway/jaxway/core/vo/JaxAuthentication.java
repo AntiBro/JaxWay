@@ -1,6 +1,7 @@
-package com.gateway.jaxway.core.utils.http;
+package com.gateway.jaxway.core.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.gateway.jaxway.core.utils.http.OpType;
 
 import java.util.Date;
 
@@ -11,7 +12,6 @@ import java.util.Date;
  **/
 public class JaxAuthentication {
 
-    public static JaxAuthentication NONE = new JaxAuthentication(OpType.NONE);
 
 
     public JaxAuthentication(){
@@ -21,10 +21,6 @@ public class JaxAuthentication {
         this.opType = opType;
     }
 
-    private String url;
-
-    private String token;
-
     private String publisher;
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date publishDate;
@@ -32,21 +28,6 @@ public class JaxAuthentication {
     private OpType opType;
 
 
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
 
     public String getPublisher() {
         return publisher;

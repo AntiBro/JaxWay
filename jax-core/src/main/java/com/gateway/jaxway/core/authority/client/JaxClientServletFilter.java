@@ -5,7 +5,6 @@ import com.gateway.jaxway.core.authority.JaxwayClientValidator;
 import com.gateway.jaxway.core.authority.bean.JaxRequest;
 import com.gateway.jaxway.core.authority.impl.Base64JaxwayCoder;
 import com.gateway.jaxway.core.authority.impl.DefaultJaxwayClientValidator;
-import com.gateway.jaxway.core.authority.impl.LocalJaxwayAuthenticationDataStore;
 import com.gateway.jaxway.core.vo.ResultVO;
 import com.gateway.jaxway.log.Log;
 
@@ -34,7 +33,7 @@ public class JaxClientServletFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         if(jaxwayClientValidator == null){
-            jaxwayClientValidator = new DefaultJaxwayClientValidator(new Base64JaxwayCoder(), LocalJaxwayAuthenticationDataStore.instance());
+            jaxwayClientValidator = new DefaultJaxwayClientValidator(new Base64JaxwayCoder(), LocalJaxwayAuthenticationClientDataStore.instance());
         }
 
     }

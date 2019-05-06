@@ -41,6 +41,6 @@ public class DefaultJaxwayClientValidator implements JaxwayClientValidator {
         log.log(Log.LogType.DEBUG,"origin token= "+jaxRequest.getToken());
         jaxRequest.setToken(jaxwayCoder.decode(jaxRequest.getToken()));
         log.log(Log.LogType.DEBUG,"decoder token= "+jaxRequest.getToken());
-        return jaxwayAuthenticationDataStore.contains(jaxRequest.getUrl(),jaxRequest.getToken());
+        return jaxwayAuthenticationDataStore.match(jaxRequest.getUrl(),jaxRequest.getToken());
     }
 }

@@ -1,8 +1,11 @@
-package com.gateway.jaxway.core.authority.impl;
+package com.gateway.jaxway.core.authority.client;
 
 import com.gateway.jaxway.core.authority.JaxwayAuthenticationDataStore;
+import com.gateway.jaxway.core.authority.JaxwayClientAuthenticationDataStore;
 import com.gateway.jaxway.core.authority.JaxwayCoder;
-import com.gateway.jaxway.core.utils.http.JaxAuthentication;
+import com.gateway.jaxway.core.authority.impl.Base64JaxwayCoder;
+import com.gateway.jaxway.core.vo.JaxAuthentication;
+import com.gateway.jaxway.core.vo.JaxClientAuthentication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
@@ -16,24 +19,24 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * @Author huaili
  * @Date 2019/4/17 20:25
- * @Description LocalJaxwayAuthenticationDataStore
+ * @Description LocalJaxwayAuthenticationClientDataStore
  **/
-public class LocalJaxwayAuthenticationDataStore implements JaxwayAuthenticationDataStore {
-    private Logger logger = LoggerFactory.getLogger(LocalJaxwayAuthenticationDataStore.class);
+public class LocalJaxwayAuthenticationClientDataStore implements JaxwayClientAuthenticationDataStore {
+    private Logger logger = LoggerFactory.getLogger(LocalJaxwayAuthenticationClientDataStore.class);
 
-    private static JaxwayAuthenticationDataStore INSTANCE = new LocalJaxwayAuthenticationDataStore();
+    private static JaxwayClientAuthenticationDataStore INSTANCE = new LocalJaxwayAuthenticationClientDataStore();
 
     private JaxwayCoder jaxwayCoder;
 
-    private LocalJaxwayAuthenticationDataStore(){
+    private LocalJaxwayAuthenticationClientDataStore(){
         this(new Base64JaxwayCoder());
     }
 
-    private LocalJaxwayAuthenticationDataStore(JaxwayCoder jaxwayCoder){
+    private LocalJaxwayAuthenticationClientDataStore(JaxwayCoder jaxwayCoder){
         this.jaxwayCoder = jaxwayCoder;
     }
 
-    public static JaxwayAuthenticationDataStore instance(){
+    public static JaxwayClientAuthenticationDataStore instance(){
         return INSTANCE;
     }
 
@@ -45,7 +48,7 @@ public class LocalJaxwayAuthenticationDataStore implements JaxwayAuthenticationD
     }
 
     @Override
-    public void updateAppAuthentications(JaxAuthentication jaxAuthentication) {
+    public void updateAppAuthentications(JaxClientAuthentication jaxAuthentication) {
         String token = null;
         try {
             token = jaxwayCoder.decode(jaxAuthentication.getToken());

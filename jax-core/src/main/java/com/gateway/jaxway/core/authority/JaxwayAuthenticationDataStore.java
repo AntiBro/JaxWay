@@ -1,6 +1,5 @@
 package com.gateway.jaxway.core.authority;
 
-import com.gateway.jaxway.core.utils.http.JaxAuthentication;
 import org.springframework.util.CollectionUtils;
 
 import java.util.Map;
@@ -15,16 +14,10 @@ public interface JaxwayAuthenticationDataStore {
 
     /**
      * 全量 更新 本地的请求认证信息
-     * @param newAppAppAuthenticationMap
+     * @param newAppAuthenticationMap
      */
-    void updateAppAuthentications(Map<String,Set<String>> newAppAppAuthenticationMap);
+    void updateAppAuthentications(Map<String,Set<String>> newAppAuthenticationMap);
 
-
-    /**
-     * 增量更新
-     * @param jaxAuthentication
-     */
-    void updateAppAuthentications(JaxAuthentication jaxAuthentication);
 
     /**
      * 获取所有的 请求认证信息
@@ -32,7 +25,7 @@ public interface JaxwayAuthenticationDataStore {
      */
     Map<String, Set<String>> getAllAppAuthentications();
 
-    default boolean contains(String url,String token){
+    default boolean match(String url, String token){
         if(CollectionUtils.isEmpty(getAllAppAuthentications().get(url))){
             return false;
         }
