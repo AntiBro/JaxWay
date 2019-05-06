@@ -1,8 +1,7 @@
 package com.gateway.jaxway.core.authority.impl;
 
 import com.gateway.jaxway.core.authority.JaxwayAuthenticationDataStore;
-import com.gateway.jaxway.core.authority.JaxwayTokenCoder;
-import com.gateway.jaxway.core.common.JaxwayConstant;
+import com.gateway.jaxway.core.authority.JaxwayCoder;
 import com.gateway.jaxway.core.utils.http.JaxAuthentication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,14 +23,14 @@ public class LocalJaxwayAuthenticationDataStore implements JaxwayAuthenticationD
 
     private static JaxwayAuthenticationDataStore INSTANCE = new LocalJaxwayAuthenticationDataStore();
 
-    private JaxwayTokenCoder jaxwayTokenCoder;
+    private JaxwayCoder jaxwayCoder;
 
     private LocalJaxwayAuthenticationDataStore(){
-        this(new Base64JaxwayTokenCoder());
+        this(new Base64JaxwayCoder());
     }
 
-    private LocalJaxwayAuthenticationDataStore(JaxwayTokenCoder jaxwayTokenCoder){
-        this.jaxwayTokenCoder = jaxwayTokenCoder;
+    private LocalJaxwayAuthenticationDataStore(JaxwayCoder jaxwayCoder){
+        this.jaxwayCoder = jaxwayCoder;
     }
 
     public static JaxwayAuthenticationDataStore instance(){
@@ -49,7 +48,7 @@ public class LocalJaxwayAuthenticationDataStore implements JaxwayAuthenticationD
     public void updateAppAuthentications(JaxAuthentication jaxAuthentication) {
         String token = null;
         try {
-            token = jaxwayTokenCoder.decode(jaxAuthentication.getToken());
+            token = jaxwayCoder.decode(jaxAuthentication.getToken());
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
             logger.error("decode token error from portal,{}",e.getMessage());

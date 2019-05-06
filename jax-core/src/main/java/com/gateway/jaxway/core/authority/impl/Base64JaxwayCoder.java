@@ -1,6 +1,6 @@
 package com.gateway.jaxway.core.authority.impl;
 
-import com.gateway.jaxway.core.authority.JaxwayTokenCoder;
+import com.gateway.jaxway.core.authority.JaxwayCoder;
 import org.apache.commons.codec.binary.Base64;
 
 import java.io.UnsupportedEncodingException;
@@ -10,9 +10,9 @@ import static com.gateway.jaxway.core.common.JaxwayConstant.JAXWAY_CLIENT_VALIDA
 /**
  * @Author huaili
  * @Date 2019/4/17 18:02
- * @Description Base64JaxwayTokenCoder 使用 base64 加密算法
+ * @Description Base64JaxwayCoder 使用 base64 加密算法
  **/
-public class Base64JaxwayTokenCoder implements JaxwayTokenCoder {
+public class Base64JaxwayCoder implements JaxwayCoder {
 
     private static String  UTF_8 = "UTF-8";
 

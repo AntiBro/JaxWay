@@ -2,7 +2,7 @@ package com.gateway.jaxway.core.authority.impl;
 
 import com.gateway.jaxway.core.authority.JaxwayAuthenticationDataStore;
 import com.gateway.jaxway.core.authority.JaxwayClientValidator;
-import com.gateway.jaxway.core.authority.JaxwayTokenCoder;
+import com.gateway.jaxway.core.authority.JaxwayCoder;
 import com.gateway.jaxway.core.authority.bean.JaxRequest;
 import com.gateway.jaxway.log.Log;
 import com.gateway.jaxway.log.impl.DefaultLogImpl;
@@ -18,18 +18,18 @@ import java.io.UnsupportedEncodingException;
 public class DefaultJaxwayClientValidator implements JaxwayClientValidator {
     private Log log;
 
-    private JaxwayTokenCoder jaxwayTokenCoder;
+    private JaxwayCoder jaxwayCoder;
 
     private JaxwayAuthenticationDataStore jaxwayAuthenticationDataStore;
 
-    public DefaultJaxwayClientValidator(JaxwayTokenCoder jaxwayTokenCoder,JaxwayAuthenticationDataStore jaxwayAuthenticationDataStore){
-        this.jaxwayTokenCoder = jaxwayTokenCoder;
+    public DefaultJaxwayClientValidator(JaxwayCoder jaxwayCoder, JaxwayAuthenticationDataStore jaxwayAuthenticationDataStore){
+        this.jaxwayCoder = jaxwayCoder;
         this.jaxwayAuthenticationDataStore = jaxwayAuthenticationDataStore;
         this.log = new DefaultLogImpl(DefaultJaxwayClientValidator.class);
     }
 
-    public DefaultJaxwayClientValidator(JaxwayTokenCoder jaxwayTokenCoder, Log log){
-        this.jaxwayTokenCoder = jaxwayTokenCoder;
+    public DefaultJaxwayClientValidator(JaxwayCoder jaxwayCoder, Log log){
+        this.jaxwayCoder = jaxwayCoder;
         this.log = log;
     }
 
@@ -39,7 +39,7 @@ public class DefaultJaxwayClientValidator implements JaxwayClientValidator {
             return false;
         }
         log.log(Log.LogType.DEBUG,"origin token= "+jaxRequest.getToken());
-        jaxRequest.setToken(jaxwayTokenCoder.decode(jaxRequest.getToken()));
+        jaxRequest.setToken(jaxwayCoder.decode(jaxRequest.getToken()));
         log.log(Log.LogType.DEBUG,"decoder token= "+jaxRequest.getToken());
         return jaxwayAuthenticationDataStore.contains(jaxRequest.getUrl(),jaxRequest.getToken());
     }

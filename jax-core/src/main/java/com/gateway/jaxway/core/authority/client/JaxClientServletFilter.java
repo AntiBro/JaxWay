@@ -3,7 +3,7 @@ package com.gateway.jaxway.core.authority.client;
 import com.alibaba.fastjson.JSON;
 import com.gateway.jaxway.core.authority.JaxwayClientValidator;
 import com.gateway.jaxway.core.authority.bean.JaxRequest;
-import com.gateway.jaxway.core.authority.impl.Base64JaxwayTokenCoder;
+import com.gateway.jaxway.core.authority.impl.Base64JaxwayCoder;
 import com.gateway.jaxway.core.authority.impl.DefaultJaxwayClientValidator;
 import com.gateway.jaxway.core.authority.impl.LocalJaxwayAuthenticationDataStore;
 import com.gateway.jaxway.core.vo.ResultVO;
@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 import static com.gateway.jaxway.core.common.JaxwayConstant.JAXWAY_REQUEST_TOKEN_HEADER_KEY;
+import static com.gateway.jaxway.core.common.JaxwayConstant.JAXWAY_URL_FROM_SERVER;
 
 /**
  * @Author huaili
@@ -33,7 +34,7 @@ public class JaxClientServletFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         if(jaxwayClientValidator == null){
-            jaxwayClientValidator = new DefaultJaxwayClientValidator(new Base64JaxwayTokenCoder(), LocalJaxwayAuthenticationDataStore.instance());
+            jaxwayClientValidator = new DefaultJaxwayClientValidator(new Base64JaxwayCoder(), LocalJaxwayAuthenticationDataStore.instance());
         }
 
     }
@@ -41,7 +42,7 @@ public class JaxClientServletFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest)servletRequest;
-        JaxRequest jaxRequest = JaxRequest.newBuilder().token( req.getHeader(JAXWAY_REQUEST_TOKEN_HEADER_KEY)).url(req.getRequestURI()).build();
+        JaxRequest jaxRequest = JaxRequest.newBuilder().token( req.getHeader(JAXWAY_REQUEST_TOKEN_HEADER_KEY)).url(req.getHeader(JAXWAY_URL_FROM_SERVER)).build();
         if(jaxwayClientValidator.validate(jaxRequest)){
             log.log("legal servlet request jaxRequest={}",JSON.toJSON(jaxRequest));
             filterChain.doFilter(servletRequest,servletResponse);

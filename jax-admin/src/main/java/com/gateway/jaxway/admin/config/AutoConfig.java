@@ -1,7 +1,7 @@
 package com.gateway.jaxway.admin.config;
 
-import com.gateway.jaxway.core.authority.JaxwayTokenCoder;
-import com.gateway.jaxway.core.authority.impl.Base64JaxwayTokenCoder;
+import com.gateway.jaxway.core.authority.JaxwayCoder;
+import com.gateway.jaxway.core.authority.impl.Base64JaxwayCoder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
 public class AutoConfig {
 
     @Bean
-    public JaxwayTokenCoder jaxwayTokenCoder(){
-        return new Base64JaxwayTokenCoder();
+    public JaxwayCoder jaxwayTokenCoder(){
+        return new Base64JaxwayCoder();
     }
 }

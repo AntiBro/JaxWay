@@ -3,7 +3,7 @@ package com.gateway.jaxway.core.authority.client;
 import com.alibaba.fastjson.JSON;
 import com.gateway.jaxway.core.authority.JaxwayClientValidator;
 import com.gateway.jaxway.core.authority.bean.JaxRequest;
-import com.gateway.jaxway.core.authority.impl.Base64JaxwayTokenCoder;
+import com.gateway.jaxway.core.authority.impl.Base64JaxwayCoder;
 import com.gateway.jaxway.core.authority.impl.DefaultJaxwayClientValidator;
 import com.gateway.jaxway.core.authority.impl.LocalJaxwayAuthenticationDataStore;
 import com.gateway.jaxway.core.vo.ResultVO;
@@ -20,6 +20,7 @@ import reactor.core.publisher.Mono;
 import java.io.UnsupportedEncodingException;
 
 import static com.gateway.jaxway.core.common.JaxwayConstant.JAXWAY_REQUEST_TOKEN_HEADER_KEY;
+import static com.gateway.jaxway.core.common.JaxwayConstant.JAXWAY_URL_FROM_SERVER;
 
 /**
  * @Author huaili
@@ -32,14 +33,15 @@ public class JaxClientWebFluxFilter implements WebFilter {
 
     public JaxClientWebFluxFilter(Log log){
         this.log = log;
-        this.jaxwayClientValidator = new DefaultJaxwayClientValidator(new Base64JaxwayTokenCoder(), LocalJaxwayAuthenticationDataStore.instance());
+        this.jaxwayClientValidator = new DefaultJaxwayClientValidator(new Base64JaxwayCoder(), LocalJaxwayAuthenticationDataStore.instance());
     }
 
     @Override
     public Mono<Void> filter(ServerWebExchange serverWebExchange, WebFilterChain webFilterChain) {
         ServerHttpRequest request =  serverWebExchange.getRequest();
         ServerHttpResponse response = serverWebExchange.getResponse();
-        JaxRequest jaxRequest = JaxRequest.newBuilder().url(request.getURI().getPath()).token(request.getHeaders().getFirst(JAXWAY_REQUEST_TOKEN_HEADER_KEY)).build();
+
+        JaxRequest jaxRequest = JaxRequest.newBuilder().url(request.getHeaders().getFirst(JAXWAY_URL_FROM_SERVER)).token(request.getHeaders().getFirst(JAXWAY_REQUEST_TOKEN_HEADER_KEY)).build();
         try {
             if(jaxwayClientValidator.validate(jaxRequest)){
                 log.log("legal webflux request jaxRequest={}",JSON.toJSONString(jaxRequest));

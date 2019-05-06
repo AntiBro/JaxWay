@@ -13,21 +13,16 @@ import java.util.Arrays;
 /**
  * @Author huaili
  * @Date 2019/5/5 19:53
- * @Description RouteUtils for JaxWay
+ * @Description RouteUtil for JaxWay
  **/
-public class RouteUtils {
+public class RouteUtil {
 
     public static RouteDefinition generatePathRouteDefition(String url,String path,String Id,Integer order) throws URISyntaxException {
         RouteDefinition rdf = new RouteDefinition();
-
         PredicateDefinition pd = new PredicateDefinition(PredicatesEnum.getPathPredicateValue(path));
-
         rdf.setPredicates(new ArrayList<>(Arrays.asList(pd)));
-
         FilterDefinition filter = new FilterDefinition(FiltersEnum.defaultStripPrefixValueOf());
-
         rdf.setFilters(new ArrayList<>(Arrays.asList(filter)));
-
         rdf.setUri(new URI(url));
 
         if(!StringUtils.isEmpty(Id))
