@@ -1,6 +1,7 @@
 package com.gateway.jaxway.core.authority.impl;
 
 import com.gateway.jaxway.core.authority.JaxwayAuthenticationDataStore;
+import com.gateway.jaxway.core.authority.JaxwayClientAuthenticationDataStore;
 import com.gateway.jaxway.core.authority.JaxwayClientValidator;
 import com.gateway.jaxway.core.authority.JaxwayCoder;
 import com.gateway.jaxway.core.authority.bean.JaxRequest;
@@ -20,9 +21,9 @@ public class DefaultJaxwayClientValidator implements JaxwayClientValidator {
 
     private JaxwayCoder jaxwayCoder;
 
-    private JaxwayAuthenticationDataStore jaxwayAuthenticationDataStore;
+    private JaxwayClientAuthenticationDataStore jaxwayAuthenticationDataStore;
 
-    public DefaultJaxwayClientValidator(JaxwayCoder jaxwayCoder, JaxwayAuthenticationDataStore jaxwayAuthenticationDataStore){
+    public DefaultJaxwayClientValidator(JaxwayCoder jaxwayCoder, JaxwayClientAuthenticationDataStore jaxwayAuthenticationDataStore){
         this.jaxwayCoder = jaxwayCoder;
         this.jaxwayAuthenticationDataStore = jaxwayAuthenticationDataStore;
         this.log = new DefaultLogImpl(DefaultJaxwayClientValidator.class);
@@ -38,9 +39,10 @@ public class DefaultJaxwayClientValidator implements JaxwayClientValidator {
         if(StringUtils.isEmpty(jaxRequest.getToken())){
             return false;
         }
+        jaxRequest.setUrl(jaxwayCoder.decode(jaxRequest.getId()));
         log.log(Log.LogType.DEBUG,"origin token= "+jaxRequest.getToken());
         jaxRequest.setToken(jaxwayCoder.decode(jaxRequest.getToken()));
         log.log(Log.LogType.DEBUG,"decoder token= "+jaxRequest.getToken());
-        return jaxwayAuthenticationDataStore.match(jaxRequest.getUrl(),jaxRequest.getToken());
+        return jaxwayAuthenticationDataStore.match(jaxRequest.getId(),jaxRequest.getToken());
     }
 }

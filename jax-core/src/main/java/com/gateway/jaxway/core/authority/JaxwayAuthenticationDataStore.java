@@ -25,10 +25,10 @@ public interface JaxwayAuthenticationDataStore {
      */
     Map<String, Set<String>> getAllAppAuthentications();
 
-    default boolean match(String url, String token){
-        if(CollectionUtils.isEmpty(getAllAppAuthentications().get(url))){
+    default boolean match(String appId, String token){
+        if(CollectionUtils.isEmpty(getAllAppAuthentications().get(appId))){
             return false;
         }
-        return getAllAppAuthentications().get(url).contains(token);
+        return getAllAppAuthentications().get(appId).contains(token);
     }
 }

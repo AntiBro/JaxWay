@@ -42,7 +42,7 @@ public class TestController {
 
         JaxClientAuthentication jaxAuthentication = new JaxClientAuthentication();
         jaxAuthentication.setOpType(OpType.ADD);
-        jaxAuthentication.setUrl("/test");
+        jaxAuthentication.setAppId("/test");
         jaxAuthentication.setPublishDate(new Date());
         jaxAuthentication.setPublisher("lili");
 
@@ -51,6 +51,14 @@ public class TestController {
             list.add(jaxAuthentication);
         }
         return ResultVO.success(list);
+    }
+
+
+    @RequestMapping("/sohu")
+    public ResultVO getTestSohu(){
+        log.log("sohu");
+
+        return ResultVO.success("sohu success");
     }
 //
 //    @GetMapping("/test")

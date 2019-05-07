@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author huaili
- * @Description Controller日志切面抽象类,需要实现allPublicMethodCall()方法，指定相应 @Pointcut
+ * @Description 日志切面抽象类,需要实现allPublicMethodCall()方法，指定相应 @Pointcut
  *
  */
 public abstract class AbstractLogAspect {

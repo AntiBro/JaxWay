@@ -17,17 +17,17 @@ public class JaxClientAuthentication extends JaxAuthentication{
         super(opType);
     }
 
-    private String url;
+    private String appId;
 
     private String token;
 
-    public String getUrl() {
-        return url;
+    public String getAppId() {
+        return appId;
     }
 
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setAppId(String appId) {
+        this.appId = appId;
     }
 
 

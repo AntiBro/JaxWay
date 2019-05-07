@@ -1,10 +1,8 @@
 package com.gateway.jaxway.core.authority.client;
 
-import com.gateway.jaxway.core.authority.JaxwayAuthenticationDataStore;
 import com.gateway.jaxway.core.authority.JaxwayClientAuthenticationDataStore;
 import com.gateway.jaxway.core.authority.JaxwayCoder;
 import com.gateway.jaxway.core.authority.impl.Base64JaxwayCoder;
-import com.gateway.jaxway.core.vo.JaxAuthentication;
 import com.gateway.jaxway.core.vo.JaxClientAuthentication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,8 +48,10 @@ public class LocalJaxwayAuthenticationClientDataStore implements JaxwayClientAut
     @Override
     public void updateAppAuthentications(JaxClientAuthentication jaxAuthentication) {
         String token = null;
+        String appId = null;
         try {
             token = jaxwayCoder.decode(jaxAuthentication.getToken());
+            appId = jaxwayCoder.decode(jaxAuthentication.getAppId());
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
             logger.error("decode token error from portal,{}",e.getMessage());
@@ -60,20 +60,20 @@ public class LocalJaxwayAuthenticationClientDataStore implements JaxwayClientAut
 
         switch (jaxAuthentication.getOpType()){
             case ADD:
-                Set<String> toAddTokenSet = whiteAppSets.get(jaxAuthentication.getUrl());
+                Set<String> toAddTokenSet = whiteAppSets.get(appId);
                 if(CollectionUtils.isEmpty(toAddTokenSet)){
                     toAddTokenSet = new HashSet<>();
-                    whiteAppSets.put(jaxAuthentication.getUrl(),toAddTokenSet);
+                    whiteAppSets.put(appId,toAddTokenSet);
                 }
                 toAddTokenSet.add(token);
-                logger.trace("add info url={} token={} ",jaxAuthentication.getUrl(),token);
+                logger.trace("add info appId={} token={} ",appId,token);
                 break;
             case DELETE:
-                Set<String> toDeleTokenSet = whiteAppSets.get(jaxAuthentication.getUrl());
+                Set<String> toDeleTokenSet = whiteAppSets.get(appId);
                 if(!CollectionUtils.isEmpty(toDeleTokenSet)){
                     toDeleTokenSet.remove(token);
                 }
-                logger.trace("dele info url={} token={} ",jaxAuthentication.getUrl(),token);
+                logger.trace("dele info appId={} token={} ",appId,token);
                 break;
         }
     }

@@ -35,10 +35,10 @@ spring:
       charset: UTF-8
 
 
-spring.jaxway.filter.enable: false
+spring.jaxway.filter.enable: true
 
 jaxway.host: http://127.0.0.1:8920
-jaxway.appid: test1
+jaxway.appid: test
 
 #开启feign的GZIP压缩
 feign:

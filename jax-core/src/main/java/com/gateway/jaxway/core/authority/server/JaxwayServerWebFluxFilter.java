@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.gateway.jaxway.core.authority.JaxwayCoder;
 import com.gateway.jaxway.core.authority.JaxwayServerAuthenticationDataStore;
 import com.gateway.jaxway.core.authority.JaxwayWhiteList;
+import com.gateway.jaxway.core.authority.impl.Base64JaxwayCoder;
 import com.gateway.jaxway.core.vo.ResultVO;
 import com.gateway.jaxway.log.Log;
 import com.gateway.jaxway.log.impl.DefaultLogImpl;
@@ -19,9 +20,7 @@ import reactor.core.publisher.Mono;
 
 import java.io.UnsupportedEncodingException;
 
-import static com.gateway.jaxway.core.common.JaxwayConstant.JAXWAY_APP_ID;
-import static com.gateway.jaxway.core.common.JaxwayConstant.JAXWAY_REQUEST_TOKEN_HEADER_KEY;
-import static com.gateway.jaxway.core.common.JaxwayConstant.JAXWAY_URL_FROM_SERVER;
+import static com.gateway.jaxway.core.common.JaxwayConstant.*;
 
 /**
  * @Author huaili
@@ -38,11 +37,14 @@ public class JaxwayServerWebFluxFilter implements WebFilter {
 
     private Log log;
 
-    public JaxwayServerWebFluxFilter(JaxwayWhiteList jaxwayWhiteList, Log log){
+    public JaxwayServerWebFluxFilter(JaxwayWhiteList jaxwayWhiteList, Log log,JaxwayCoder jaxwayCoder,JaxwayServerAuthenticationDataStore jaxwayServerAuthenticationDataStore){
         this.jaxwayWhiteList = jaxwayWhiteList;
+        this.log = log;
+        this.jaxwayCoder = jaxwayCoder;
+        this.jaxwayServerAuthenticationDataStore = jaxwayServerAuthenticationDataStore;
     }
     public JaxwayServerWebFluxFilter(){
-        this(LocalJaxwayWhiteList.create(),new DefaultLogImpl(JaxwayServerWebFluxFilter.class));
+        this(LocalJaxwayWhiteList.create(),new DefaultLogImpl(JaxwayServerWebFluxFilter.class),new Base64JaxwayCoder(),LocalJaxwayAuthenticationServerDataStore.create());
     }
 
 
@@ -62,11 +64,12 @@ public class JaxwayServerWebFluxFilter implements WebFilter {
         if(jaxwayServerAuthenticationDataStore.match(appId,uri)){
             try {
                 // add jax-way-url and jax-way-token in Http Headers to validate the request on client side
-                request.getHeaders().set(JAXWAY_URL_FROM_SERVER,jaxwayCoder.encode(jaxwayServerAuthenticationDataStore.getRegxOfUri(appId,uri)));
-                request.getHeaders().set(JAXWAY_REQUEST_TOKEN_HEADER_KEY,jaxwayCoder.encode(appId));
+                request.getHeaders().set(JAXWAY_SERVER_ID,jaxwayCoder.encode(appId));
+
+                request.getHeaders().set(JAXWAY_REQUEST_TOKEN_HEADER_KEY,jaxwayCoder.encode(jaxwayServerAuthenticationDataStore.getRegxOfUri(appId,uri)));
                 log.log("jaxway legal webflux request ip="+request.getRemoteAddress()+" uri="+request.getURI().getPath()+" appId="+appId);
                 return webFilterChain.filter(serverWebExchange);
-            } catch (UnsupportedEncodingException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
                 log.log(Log.LogType.ERROR,e.getMessage());
                 response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR);
