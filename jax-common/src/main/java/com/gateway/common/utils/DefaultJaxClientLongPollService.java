@@ -21,9 +21,9 @@ import java.util.concurrent.TimeUnit;
 /**
  * @Author huaili
  * @Date 2019/4/23 17:58
- * @Description DefaultLongPollService
+ * @Description DefaultJaxClientLongPollService
  **/
-public class DefaultLongPollService implements LongPollService, DisposableBean {
+public class DefaultJaxClientLongPollService implements JaxClientLongPollService, DisposableBean {
 
     private JaxwayAuthenticationDataStore jaxwayAuthenticationDataStore;
 
@@ -53,7 +53,7 @@ public class DefaultLongPollService implements LongPollService, DisposableBean {
 
     private int readTimeOut = 10;
 
-    public DefaultLongPollService(Environment env, LoadBalanceService loadBalanceService) {
+    public DefaultJaxClientLongPollService(Environment env, LoadBalanceService loadBalanceService) {
         Assert.notNull(env.getProperty(JAX_PORTAL_HOST_PROPERTIES_NAME), "jaxway.host has not set");
         Assert.notNull(env.getProperty(JAX_APP_ID_PROPERTIES_NAME), "jaxway.appid has not set");
 
@@ -71,7 +71,7 @@ public class DefaultLongPollService implements LongPollService, DisposableBean {
         doLongPoll(LocalJaxwayAuthenticationClientDataStore.instance());
     }
 
-    public DefaultLongPollService(Environment env) {
+    public DefaultJaxClientLongPollService(Environment env) {
         this(env, LoadBalanceService.RandomLoadBalanceService);
     }
 

@@ -5,9 +5,9 @@ import com.gateway.common.JaxwayClientAuthenticationDataStore;
 /**
  * @Author huaili
  * @Date 2019/4/23 17:56
- * @Description LongPollService
+ * @Description JaxClientLongPollService
  **/
-public interface LongPollService {
+public interface JaxClientLongPollService {
 
     void doLongPoll(JaxwayClientAuthenticationDataStore jaxwayAuthenticationDataStore);
 

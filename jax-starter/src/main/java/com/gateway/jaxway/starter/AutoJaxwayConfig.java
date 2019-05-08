@@ -1,7 +1,7 @@
 package com.gateway.jaxway.starter;
 
-import com.gateway.common.utils.DefaultLongPollService;
-import com.gateway.common.utils.LongPollService;
+import com.gateway.common.utils.DefaultJaxClientLongPollService;
+import com.gateway.common.utils.JaxClientLongPollService;
 import com.gateway.jaxway.core.authority.client.JaxClientServletFilter;
 import com.gateway.jaxway.core.authority.client.JaxClientWebFluxFilter;
 import com.gateway.jaxway.log.Log;
@@ -56,12 +56,12 @@ public class AutoJaxwayConfig {
         return new JaxClientWebFluxFilter();
     }
     @Bean
-    public LongPollService longPollService(Environment env) {
-        return new DefaultLongPollService(env);
+    public JaxClientLongPollService longPollService(Environment env) {
+        return new DefaultJaxClientLongPollService(env);
     }
 
     public void initApp(){
-        log.log("LongPollService init for get appInfo");
+        log.log("JaxClientLongPollService init for get appInfo");
        // longPollService.doLongPoll(LocalJaxwayAuthenticationClientDataStore.instance());
 //        JaxwayAuthenticationDataStore jaxwayAuthenticationDataStore = LocalJaxwayAuthenticationClientDataStore.instance();
 //        Map<String,String> map = new HashMap<String,String>();

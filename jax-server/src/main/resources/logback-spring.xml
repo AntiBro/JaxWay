@@ -28,7 +28,7 @@
         <root level="info">
             <appender-ref ref="Console"/>
         </root>
-        <logger name="com.gateway.jaxway" level="debug" additivity="false">
+        <logger name="com.gateway.jaxway.*" level="debug" additivity="false">
             <appender-ref ref="Console"/>
         </logger>
     </springProfile>

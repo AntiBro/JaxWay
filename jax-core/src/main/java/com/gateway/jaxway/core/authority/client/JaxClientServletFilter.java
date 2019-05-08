@@ -48,7 +48,7 @@ public class JaxClientServletFilter implements Filter {
             filterChain.doFilter(servletRequest,servletResponse);
             return;
         }
-        log.log("found illegal servlet request ip="+servletRequest.getLocalAddr()+" uri="+((HttpServletRequest) servletRequest).getRequestURI());
+        log.log(Log.LogType.WARN,"found illegal servlet request ip="+servletRequest.getLocalAddr()+" uri="+((HttpServletRequest) servletRequest).getRequestURI());
         servletResponse.getOutputStream().write(JSON.toJSONBytes(ResultVO.NOT_AUTHORIZED_REQUEST));
 
     }
