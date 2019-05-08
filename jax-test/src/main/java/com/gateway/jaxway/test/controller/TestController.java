@@ -1,8 +1,8 @@
 package com.gateway.jaxway.test.controller;
 
-import com.gateway.jaxway.core.utils.http.OpType;
-import com.gateway.jaxway.core.vo.JaxClientAuthentication;
-import com.gateway.jaxway.core.vo.ResultVO;
+import com.gateway.common.beans.JaxClientAuthentication;
+import com.gateway.common.beans.OpType;
+import com.gateway.common.beans.ResultVO;
 import com.gateway.jaxway.log.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -1,6 +1,6 @@
 package com.gateway.jaxway.admin.aspcet;
 
-import com.gateway.jaxway.core.aspect.AbstractLogAspect;
+import com.gateway.common.aspect.AbstractLogAspect;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;

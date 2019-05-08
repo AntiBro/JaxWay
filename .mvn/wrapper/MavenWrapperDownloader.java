@@ -36,7 +36,7 @@ public class MavenWrapperDownloader {
 
     /**
      * Path to the maven-wrapper.properties file, which might contain a downloadUrl property to
-     * use instead of the default one.
+     * use instead of the defaults one.
      */
     private static final String MAVEN_WRAPPER_PROPERTIES_PATH =
             ".mvn/wrapper/maven-wrapper.properties";
@@ -48,7 +48,7 @@ public class MavenWrapperDownloader {
             ".mvn/wrapper/maven-wrapper.jar";
 
     /**
-     * Name of the property which should be used to override the default download url for the wrapper.
+     * Name of the property which should be used to override the defaults download url for the wrapper.
      */
     private static final String PROPERTY_NAME_WRAPPER_URL = "wrapperUrl";
 

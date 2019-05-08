@@ -1,9 +1,9 @@
 package com.gateway.jaxway.server;
 
-import com.gateway.jaxway.core.authority.JaxwayServerAuthenticationDataStore;
-import com.gateway.jaxway.core.authority.server.LocalJaxwayAuthenticationServerDataStore;
-import com.gateway.jaxway.core.utils.http.OpType;
-import com.gateway.jaxway.core.vo.JaxServerAuthentication;
+import com.gateway.common.JaxwayServerAuthenticationDataStore;
+import com.gateway.common.beans.JaxServerAuthentication;
+import com.gateway.common.beans.OpType;
+import com.gateway.common.defaults.LocalJaxwayAuthenticationServerDataStore;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

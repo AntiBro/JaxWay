@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 /**
  * @Author huaili
  * @Date 2019/4/3 18:48
- * @Description default log service for jax-way
+ * @Description defaults log service for jax-way
  **/
 public class DefaultLogImpl implements Log {
     Logger logger = LoggerFactory.getLogger(getClass());

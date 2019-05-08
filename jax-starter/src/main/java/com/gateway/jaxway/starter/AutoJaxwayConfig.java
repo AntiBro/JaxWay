@@ -1,9 +1,9 @@
 package com.gateway.jaxway.starter;
 
+import com.gateway.common.utils.DefaultLongPollService;
+import com.gateway.common.utils.LongPollService;
 import com.gateway.jaxway.core.authority.client.JaxClientServletFilter;
 import com.gateway.jaxway.core.authority.client.JaxClientWebFluxFilter;
-import com.gateway.jaxway.core.utils.DefaultLongPollService;
-import com.gateway.jaxway.core.utils.LongPollService;
 import com.gateway.jaxway.log.Log;
 import com.gateway.jaxway.log.LogProxyService;
 import com.gateway.jaxway.log.impl.DefaultLogImpl;
@@ -55,7 +55,10 @@ public class AutoJaxwayConfig {
         log.log("loading for JaxClientWebFluxFilter");
         return new JaxClientWebFluxFilter();
     }
-
+    @Bean
+    public LongPollService longPollService(Environment env) {
+        return new DefaultLongPollService(env);
+    }
 
     public void initApp(){
         log.log("LongPollService init for get appInfo");
@@ -69,9 +72,6 @@ public class AutoJaxwayConfig {
     }
 
 
-    @Bean
-    public LongPollService longPollService(Environment env) {
-        return new DefaultLongPollService(env);
-    }
+
 
 }

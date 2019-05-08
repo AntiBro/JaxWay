@@ -19,7 +19,7 @@
         </dependency>
         <dependency>
             <groupId>com.gateway</groupId>
-            <artifactId>jax-core</artifactId>
+            <artifactId>common</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 

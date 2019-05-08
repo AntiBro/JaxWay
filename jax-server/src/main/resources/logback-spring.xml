@@ -10,7 +10,7 @@
     </appender>
     <springProfile name="dev,test">
         <appender name="accessLog" class="ch.qos.logback.core.FileAppender">
-            <file>access_log.log</file>
+            <file>server_access_log.log</file>
             <encoder>
                 <pattern>%msg%n</pattern>
             </encoder>
@@ -23,16 +23,18 @@
             <appender-ref ref="async"/>
             <appender-ref ref="Console"/>
         </logger>
+
+        <!-- -Dreactor.netty.http.server.accessLogEnabled=true -->
         <root level="info">
             <appender-ref ref="Console"/>
         </root>
-        <logger name="com.sohu.media.mobile.clients.feignclients" level="DEBUG" additivity="false">
+        <logger name="com.gateway.jaxway" level="debug" additivity="false">
             <appender-ref ref="Console"/>
         </logger>
     </springProfile>
     <springProfile name="prd">
         <appender name="RunLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
-            <file>/tmp/mobile-site.log</file>
+            <file>/tmp/server_access_log.log</file>
             <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
                 <fileNamePattern>/tmp/mobile-site.log.%d{yyyyMMdd}</fileNamePattern>
                 <maxHistory>7</maxHistory>
@@ -45,7 +47,7 @@
         <root level="WARN">
             <appender-ref ref="RunLog"/>
         </root>
-        <logger name="com.sohu.media.mobile.controller" level="INFO" additivity="false">
+        <logger name="com.gateway.jaxway" level="INFO" additivity="false">
             <appender-ref ref="RunLog"/>
         </logger>
     </springProfile>

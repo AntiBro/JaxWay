@@ -1,11 +1,12 @@
 package com.gateway.jaxway.core.authority.server;
 
 import com.alibaba.fastjson.JSON;
-import com.gateway.jaxway.core.authority.JaxwayCoder;
-import com.gateway.jaxway.core.authority.JaxwayServerAuthenticationDataStore;
-import com.gateway.jaxway.core.authority.JaxwayWhiteList;
-import com.gateway.jaxway.core.authority.impl.Base64JaxwayCoder;
-import com.gateway.jaxway.core.vo.ResultVO;
+import com.gateway.common.JaxwayCoder;
+import com.gateway.common.JaxwayServerAuthenticationDataStore;
+import com.gateway.common.JaxwayWhiteList;
+import com.gateway.common.beans.ResultVO;
+import com.gateway.common.defaults.Base64JaxwayCoder;
+import com.gateway.common.defaults.LocalJaxwayAuthenticationServerDataStore;
 import com.gateway.jaxway.log.Log;
 import com.gateway.jaxway.log.impl.DefaultLogImpl;
 import org.springframework.core.io.buffer.DataBuffer;
@@ -18,9 +19,7 @@ import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.io.UnsupportedEncodingException;
-
-import static com.gateway.jaxway.core.common.JaxwayConstant.*;
+import static com.gateway.common.JaxwayConstant.*;
 
 /**
  * @Author huaili
@@ -37,14 +36,14 @@ public class JaxwayServerWebFluxFilter implements WebFilter {
 
     private Log log;
 
-    public JaxwayServerWebFluxFilter(JaxwayWhiteList jaxwayWhiteList, Log log,JaxwayCoder jaxwayCoder,JaxwayServerAuthenticationDataStore jaxwayServerAuthenticationDataStore){
+    public JaxwayServerWebFluxFilter(JaxwayWhiteList jaxwayWhiteList, Log log, JaxwayCoder jaxwayCoder, JaxwayServerAuthenticationDataStore jaxwayServerAuthenticationDataStore){
         this.jaxwayWhiteList = jaxwayWhiteList;
         this.log = log;
         this.jaxwayCoder = jaxwayCoder;
         this.jaxwayServerAuthenticationDataStore = jaxwayServerAuthenticationDataStore;
     }
     public JaxwayServerWebFluxFilter(){
-        this(LocalJaxwayWhiteList.create(),new DefaultLogImpl(JaxwayServerWebFluxFilter.class),new Base64JaxwayCoder(),LocalJaxwayAuthenticationServerDataStore.create());
+        this(LocalJaxwayWhiteList.create(),new DefaultLogImpl(JaxwayServerWebFluxFilter.class),new Base64JaxwayCoder(), LocalJaxwayAuthenticationServerDataStore.create());
     }
 
 
@@ -54,6 +53,7 @@ public class JaxwayServerWebFluxFilter implements WebFilter {
         ServerHttpResponse response = serverWebExchange.getResponse();
 
         String uri = request.getURI().getPath();
+        // check if request is in whitelist,so let it go through jaxway
         if(jaxwayWhiteList.match(uri)){
             // white list request no need to check jax-way-app-id
             return webFilterChain.filter(serverWebExchange);
@@ -64,11 +64,13 @@ public class JaxwayServerWebFluxFilter implements WebFilter {
         if(jaxwayServerAuthenticationDataStore.match(appId,uri)){
             try {
                 // add jax-way-url and jax-way-token in Http Headers to validate the request on client side
-                request.getHeaders().set(JAXWAY_SERVER_ID,jaxwayCoder.encode(appId));
+                //向headers中放文件，记得build
+                ServerHttpRequest wrapRequest = request.mutate().header(JAXWAY_SERVER_ID, jaxwayCoder.encode(appId)).header(JAXWAY_REQUEST_TOKEN_HEADER_KEY,jaxwayCoder.encode(jaxwayServerAuthenticationDataStore.getRegxOfUri(appId,uri))).build();
+                //将现在的request 变成 change对象
+                ServerWebExchange wrapserverWebExchange = serverWebExchange.mutate().request(wrapRequest).build();
 
-                request.getHeaders().set(JAXWAY_REQUEST_TOKEN_HEADER_KEY,jaxwayCoder.encode(jaxwayServerAuthenticationDataStore.getRegxOfUri(appId,uri)));
                 log.log("jaxway legal webflux request ip="+request.getRemoteAddress()+" uri="+request.getURI().getPath()+" appId="+appId);
-                return webFilterChain.filter(serverWebExchange);
+                return webFilterChain.filter(wrapserverWebExchange);
             } catch (Exception e) {
                 e.printStackTrace();
                 log.log(Log.LogType.ERROR,e.getMessage());

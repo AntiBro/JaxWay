@@ -10,7 +10,7 @@
     </appender>
     <springProfile name="dev,test">
         <appender name="accessLog" class="ch.qos.logback.core.FileAppender">
-            <file>access_log.log</file>
+            <file>admin_access_log.log</file>
             <encoder>
                 <pattern>%msg%n</pattern>
             </encoder>
@@ -19,10 +19,10 @@
             <appender-ref ref="accessLog" />
         </appender>
 
-        <logger name="reactor.netty.http.server.AccessLog" level="debug" additivity="false">
-            <appender-ref ref="async"/>
-            <appender-ref ref="Console"/>
-        </logger>
+        <!--<logger name="reactor.netty.http.server.AccessLog" level="debug" additivity="false">-->
+            <!--<appender-ref ref="async"/>-->
+            <!--<appender-ref ref="Console"/>-->
+        <!--</logger>-->
         <root level="info">
             <appender-ref ref="Console"/>
         </root>

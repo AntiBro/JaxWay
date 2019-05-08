@@ -1,8 +1,8 @@
 package com.gateway.jaxway.core.authority.server;
 
-import com.gateway.jaxway.core.authority.JaxwayCoder;
-import com.gateway.jaxway.core.authority.JaxwayWhiteList;
-import com.gateway.jaxway.core.authority.impl.Base64JaxwayCoder;
+import com.gateway.common.JaxwayCoder;
+import com.gateway.common.JaxwayWhiteList;
+import com.gateway.common.defaults.Base64JaxwayCoder;
 import com.gateway.jaxway.log.Log;
 import com.gateway.jaxway.log.impl.DefaultLogImpl;
 import org.springframework.http.server.PathContainer;
@@ -13,7 +13,6 @@ import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.regex.Pattern;
 
 import static org.springframework.http.server.PathContainer.parsePath;
 

@@ -1,11 +1,12 @@
 package com.gateway.jaxway.core.authority.client;
 
 import com.alibaba.fastjson.JSON;
-import com.gateway.jaxway.core.authority.JaxwayClientValidator;
-import com.gateway.jaxway.core.authority.bean.JaxRequest;
-import com.gateway.jaxway.core.authority.impl.Base64JaxwayCoder;
-import com.gateway.jaxway.core.authority.impl.DefaultJaxwayClientValidator;
-import com.gateway.jaxway.core.vo.ResultVO;
+import com.gateway.common.JaxwayClientValidator;
+import com.gateway.common.beans.JaxRequest;
+import com.gateway.common.beans.ResultVO;
+import com.gateway.common.defaults.Base64JaxwayCoder;
+import com.gateway.common.defaults.DefaultJaxwayClientValidator;
+import com.gateway.common.defaults.LocalJaxwayAuthenticationClientDataStore;
 import com.gateway.jaxway.log.Log;
 import com.gateway.jaxway.log.impl.DefaultLogImpl;
 import org.springframework.core.io.buffer.DataBuffer;
@@ -19,9 +20,8 @@ import reactor.core.publisher.Mono;
 
 import java.io.UnsupportedEncodingException;
 
-import static com.gateway.jaxway.core.common.JaxwayConstant.JAXWAY_APP_ID;
-import static com.gateway.jaxway.core.common.JaxwayConstant.JAXWAY_REQUEST_TOKEN_HEADER_KEY;
-import static com.gateway.jaxway.core.common.JaxwayConstant.JAXWAY_SERVER_ID;
+import static com.gateway.common.JaxwayConstant.JAXWAY_REQUEST_TOKEN_HEADER_KEY;
+import static com.gateway.common.JaxwayConstant.JAXWAY_SERVER_ID;
 
 /**
  * @Author huaili

@@ -35,7 +35,7 @@ spring:
       charset: UTF-8
 
 
-spring.jaxway.filter.enable: true
+spring.jaxway.filter.enable: false
 
 jaxway.host: http://127.0.0.1:8920
 jaxway.appid: test

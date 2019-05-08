@@ -1,9 +1,9 @@
 package com.gateway.jaxway.admin.controller;
 
-import com.gateway.jaxway.core.authority.JaxwayCoder;
-import com.gateway.jaxway.core.utils.http.OpType;
-import com.gateway.jaxway.core.vo.JaxClientAuthentication;
-import com.gateway.jaxway.core.vo.ResultVO;
+import com.gateway.common.JaxwayCoder;
+import com.gateway.common.beans.JaxClientAuthentication;
+import com.gateway.common.beans.OpType;
+import com.gateway.common.beans.ResultVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +35,7 @@ public class AppInfoController {
         jaxAuthentication.setAppId(jaxwayCoder.encode(appId));
         jaxAuthentication.setPublishDate(new Date());
         jaxAuthentication.setPublisher("lili");
-        jaxAuthentication.setToken(jaxwayCoder.encode("/sohu"));
+        jaxAuthentication.setToken(jaxwayCoder.encode("/sohu/**"));
 
         System.out.println(jaxAuthentication.getToken());
 
