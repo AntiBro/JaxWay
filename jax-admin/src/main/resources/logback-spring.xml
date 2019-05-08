@@ -18,7 +18,9 @@
         <appender name="async" class="ch.qos.logback.classic.AsyncAppender">
             <appender-ref ref="accessLog" />
         </appender>
-
+        <logger name="com.gateway.jaxway" level="debug" additivity="false">
+            <appender-ref ref="Console"/>
+        </logger>
         <!--<logger name="reactor.netty.http.server.AccessLog" level="debug" additivity="false">-->
             <!--<appender-ref ref="async"/>-->
             <!--<appender-ref ref="Console"/>-->

@@ -31,13 +31,12 @@ public class AppInfoController {
 
         JaxClientAuthentication jaxAuthentication = new JaxClientAuthentication();
         String appId = "test";
-        jaxAuthentication.setOpType(OpType.ADD);
+        jaxAuthentication.setOpType(OpType.ADD_APP);
         jaxAuthentication.setAppId(jaxwayCoder.encode(appId));
         jaxAuthentication.setPublishDate(new Date());
         jaxAuthentication.setPublisher("lili");
         jaxAuthentication.setToken(jaxwayCoder.encode("/sohu/**"));
 
-        System.out.println(jaxAuthentication.getToken());
 
         if(appid.equals("test2")){
             return ResultVO.success(JaxClientAuthentication.NONE);

@@ -1,13 +1,11 @@
 package com.gateway.common.utils.http;
 
-import com.gateway.common.beans.JaxClientAuthentication;
-
 /**
  * @Author huaili
  * @Date 2019/4/22 21:15
  * @Description JaxHttpResponseWrapper
  **/
-public class JaxHttpResponseWrapper<T extends JaxClientAuthentication> {
+public class JaxHttpResponseWrapper<T> {
     private String status;
     private Integer code;
     private T body;

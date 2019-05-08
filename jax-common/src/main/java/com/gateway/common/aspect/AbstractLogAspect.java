@@ -84,7 +84,7 @@ public abstract class AbstractLogAspect {
             if (timeUsed >= 500) {
                 logger.warn("SLOW API CALL " + getInternalApiCallInfoTemplate(), apiName.toString(), timeUsed, apiArgs);
             }
-            logger.info(getInternalApiCallInfoTemplate(), apiName.toString(), timeUsed, apiArgs);
+            logger.debug(getInternalApiCallInfoTemplate(), apiName.toString(), timeUsed, apiArgs);
             return returnValue;
         } catch (Throwable throwable) {
             logger.error(getIllegalDetailsRequestExceptionTemplate(),throwable.getCause(),throwable.getMessage());

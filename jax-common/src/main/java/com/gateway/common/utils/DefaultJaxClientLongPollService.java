@@ -9,6 +9,7 @@ import com.gateway.common.utils.http.JaxHttpRequest;
 import com.gateway.common.utils.http.JaxHttpResponseWrapper;
 import com.google.common.util.concurrent.RateLimiter;
 import org.springframework.beans.factory.DisposableBean;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.env.Environment;
 import org.springframework.util.Assert;
 
@@ -31,7 +32,7 @@ public class DefaultJaxClientLongPollService implements JaxClientLongPollService
 
     private RateLimiter longPollRateLimiter;
 
-    private double longPullQPS = 0.2;
+    private double longPullQPS = 0.001;
 
     private static String GROUP_NAME = "JaxWay";
 
@@ -87,14 +88,15 @@ public class DefaultJaxClientLongPollService implements JaxClientLongPollService
                 while (!Thread.currentThread().isInterrupted()) {
                     if (!longPollRateLimiter.tryAcquire(5, TimeUnit.MILLISECONDS)) {
                         try {
-                            TimeUnit.MILLISECONDS.sleep(500);
+                            TimeUnit.MILLISECONDS.sleep(1500);
                         } catch (InterruptedException e) {
                         }
                     }
 
                     JaxHttpRequest jaxHttpRequest = JaxHttpRequest.newBuilder().requestUrl(requestUrl).connectionTimeOut(connectTimeout).readTimeOut(readTimeOut).build();
                     try {
-                        JaxHttpResponseWrapper<JaxClientAuthentication> responseWrapper = httpUtil.doGet(jaxHttpRequest);
+                        ParameterizedTypeReference<JaxHttpResponseWrapper<JaxClientAuthentication>> responseBodyType = new ParameterizedTypeReference<JaxHttpResponseWrapper<JaxClientAuthentication>>() {};
+                        JaxHttpResponseWrapper<JaxClientAuthentication> responseWrapper = httpUtil.doGet(jaxHttpRequest,responseBodyType);
 
                         if (responseWrapper.getCode() == 200) {
                             jaxwayAuthenticationDataStore.updateAppAuthentications(responseWrapper.getBody());

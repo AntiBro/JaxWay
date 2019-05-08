@@ -46,7 +46,7 @@ public class LocalJaxwayAuthenticationServerDataStore implements JaxwayServerAut
     public void updateAppAuthentications(JaxServerAuthentication jaxServerAuthentication) {
         // todo
         switch (jaxServerAuthentication.getOpType()){
-            case DELETE:
+            case DELETE_APP:
                 if(!CollectionUtils.isEmpty(cachedAppAuthMapPathPattern.get(jaxServerAuthentication.getAppId()))){
 //                    Set<String> uriRegx = cachedAppAuthMap.get(jaxServerAuthentication.getAppId());
 //                    uriRegx.removeAll(jaxServerAuthentication.getUriRegxSet());
@@ -57,7 +57,7 @@ public class LocalJaxwayAuthenticationServerDataStore implements JaxwayServerAut
                 }
 
                 break;
-            case ADD:
+            case ADD_APP:
                 Set<PathPattern> uriRegx;
                 if(CollectionUtils.isEmpty(cachedAppAuthMapPathPattern.get(jaxServerAuthentication.getAppId()))){
                     uriRegx = new HashSet<>();

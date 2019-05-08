@@ -37,11 +37,11 @@ public class LocalJaxwayAuthenticationClientDataStore implements JaxwayClientAut
         return INSTANCE;
     }
 
-    private static volatile Map<String, Set<String>> whiteAppSets = new ConcurrentHashMap<>();
+    private static volatile Map<String, Set<String>> cachedWhiteAppPathPatternSets = new ConcurrentHashMap<>();
 
     @Override
     public void updateAppAuthentications(Map<String, Set<String>> newAppAppAuthenticationMap) {
-        whiteAppSets.putAll(newAppAppAuthenticationMap);
+        cachedWhiteAppPathPatternSets.putAll(newAppAppAuthenticationMap);
     }
 
     @Override
@@ -58,17 +58,17 @@ public class LocalJaxwayAuthenticationClientDataStore implements JaxwayClientAut
         }
 
         switch (jaxAuthentication.getOpType()){
-            case ADD:
-                Set<String> toAddTokenSet = whiteAppSets.get(appId);
+            case ADD_APP:
+                Set<String> toAddTokenSet = cachedWhiteAppPathPatternSets.get(appId);
                 if(CollectionUtils.isEmpty(toAddTokenSet)){
                     toAddTokenSet = new HashSet<>();
-                    whiteAppSets.put(appId,toAddTokenSet);
+                    cachedWhiteAppPathPatternSets.put(appId,toAddTokenSet);
                 }
                 toAddTokenSet.add(token);
                 logger.trace("add info appId={} token={} ",appId,token);
                 break;
-            case DELETE:
-                Set<String> toDeleTokenSet = whiteAppSets.get(appId);
+            case DELETE_APP:
+                Set<String> toDeleTokenSet = cachedWhiteAppPathPatternSets.get(appId);
                 if(!CollectionUtils.isEmpty(toDeleTokenSet)){
                     toDeleTokenSet.remove(token);
                 }
@@ -79,7 +79,7 @@ public class LocalJaxwayAuthenticationClientDataStore implements JaxwayClientAut
 
     @Override
     public Map<String, Set<String>> getAllAppAuthentications() {
-        return whiteAppSets;
+        return cachedWhiteAppPathPatternSets;
     }
 
 

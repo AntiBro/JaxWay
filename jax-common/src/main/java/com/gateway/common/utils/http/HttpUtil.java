@@ -1,7 +1,13 @@
 package com.gateway.common.utils.http;
 
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.*;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
+import org.springframework.util.MimeType;
+import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.client.RestTemplate;
+
+import java.nio.charset.Charset;
 
 /**
  * @Author huaili
@@ -16,7 +22,8 @@ public class HttpUtil {
 
     private RestTemplate restTemplate = new RestTemplate();
 
-    public  <T> T doGet(JaxHttpRequest jaxHttpRequest,Class<T> clazz){
+    public <T> T doGet(JaxHttpRequest jaxHttpRequest, ParameterizedTypeReference<T> responseBodyType){
+
         SimpleClientHttpRequestFactory simpleClientHttpRequestFactory = new SimpleClientHttpRequestFactory();
         if(simpleClientHttpRequestFactory == null){
             simpleClientHttpRequestFactory = new SimpleClientHttpRequestFactory();
@@ -25,13 +32,23 @@ public class HttpUtil {
         simpleClientHttpRequestFactory.setReadTimeout(jaxHttpRequest.getReadTimeOut());
 
         restTemplate.setRequestFactory(simpleClientHttpRequestFactory);
-        T responseEntity = restTemplate.getForObject(jaxHttpRequest.getRequestUrl(),clazz);
 
+        T responseEntity = exchange(restTemplate,jaxHttpRequest.getRequestUrl(),HttpMethod.GET,responseBodyType,null);
         return responseEntity;
     }
 
-    public JaxHttpResponseWrapper doGet(JaxHttpRequest jaxHttpRequest){
-        return doGet(jaxHttpRequest,JaxHttpResponseWrapper.class);
+
+    public  <T, A> T exchange(RestTemplate restTemplate,String url, HttpMethod method, ParameterizedTypeReference<T> responseBodyType, A requestBody) {
+        HttpHeaders headers = new HttpHeaders();
+        MimeType mimeType = MimeTypeUtils.parseMimeType("application/json");
+        MediaType mediaType = new MediaType(mimeType.getType(), mimeType.getSubtype(), Charset.forName("UTF-8"));
+
+        headers.setContentType(mediaType);
+
+        HttpEntity<A> entity = new HttpEntity<>(requestBody, headers);
+        ResponseEntity<T> resultEntity = restTemplate.exchange(url, method, entity, responseBodyType);
+        return resultEntity.getBody();
     }
+
 
 }

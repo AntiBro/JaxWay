@@ -33,7 +33,7 @@ public class JaxServerApplication {
 
         JaxServerAuthentication jaxServerAuthentication = new JaxServerAuthentication();
         jaxServerAuthentication.setAppId("test");
-        jaxServerAuthentication.setOpType(OpType.ADD);
+        jaxServerAuthentication.setOpType(OpType.ADD_APP);
         jaxServerAuthentication.setUriRegxSet(uriRegSet);
 
         JaxwayServerAuthenticationDataStore jaxwayServerAuthenticationDataStore = LocalJaxwayAuthenticationServerDataStore.create();

@@ -40,7 +40,7 @@ public class TestController {
         log.log("调用testflux");
 
         JaxClientAuthentication jaxAuthentication = new JaxClientAuthentication();
-        jaxAuthentication.setOpType(OpType.ADD);
+        jaxAuthentication.setOpType(OpType.ADD_APP);
         jaxAuthentication.setAppId("/test");
         jaxAuthentication.setPublishDate(new Date());
         jaxAuthentication.setPublisher("lili");

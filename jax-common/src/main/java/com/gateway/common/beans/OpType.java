@@ -7,6 +7,8 @@ package com.gateway.common.beans;
  **/
 public enum OpType {
     NONE,
-    ADD,
-    DELETE;
+    ADD_APP,
+    DELETE_APP,
+    ADD_WHITE_SERVER_APP,
+    DELETE_WHITE_SERVER_APP;
 }
