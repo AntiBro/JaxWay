@@ -39,7 +39,7 @@ public class DefaultJaxClientLongPullService implements JaxClientLongPullService
 
     private static String JAX_APP_ID_PROPERTIES_NAME = "jaxway.appid";
 
-    private static String REQUEST_TEMPLATE = "%s/getAppInfo?appid=%s";
+    private static String REQUEST_TEMPLATE = "%s/client/getAppInfo?appid=%s";
 
     private Environment env;
 
@@ -79,15 +79,16 @@ public class DefaultJaxClientLongPullService implements JaxClientLongPullService
     @Override
     public void doLongPull(JaxwayClientAuthenticationDataStore jaxwayAuthenticationDataStore) {
         HttpUtil httpUtil = HttpUtil.newInstance();
-        String requestUrl = generateUrl(selectPortalHost());
+
         executorService.submit(new Runnable() {
             @Override
             public void run() {
 
                 while (!Thread.currentThread().isInterrupted()) {
+                    String requestUrl = generateUrl(selectPortalHost());
                     if (!longPollRateLimiter.tryAcquire(5, TimeUnit.MILLISECONDS)) {
                         try {
-                            TimeUnit.MILLISECONDS.sleep(500);
+                            TimeUnit.MILLISECONDS.sleep(1000);
                         } catch (InterruptedException e) {
                         }
                     }

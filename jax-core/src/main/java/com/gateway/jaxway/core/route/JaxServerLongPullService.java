@@ -1,4 +1,4 @@
-package com.gateway.common.support;
+package com.gateway.jaxway.core.route;
 
 import com.gateway.common.JaxRouteDefinitionRepository;
 import com.gateway.common.JaxwayServerAuthenticationDataStore;

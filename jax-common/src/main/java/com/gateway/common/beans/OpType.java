@@ -12,5 +12,6 @@ public enum OpType {
     ADD_WHITE_SERVER_APP,
     DELETE_WHITE_SERVER_APP,
     ADD_ROUTE,
-    DELETE_ROUTE;
+    DELETE_ROUTE,
+    UPDATE_ROUTE;
 }

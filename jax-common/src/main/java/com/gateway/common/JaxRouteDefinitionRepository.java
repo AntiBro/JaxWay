@@ -1,6 +1,7 @@
 package com.gateway.common;
 
 import com.gateway.common.beans.JaxRouteDefinition;
+import com.gateway.common.support.http.JaxHttpRequest;
 
 import java.util.List;
 
@@ -11,6 +12,6 @@ import java.util.List;
  **/
 public interface JaxRouteDefinitionRepository {
 
-    List<JaxRouteDefinition> getJaxRouteDefinitions();
+    List<JaxRouteDefinition> getJaxRouteDefinitions(JaxHttpRequest jaxHttpRequest);
 
 }
