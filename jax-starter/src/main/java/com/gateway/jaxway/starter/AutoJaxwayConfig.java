@@ -1,7 +1,7 @@
 package com.gateway.jaxway.starter;
 
-import com.gateway.common.utils.DefaultJaxClientLongPollService;
-import com.gateway.common.utils.JaxClientLongPollService;
+import com.gateway.common.support.DefaultJaxClientLongPullService;
+import com.gateway.common.support.JaxClientLongPullService;
 import com.gateway.jaxway.core.authority.client.JaxClientServletFilter;
 import com.gateway.jaxway.core.authority.client.JaxClientWebFluxFilter;
 import com.gateway.jaxway.log.Log;
@@ -56,19 +56,19 @@ public class AutoJaxwayConfig {
         return new JaxClientWebFluxFilter();
     }
     @Bean
-    public JaxClientLongPollService longPollService(Environment env) {
-        return new DefaultJaxClientLongPollService(env);
+    public JaxClientLongPullService longPollService(Environment env) {
+        return new DefaultJaxClientLongPullService(env);
     }
 
     public void initApp(){
-        log.log("JaxClientLongPollService init for get appInfo");
-       // longPollService.doLongPoll(LocalJaxwayAuthenticationClientDataStore.instance());
+        log.log("JaxClientLongPullService init for get appInfo");
+       // longPollService.doLongPull(LocalJaxwayAuthenticationClientDataStore.instance());
 //        JaxwayAuthenticationDataStore jaxwayAuthenticationDataStore = LocalJaxwayAuthenticationClientDataStore.instance();
 //        Map<String,String> map = new HashMap<String,String>();
 //        map.put("/testflux","123");
 //        jaxwayAuthenticationDataStore.updateAppAuthentications(map);
 
-      //  longPollService.doLongPoll(LocalJaxwayAuthenticationClientDataStore.instance());
+      //  longPollService.doLongPull(LocalJaxwayAuthenticationClientDataStore.instance());
     }
 
 

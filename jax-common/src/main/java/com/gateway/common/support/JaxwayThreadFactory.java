@@ -1,4 +1,4 @@
-package com.gateway.common.utils;
+package com.gateway.common.support;
 
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicLong;

@@ -1,4 +1,4 @@
-package com.gateway.common.utils.http;
+package com.gateway.common.support.http;
 
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;

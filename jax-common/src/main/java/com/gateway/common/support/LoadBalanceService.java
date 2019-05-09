@@ -1,4 +1,4 @@
-package com.gateway.common.utils;
+package com.gateway.common.support;
 
 import org.springframework.util.CollectionUtils;
 

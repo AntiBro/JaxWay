@@ -1,8 +1,8 @@
 //package com.gateway.jaxway.test;
 //
 //import com.alibaba.fastjson.JSON;
-//import com.gateway.jaxway.core.utils.http.HttpUtil;
-//import com.gateway.jaxway.core.utils.http.JaxHttpRequest;
+//import com.gateway.jaxway.core.support.http.HttpUtil;
+//import com.gateway.jaxway.core.support.http.JaxHttpRequest;
 //
 //import java.util.ArrayList;
 //import java.util.List;

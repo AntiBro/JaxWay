@@ -1,12 +1,11 @@
-package com.gateway.common.utils;
+package com.gateway.common.support;
 
-import com.gateway.common.JaxwayAuthenticationDataStore;
 import com.gateway.common.JaxwayClientAuthenticationDataStore;
 import com.gateway.common.beans.JaxClientAuthentication;
 import com.gateway.common.defaults.LocalJaxwayAuthenticationClientDataStore;
-import com.gateway.common.utils.http.HttpUtil;
-import com.gateway.common.utils.http.JaxHttpRequest;
-import com.gateway.common.utils.http.JaxHttpResponseWrapper;
+import com.gateway.common.support.http.HttpUtil;
+import com.gateway.common.support.http.JaxHttpRequest;
+import com.gateway.common.support.http.JaxHttpResponseWrapper;
 import com.google.common.util.concurrent.RateLimiter;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.core.ParameterizedTypeReference;
@@ -22,11 +21,11 @@ import java.util.concurrent.TimeUnit;
 /**
  * @Author huaili
  * @Date 2019/4/23 17:58
- * @Description DefaultJaxClientLongPollService
+ * @Description DefaultJaxClientLongPullService
  **/
-public class DefaultJaxClientLongPollService implements JaxClientLongPollService, DisposableBean {
+public class DefaultJaxClientLongPullService implements JaxClientLongPullService, DisposableBean {
 
-    private JaxwayAuthenticationDataStore jaxwayAuthenticationDataStore;
+    private JaxwayClientAuthenticationDataStore jaxwayAuthenticationDataStore;
 
     private ExecutorService executorService;
 
@@ -54,7 +53,7 @@ public class DefaultJaxClientLongPollService implements JaxClientLongPollService
 
     private int readTimeOut = 10;
 
-    public DefaultJaxClientLongPollService(Environment env, LoadBalanceService loadBalanceService) {
+    public DefaultJaxClientLongPullService(Environment env, LoadBalanceService loadBalanceService) {
         Assert.notNull(env.getProperty(JAX_PORTAL_HOST_PROPERTIES_NAME), "jaxway.host has not set");
         Assert.notNull(env.getProperty(JAX_APP_ID_PROPERTIES_NAME), "jaxway.appid has not set");
 
@@ -67,18 +66,18 @@ public class DefaultJaxClientLongPollService implements JaxClientLongPollService
         this.jaxwayAuthenticationDataStore = LocalJaxwayAuthenticationClientDataStore.instance();
 
         /**
-         * begin long pull for appinfo
+         * begin long pull for app authority info
          */
-        doLongPoll(LocalJaxwayAuthenticationClientDataStore.instance());
+        doLongPull(this.jaxwayAuthenticationDataStore);
     }
 
-    public DefaultJaxClientLongPollService(Environment env) {
+    public DefaultJaxClientLongPullService(Environment env) {
         this(env, LoadBalanceService.RandomLoadBalanceService);
     }
 
 
     @Override
-    public void doLongPoll(JaxwayClientAuthenticationDataStore jaxwayAuthenticationDataStore) {
+    public void doLongPull(JaxwayClientAuthenticationDataStore jaxwayAuthenticationDataStore) {
         HttpUtil httpUtil = HttpUtil.newInstance();
         String requestUrl = generateUrl(selectPortalHost());
         executorService.submit(new Runnable() {
@@ -88,7 +87,7 @@ public class DefaultJaxClientLongPollService implements JaxClientLongPollService
                 while (!Thread.currentThread().isInterrupted()) {
                     if (!longPollRateLimiter.tryAcquire(5, TimeUnit.MILLISECONDS)) {
                         try {
-                            TimeUnit.MILLISECONDS.sleep(1500);
+                            TimeUnit.MILLISECONDS.sleep(500);
                         } catch (InterruptedException e) {
                         }
                     }
