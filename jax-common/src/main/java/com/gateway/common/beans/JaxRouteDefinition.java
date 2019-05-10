@@ -7,9 +7,19 @@ import org.springframework.cloud.gateway.route.RouteDefinition;
  * @Date 2019/5/9 11:28
  * @Description JaxRouteDefinition
  **/
-public class JaxRouteDefinition extends RouteDefinition {
+public class JaxRouteDefinition extends RouteDefinition implements Comparable<JaxRouteDefinition> {
 
     private OpType opType;
+
+    private long versionId;
+
+    public long getVersionId() {
+        return versionId;
+    }
+
+    public void setVersionId(long versionId) {
+        this.versionId = versionId;
+    }
 
     public OpType getOpType() {
         return opType;
@@ -17,5 +27,10 @@ public class JaxRouteDefinition extends RouteDefinition {
 
     public void setOpType(OpType opType) {
         this.opType = opType;
+    }
+
+    @Override
+    public int compareTo(JaxRouteDefinition o) {
+        return  this.getVersionId()>=o.getVersionId()?1:-1;
     }
 }

@@ -6,6 +6,7 @@ import com.gateway.common.defaults.LocalJaxwayAuthenticationClientDataStore;
 import com.gateway.common.support.http.HttpUtil;
 import com.gateway.common.support.http.JaxHttpRequest;
 import com.gateway.common.support.http.JaxHttpResponseWrapper;
+import com.gateway.common.util.VersionUtil;
 import com.google.common.util.concurrent.RateLimiter;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.core.ParameterizedTypeReference;
@@ -39,7 +40,7 @@ public class DefaultJaxClientLongPullService implements JaxClientLongPullService
 
     private static String JAX_APP_ID_PROPERTIES_NAME = "jaxway.appid";
 
-    private static String REQUEST_TEMPLATE = "%s/client/getAppInfo?appid=%s";
+    private static String REQUEST_TEMPLATE = "%s/client/getAppInfo?appid=%s&versionId=%s";
 
     private Environment env;
 
@@ -83,12 +84,12 @@ public class DefaultJaxClientLongPullService implements JaxClientLongPullService
         executorService.submit(new Runnable() {
             @Override
             public void run() {
-
+                long versionId = -1;// pull the whole info
                 while (!Thread.currentThread().isInterrupted()) {
-                    String requestUrl = generateUrl(selectPortalHost());
+                    String requestUrl = generateUrl(selectPortalHost(),versionId);
                     if (!longPollRateLimiter.tryAcquire(5, TimeUnit.MILLISECONDS)) {
                         try {
-                            TimeUnit.MILLISECONDS.sleep(1000);
+                            TimeUnit.MILLISECONDS.sleep(500);
                         } catch (InterruptedException e) {
                         }
                     }
@@ -99,7 +100,12 @@ public class DefaultJaxClientLongPullService implements JaxClientLongPullService
                         JaxHttpResponseWrapper<JaxClientAuthentication> responseWrapper = httpUtil.doGet(jaxHttpRequest,responseBodyType);
 
                         if (responseWrapper.getCode() == 200) {
-                            jaxwayAuthenticationDataStore.updateAppAuthentications(responseWrapper.getBody());
+                            JaxClientAuthentication jaxClientAuthentication = responseWrapper.getBody();
+                            if(VersionUtil.checkVerion(jaxClientAuthentication.getVersionId(),versionId)) {
+                                jaxwayAuthenticationDataStore.updateAppAuthentications(responseWrapper.getBody());
+                                // update local versionId
+                                versionId = jaxClientAuthentication.getVersionId();
+                            }
                         }
                     } catch (Exception e) {
 
@@ -126,4 +132,8 @@ public class DefaultJaxClientLongPullService implements JaxClientLongPullService
     private String generateUrl(String host) {
         return String.format(REQUEST_TEMPLATE, host, this.appId);
     }
+    private String generateUrl(String host,long verionId) {
+        return String.format(REQUEST_TEMPLATE, host, this.appId,String.valueOf(verionId));
+    }
+
 }

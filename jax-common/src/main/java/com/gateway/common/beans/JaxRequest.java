@@ -10,6 +10,8 @@ public class JaxRequest {
     private String url;
     private String token;
 
+    private long versionId;
+
 
     private JaxRequest(){
 
@@ -43,10 +45,19 @@ public class JaxRequest {
         return new Builder();
     }
 
+    public long getVersionId() {
+        return versionId;
+    }
+
+    public void setVersionId(long versionId) {
+        this.versionId = versionId;
+    }
+
     public static class Builder {
         private String id;
         private String url;
         private String token;
+        private long versionId;
 
 
         public Builder appId(String appId){
@@ -63,12 +74,18 @@ public class JaxRequest {
             return this;
         }
 
+        public Builder versionId(long versionId){
+            this.versionId = versionId;
+            return this;
+        }
+
         public JaxRequest build(){
             JaxRequest jaxRequest = new JaxRequest();
 
             jaxRequest.setUrl(this.url);
             jaxRequest.setToken(this.token);
             jaxRequest.setId(this.id);
+            jaxRequest.setVersionId(this.versionId);
             return jaxRequest;
         }
     }

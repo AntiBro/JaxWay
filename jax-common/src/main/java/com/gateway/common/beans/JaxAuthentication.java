@@ -11,8 +11,6 @@ import java.util.Date;
  **/
 public class JaxAuthentication {
 
-
-
     public JaxAuthentication(){
 
     }
@@ -26,7 +24,7 @@ public class JaxAuthentication {
 
     private OpType opType;
 
-
+    private long versionId;
 
     public String getPublisher() {
         return publisher;
@@ -54,6 +52,11 @@ public class JaxAuthentication {
     }
 
 
+    public long getVersionId() {
+        return versionId;
+    }
 
-
+    public void setVersionId(long versionId) {
+        this.versionId = versionId;
+    }
 }

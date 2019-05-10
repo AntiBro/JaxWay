@@ -3,11 +3,18 @@ package com.gateway.jaxway.core.route.support;
 import com.gateway.common.JaxRouteDefinitionRepository;
 import com.gateway.common.JaxwayServerAuthenticationDataStore;
 import com.gateway.common.JaxwayWhiteList;
+import com.gateway.common.beans.JaxClientAuthentication;
+import com.gateway.common.beans.JaxRouteDefinition;
+import com.gateway.common.beans.JaxServerAuthentication;
 import com.gateway.common.defaults.LocalJaxwayAuthenticationServerDataStore;
 import com.gateway.common.support.JaxwayThreadFactory;
 import com.gateway.common.support.LoadBalanceService;
+import com.gateway.common.support.http.HttpUtil;
 import com.gateway.common.support.http.JaxHttpRequest;
+import com.gateway.common.support.http.JaxHttpResponseWrapper;
+import com.gateway.common.util.VersionUtil;
 import com.gateway.jaxway.core.authority.server.LocalJaxwayWhiteList;
+import com.gateway.jaxway.core.route.JaxRouteRefreshEvent;
 import com.gateway.jaxway.core.route.JaxServerLongPullService;
 import com.google.common.util.concurrent.RateLimiter;
 import io.netty.util.NetUtil;
@@ -16,8 +23,10 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.env.Environment;
 import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
 import sun.net.util.IPAddressUtil;
 
 import java.net.InetAddress;
@@ -55,11 +64,11 @@ public class DefaultJaxServerLongPullService implements JaxServerLongPullService
 
     private static String JAX_WAY_APPID_PROPERTIES_NAME = "jaxway.server.id";
 
-    private static String WHITE_LIST_REQUEST_TEMPLATE = "%s/server/getWhiteList?id=%s";
+    private static String WHITE_LIST_REQUEST_TEMPLATE = "%s/server/getWhiteList?id=%s&versionId=%s";
 
-    private static String APP_AUHTORITY_REQUEST_TEMPLATE = "%s/server/getAppInfo?id=%s";
+    private static String APP_AUHTORITY_REQUEST_TEMPLATE = "%s/server/getAppInfo?id=%s&versionId=%s";
 
-    private static String ROUTE_DEFINITION_REQUEST_TEMPLATE = "%s/server/getRouteInfo?id=%s";
+    private static String ROUTE_DEFINITION_REQUEST_TEMPLATE = "%s/server/getRouteInfo?id=%s&versionId=%s";
 
     private Environment env;
 
@@ -110,24 +119,40 @@ public class DefaultJaxServerLongPullService implements JaxServerLongPullService
 
     @Override
     public void doLongPull(JaxwayWhiteList jaxwayWhiteList) {
+        HttpUtil httpUtil = HttpUtil.newInstance();
 
+        executorService.submit(new Runnable() {
+            @Override
+            public void run() {
+                long versionId = -1;// pull the whole info
+                while (!Thread.currentThread().isInterrupted()) {
+                    String requestUrl = generateUrl(WHITE_LIST_REQUEST_TEMPLATE,selectPortalHost(),versionId);
+                    if(!longPollRateLimiterForWhiteList.tryAcquire(5, TimeUnit.MILLISECONDS)){
+                        try {
+                            TimeUnit.MILLISECONDS.sleep(500);
+                        } catch (InterruptedException e) {
+                        }
+                    }
+
+
+
+                }
+            }});
     }
 
     @Override
     public void doLongPull(JaxwayServerAuthenticationDataStore jaxwayServerAuthenticationDataStore) {
+        HttpUtil httpUtil = HttpUtil.newInstance();
 
-    }
-
-    @Override
-    public void doLongPull(JaxRouteDefinitionRepository jaxRouteDefinitionRepository) {
         executorService.submit(new Runnable() {
             @Override
             public void run() {
+                long versionId = -1;// pull the whole info
                 while (!Thread.currentThread().isInterrupted()) {
-                    String requestUrl = generateUrl(ROUTE_DEFINITION_REQUEST_TEMPLATE,selectPortalHost());
-                    if(!longPollRateLimiterForRouteDefinition.tryAcquire(5, TimeUnit.MILLISECONDS)){
+                    String requestUrl = generateUrl(APP_AUHTORITY_REQUEST_TEMPLATE,selectPortalHost(),versionId);
+                    if(!longPollRateLimiterForAppAuthority.tryAcquire(5, TimeUnit.MILLISECONDS)){
                         try {
-                            TimeUnit.MILLISECONDS.sleep(1000);
+                            TimeUnit.MILLISECONDS.sleep(500);
                         } catch (InterruptedException e) {
                         }
                     }
@@ -135,7 +160,56 @@ public class DefaultJaxServerLongPullService implements JaxServerLongPullService
                     JaxHttpRequest jaxHttpRequest = JaxHttpRequest.newBuilder().requestUrl(requestUrl).connectionTimeOut(connectTimeout).readTimeOut(readTimeOut).build();
 
                     try{
+                        ParameterizedTypeReference<JaxHttpResponseWrapper<JaxServerAuthentication>> responseBodyType = new ParameterizedTypeReference<JaxHttpResponseWrapper<JaxServerAuthentication>>() {};
+                        JaxHttpResponseWrapper<JaxServerAuthentication> responseWrapper = httpUtil.doGet(jaxHttpRequest,responseBodyType);
 
+                        if(responseWrapper.getCode() == 200){
+                            JaxServerAuthentication jaxserverAuthentication = responseWrapper.getBody();
+                            if(VersionUtil.checkVerion(jaxserverAuthentication.getVersionId(),versionId)) {
+                                jaxwayServerAuthenticationDataStore.updateAppAuthentications(responseWrapper.getBody());
+                                // update local versionId
+                                versionId = jaxserverAuthentication.getVersionId();
+                            }
+                        }
+
+                    }catch (Exception e){
+
+                    }
+                }
+            }});
+    }
+
+
+    @Override
+    public void doLongPull(JaxRouteDefinitionRepository jaxRouteDefinitionRepository) {
+
+        executorService.submit(new Runnable() {
+            @Override
+            public void run() {
+                long versionId = -1;// pull the whole info
+                while (!Thread.currentThread().isInterrupted()) {
+                    String requestUrl = generateUrl(ROUTE_DEFINITION_REQUEST_TEMPLATE,selectPortalHost(),versionId);
+                    if(!longPollRateLimiterForRouteDefinition.tryAcquire(5, TimeUnit.MILLISECONDS)){
+                        try {
+                            TimeUnit.MILLISECONDS.sleep(500);
+                        } catch (InterruptedException e) {
+                        }
+                    }
+
+                    JaxHttpRequest jaxHttpRequest = JaxHttpRequest.newBuilder().requestUrl(requestUrl).connectionTimeOut(connectTimeout).readTimeOut(readTimeOut).build();
+
+                    try{
+                        List<JaxRouteDefinition> jaxRouteDefinitions = jaxRouteDefinitionRepository.getJaxRouteDefinitions(jaxHttpRequest);
+                        if(!CollectionUtils.isEmpty(jaxRouteDefinitions)){
+                            for(JaxRouteDefinition jaxRouteDefinition :jaxRouteDefinitions){
+                                if(VersionUtil.checkVerion(jaxRouteDefinition.getVersionId(),versionId)){
+                                    // publish change event
+                                    applicationContext.publishEvent(new JaxRouteRefreshEvent(this,jaxRouteDefinition));
+                                }
+                            }
+                            // update local versionId to the Max versionId
+                            versionId = jaxRouteDefinitions.get(jaxRouteDefinitions.size()-1).getVersionId();
+                        }
                     }catch(Exception e){
 
                     }
@@ -165,7 +239,9 @@ public class DefaultJaxServerLongPullService implements JaxServerLongPullService
     private String generateUrl(String template,String host) {
         return String.format(template, host,this.appId);
     }
-
+    private String generateUrl(String template,String host,long verionId) {
+        return String.format(template, host, this.appId,String.valueOf(verionId));
+    }
     private String getLocalServerIP(){
         InetAddress address = null;
         try {
