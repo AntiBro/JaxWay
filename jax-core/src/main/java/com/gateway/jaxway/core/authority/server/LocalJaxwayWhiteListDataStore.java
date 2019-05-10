@@ -12,6 +12,17 @@ import com.gateway.common.beans.JaxServerAuthentication;
 public class LocalJaxwayWhiteListDataStore implements JaxwayWhiteListDataStore {
     @Override
     public void updateWhiteList(JaxwayWhiteList jaxwayWhiteList, JaxServerAuthentication jaxServerAuthentication) {
-
+        switch (jaxServerAuthentication.getOpType()){
+            case ADD_WHITE_SERVER_APP:
+                for(String uri:jaxServerAuthentication.getUriRegxSet()) {
+                    jaxwayWhiteList.add(uri);
+                }
+                break;
+            case DELETE_WHITE_SERVER_APP:
+                for(String uri:jaxServerAuthentication.getUriRegxSet()){
+                    jaxwayWhiteList.remove(uri);
+                }
+                break;
+        }
     }
 }

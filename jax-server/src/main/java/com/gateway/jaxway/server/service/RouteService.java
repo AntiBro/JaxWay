@@ -27,8 +27,8 @@ public class RouteService implements ApplicationEventPublisherAware {
 
     @PostConstruct
     public void init() throws URISyntaxException {
-        routeDefinitionWriter.save(Mono.just(RouteUtil.generatePathRouteDefition("http://127.0.0.1:8720","/sohu,/sohu/**"))).subscribe();
-        notifyChanged();
+//        routeDefinitionWriter.save(Mono.just(RouteUtil.generatePathRouteDefition("http://127.0.0.1:8720","/sohu,/sohu/**"))).subscribe();
+//        notifyChanged();
     }
 
 

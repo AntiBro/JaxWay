@@ -3,7 +3,7 @@ package com.gateway.jaxway.core.route.support;
 import com.gateway.common.JaxRouteDefinitionRepository;
 import com.gateway.common.JaxwayServerAuthenticationDataStore;
 import com.gateway.common.JaxwayWhiteList;
-import com.gateway.common.beans.JaxClientAuthentication;
+import com.gateway.common.JaxwayWhiteListDataStore;
 import com.gateway.common.beans.JaxRouteDefinition;
 import com.gateway.common.beans.JaxServerAuthentication;
 import com.gateway.common.defaults.LocalJaxwayAuthenticationServerDataStore;
@@ -14,11 +14,10 @@ import com.gateway.common.support.http.JaxHttpRequest;
 import com.gateway.common.support.http.JaxHttpResponseWrapper;
 import com.gateway.common.util.VersionUtil;
 import com.gateway.jaxway.core.authority.server.LocalJaxwayWhiteList;
+import com.gateway.jaxway.core.authority.server.LocalJaxwayWhiteListDataStore;
 import com.gateway.jaxway.core.route.JaxRouteRefreshEvent;
 import com.gateway.jaxway.core.route.JaxServerLongPullService;
 import com.google.common.util.concurrent.RateLimiter;
-import io.netty.util.NetUtil;
-import org.bouncycastle.util.IPAddress;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.context.ApplicationContext;
@@ -27,7 +26,6 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.env.Environment;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
-import sun.net.util.IPAddressUtil;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -56,7 +54,7 @@ public class DefaultJaxServerLongPullService implements JaxServerLongPullService
 
     private RateLimiter longPollRateLimiterForRouteDefinition;
 
-    private double longPullQPS = 0.001;
+    private double longPullQPS = 0.01;
 
     private static String GROUP_NAME = "JaxWay";
 
@@ -88,6 +86,8 @@ public class DefaultJaxServerLongPullService implements JaxServerLongPullService
 
     private JaxRouteDefinitionRepository jaxRouteDefinitionRepository;
 
+    private JaxwayWhiteListDataStore jaxwayWhiteListDataStore;
+
     public DefaultJaxServerLongPullService(Environment env, LoadBalanceService loadBalanceService){
         Assert.notNull(env.getProperty(JAX_PORTAL_HOST_PROPERTIES_NAME), "jaxway.host for portal admin has not set ");
         Assert.notNull(env.getProperty(JAX_WAY_APPID_PROPERTIES_NAME), "jaxway.server.id for portal admin has not set ");
@@ -107,10 +107,11 @@ public class DefaultJaxServerLongPullService implements JaxServerLongPullService
         this.jaxwayServerAuthenticationDataStore = LocalJaxwayAuthenticationServerDataStore.create();
 
         this.jaxRouteDefinitionRepository = new DefaultJaxRouteDefinitionRepository();
+        this.jaxwayWhiteListDataStore = new LocalJaxwayWhiteListDataStore();
         // do long pull
-        doLongPull(this.jaxwayWhiteList);
-
-        doLongPull(this.jaxwayServerAuthenticationDataStore);
+//        doLongPull(this.jaxwayWhiteList);
+//
+//        doLongPull(this.jaxwayServerAuthenticationDataStore);
 
         doLongPull(this.jaxRouteDefinitionRepository);
 
@@ -133,8 +134,22 @@ public class DefaultJaxServerLongPullService implements JaxServerLongPullService
                         } catch (InterruptedException e) {
                         }
                     }
+                    JaxHttpRequest jaxHttpRequest = JaxHttpRequest.newBuilder().requestUrl(requestUrl).connectionTimeOut(connectTimeout).readTimeOut(readTimeOut).build();
 
+                    try{
+                        ParameterizedTypeReference<JaxHttpResponseWrapper<JaxServerAuthentication>> responseBodyType = new ParameterizedTypeReference<JaxHttpResponseWrapper<JaxServerAuthentication>>() {};
+                        JaxHttpResponseWrapper<JaxServerAuthentication> responseWrapper = httpUtil.doGet(jaxHttpRequest,responseBodyType);
 
+                        if(responseWrapper.getCode() == 200){
+                            JaxServerAuthentication jaxServerAuthentication = responseWrapper.getBody();
+                            if(VersionUtil.checkVerion(jaxServerAuthentication.getVersionId(),versionId)) {
+                                jaxwayWhiteListDataStore.updateWhiteList(jaxwayWhiteList, jaxServerAuthentication);
+                            }
+                        }
+
+                    }catch (Exception e){
+
+                    }
 
                 }
             }});
