@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 import static com.gateway.common.JaxwayConstant.JAXWAY_REQUEST_TOKEN_HEADER_KEY;
-import static com.gateway.common.JaxwayConstant.JAXWAY_SERVER_ID;
+import static com.gateway.common.JaxwayConstant.JAXWAY_SERVER_APP_ID;
 
 /**
  * @Author huaili
@@ -42,7 +42,7 @@ public class JaxClientServletFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest)servletRequest;
-        JaxRequest jaxRequest = JaxRequest.newBuilder().token( req.getHeader(JAXWAY_REQUEST_TOKEN_HEADER_KEY)).appId(req.getHeader(JAXWAY_SERVER_ID)).build();
+        JaxRequest jaxRequest = JaxRequest.newBuilder().token( req.getHeader(JAXWAY_REQUEST_TOKEN_HEADER_KEY)).appId(req.getHeader(JAXWAY_SERVER_APP_ID)).build();
         if(jaxwayClientValidator.validate(jaxRequest)){
             log.log("legal servlet request jaxRequest={}",JSON.toJSON(jaxRequest));
             filterChain.doFilter(servletRequest,servletResponse);

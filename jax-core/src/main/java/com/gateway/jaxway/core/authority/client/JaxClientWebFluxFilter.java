@@ -21,7 +21,7 @@ import reactor.core.publisher.Mono;
 import java.io.UnsupportedEncodingException;
 
 import static com.gateway.common.JaxwayConstant.JAXWAY_REQUEST_TOKEN_HEADER_KEY;
-import static com.gateway.common.JaxwayConstant.JAXWAY_SERVER_ID;
+import static com.gateway.common.JaxwayConstant.JAXWAY_SERVER_APP_ID;
 
 /**
  * @Author huaili
@@ -46,7 +46,7 @@ public class JaxClientWebFluxFilter implements WebFilter {
         ServerHttpRequest request =  serverWebExchange.getRequest();
         ServerHttpResponse response = serverWebExchange.getResponse();
 
-        JaxRequest jaxRequest = JaxRequest.newBuilder().appId(request.getHeaders().getFirst(JAXWAY_SERVER_ID)).token(request.getHeaders().getFirst(JAXWAY_REQUEST_TOKEN_HEADER_KEY)).build();
+        JaxRequest jaxRequest = JaxRequest.newBuilder().appId(request.getHeaders().getFirst(JAXWAY_SERVER_APP_ID)).token(request.getHeaders().getFirst(JAXWAY_REQUEST_TOKEN_HEADER_KEY)).build();
         try {
             if(jaxwayClientValidator.validate(jaxRequest)){
                 log.log("legal webflux request jaxRequest={}",JSON.toJSONString(jaxRequest));

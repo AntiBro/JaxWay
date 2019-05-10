@@ -10,13 +10,18 @@ import com.gateway.common.support.http.JaxHttpRequest;
 import com.gateway.jaxway.core.authority.server.LocalJaxwayWhiteList;
 import com.gateway.jaxway.core.route.JaxServerLongPullService;
 import com.google.common.util.concurrent.RateLimiter;
+import io.netty.util.NetUtil;
+import org.bouncycastle.util.IPAddress;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.env.Environment;
 import org.springframework.util.Assert;
+import sun.net.util.IPAddressUtil;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -48,11 +53,13 @@ public class DefaultJaxServerLongPullService implements JaxServerLongPullService
 
     private static String JAX_PORTAL_HOST_PROPERTIES_NAME = "jaxway.host";
 
-    private static String WHITE_LIST_REQUEST_TEMPLATE = "%s/server/getWhiteList";
+    private static String JAX_WAY_APPID_PROPERTIES_NAME = "jaxway.server.id";
 
-    private static String APP_AUHTORITY_REQUEST_TEMPLATE = "%s/server/getAppInfo";
+    private static String WHITE_LIST_REQUEST_TEMPLATE = "%s/server/getWhiteList?id=%s";
 
-    private static String ROUTE_DEFINITION_REQUEST_TEMPLATE = "%s/server/getRouteInfo";
+    private static String APP_AUHTORITY_REQUEST_TEMPLATE = "%s/server/getAppInfo?id=%s";
+
+    private static String ROUTE_DEFINITION_REQUEST_TEMPLATE = "%s/server/getRouteInfo?id=%s";
 
     private Environment env;
 
@@ -73,11 +80,14 @@ public class DefaultJaxServerLongPullService implements JaxServerLongPullService
     private JaxRouteDefinitionRepository jaxRouteDefinitionRepository;
 
     public DefaultJaxServerLongPullService(Environment env, LoadBalanceService loadBalanceService){
-        Assert.notNull(env.getProperty(JAX_PORTAL_HOST_PROPERTIES_NAME), "jaxway.host has not set");
+        Assert.notNull(env.getProperty(JAX_PORTAL_HOST_PROPERTIES_NAME), "jaxway.host for portal admin has not set ");
+        Assert.notNull(env.getProperty(JAX_WAY_APPID_PROPERTIES_NAME), "jaxway.server.id for portal admin has not set ");
+
 
         this.env = env;
         this.loadBalanceService = loadBalanceService;
         this.hosts = Arrays.asList(this.env.getProperty(JAX_PORTAL_HOST_PROPERTIES_NAME).split(","));
+        this.appId = this.env.getProperty(JAX_WAY_APPID_PROPERTIES_NAME);
         executorService = Executors.newFixedThreadPool(3,JaxwayThreadFactory.create(GROUP_NAME, true));
 
         this.longPollRateLimiterForWhiteList = RateLimiter.create(longPullQPS);
@@ -153,6 +163,16 @@ public class DefaultJaxServerLongPullService implements JaxServerLongPullService
     }
 
     private String generateUrl(String template,String host) {
-        return String.format(template, host);
+        return String.format(template, host,this.appId);
+    }
+
+    private String getLocalServerIP(){
+        InetAddress address = null;
+        try {
+            address = InetAddress.getLocalHost();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+        return address.getHostAddress();
     }
 }

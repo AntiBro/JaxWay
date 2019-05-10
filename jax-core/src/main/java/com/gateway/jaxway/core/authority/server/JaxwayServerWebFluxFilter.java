@@ -65,7 +65,7 @@ public class JaxwayServerWebFluxFilter implements WebFilter {
             try {
                 // add jax-way-url and jax-way-token in Http Headers to validate the request on client side
                 //向headers中放文件，记得build
-                ServerHttpRequest wrapRequest = request.mutate().header(JAXWAY_SERVER_ID, jaxwayCoder.encode(appId)).header(JAXWAY_REQUEST_TOKEN_HEADER_KEY,jaxwayCoder.encode(jaxwayServerAuthenticationDataStore.getRegxOfUri(appId,uri))).build();
+                ServerHttpRequest wrapRequest = request.mutate().header(JAXWAY_SERVER_APP_ID, jaxwayCoder.encode(appId)).header(JAXWAY_REQUEST_TOKEN_HEADER_KEY,jaxwayCoder.encode(jaxwayServerAuthenticationDataStore.getRegxOfUri(appId,uri))).build();
                 //将现在的request 变成 change对象
                 ServerWebExchange wrapserverWebExchange = serverWebExchange.mutate().request(wrapRequest).build();
 

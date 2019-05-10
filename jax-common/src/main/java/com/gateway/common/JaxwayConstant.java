@@ -15,5 +15,5 @@ public class JaxwayConstant {
 
     public static final String JAXWAY_APP_ID = "jax-way-app-id";
 
-    public static final String JAXWAY_SERVER_ID = "jax-way-server-id";
+    public static final String JAXWAY_SERVER_APP_ID = "jax-way-server-app-id";
 }

@@ -8,6 +8,7 @@ import org.springframework.boot.context.properties.PropertyMapper;
 import org.springframework.cloud.gateway.config.HttpClientProperties;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClient;
@@ -246,5 +247,16 @@ public class TestSuit {
         }
 
         return httpClient;
+    }
+
+
+    public void test3(){
+        WebClient client = WebClient.create("http://localhost:8080");
+        Mono<String> employeeMono = client.get()
+                .uri("/employees/{id}", "1")
+                .retrieve()
+                .bodyToMono(String.class);
+
+        employeeMono.subscribe(System.out::println);
     }
 }
