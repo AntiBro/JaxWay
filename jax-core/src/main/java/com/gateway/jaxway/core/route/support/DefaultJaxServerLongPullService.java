@@ -22,6 +22,7 @@ import com.gateway.jaxway.log.impl.DefaultLogImpl;
 import com.google.common.util.concurrent.RateLimiter;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.DisposableBean;
+import org.springframework.cloud.gateway.event.RefreshRoutesEvent;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.ParameterizedTypeReference;
@@ -225,7 +226,7 @@ public class DefaultJaxServerLongPullService implements JaxServerLongPullService
                             for(JaxRouteDefinition jaxRouteDefinition :jaxRouteDefinitions){
                                 if(VersionUtil.checkVerion(jaxRouteDefinition.getVersionId(),versionId)){
                                     // publish change event
-                                    applicationContext.publishEvent(new JaxRouteRefreshEvent(this,jaxRouteDefinition));
+                                    notifyChanged(jaxRouteDefinition);
                                 }
                             }
                             // update local versionId to the Max versionId
@@ -272,4 +273,11 @@ public class DefaultJaxServerLongPullService implements JaxServerLongPullService
         }
         return address.getHostAddress();
     }
+
+
+    private void notifyChanged(JaxRouteDefinition jaxRouteDefinition) {
+        applicationContext.publishEvent(new JaxRouteRefreshEvent(this,jaxRouteDefinition));
+
+    }
+
 }
