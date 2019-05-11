@@ -92,7 +92,9 @@ public class AppInfoController {
         Set<String> uriSets = new HashSet<>();
 
         String appId = "test";
-        uriSets.add(jaxwayCoder.decode("/sogou/**"));
+        uriSets.add(jaxwayCoder.encode("/sogou/**"));
+        uriSets.add(jaxwayCoder.encode("/sohu/**"));
+        uriSets.add(jaxwayCoder.encode("/sohu"));
 
         jaxAuthentication.setUriRegxSet(uriSets);
         jaxAuthentication.setOpType(OpType.ADD_WHITE_SERVER_APP);
@@ -119,6 +121,7 @@ public class AppInfoController {
 
         BeanUtils.copyProperties(RouteUtil.generatePathRouteDefition("http://m.sohu.com","/sohu,/sohu/**"),jaxRouteDefinition);
 
+        jaxRouteDefinitions.add(jaxRouteDefinition);
 //        if(id.equals("test2")){
 //            return ResultVO.success(JaxClientAuthentication.NONE);
 //        }

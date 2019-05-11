@@ -17,6 +17,8 @@ import com.gateway.jaxway.core.authority.server.LocalJaxwayWhiteList;
 import com.gateway.jaxway.core.authority.server.LocalJaxwayWhiteListDataStore;
 import com.gateway.jaxway.core.route.JaxRouteRefreshEvent;
 import com.gateway.jaxway.core.route.JaxServerLongPullService;
+import com.gateway.jaxway.log.Log;
+import com.gateway.jaxway.log.impl.DefaultLogImpl;
 import com.google.common.util.concurrent.RateLimiter;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.DisposableBean;
@@ -43,8 +45,9 @@ import java.util.concurrent.TimeUnit;
 public class DefaultJaxServerLongPullService implements JaxServerLongPullService, ApplicationContextAware, DisposableBean {
 
 
-    private ExecutorService executorService;
+    private Log logger = new DefaultLogImpl(getClass());
 
+    private ExecutorService executorService;
 
     private ApplicationContext applicationContext;
 
@@ -54,7 +57,7 @@ public class DefaultJaxServerLongPullService implements JaxServerLongPullService
 
     private RateLimiter longPollRateLimiterForRouteDefinition;
 
-    private double longPullQPS = 0.01;
+    private double longPullQPS = 0.001;
 
     private static String GROUP_NAME = "JaxWay";
 
@@ -76,9 +79,9 @@ public class DefaultJaxServerLongPullService implements JaxServerLongPullService
 
     private LoadBalanceService loadBalanceService;
 
-    private int connectTimeout = 6;
+    private int connectTimeout = 1500;
 
-    private int readTimeOut = 10;
+    private int readTimeOut = 800;
 
     private JaxwayWhiteList jaxwayWhiteList;
 
@@ -108,8 +111,10 @@ public class DefaultJaxServerLongPullService implements JaxServerLongPullService
 
         this.jaxRouteDefinitionRepository = new DefaultJaxRouteDefinitionRepository();
         this.jaxwayWhiteListDataStore = new LocalJaxwayWhiteListDataStore();
-        // do long pull
-//        doLongPull(this.jaxwayWhiteList);
+
+        // begin long pull for server
+
+        doLongPull(this.jaxwayWhiteList);
 //
 //        doLongPull(this.jaxwayServerAuthenticationDataStore);
 
@@ -148,7 +153,7 @@ public class DefaultJaxServerLongPullService implements JaxServerLongPullService
                         }
 
                     }catch (Exception e){
-
+                        logger.log(Log.LogType.ERROR,e);
                     }
 
                 }
@@ -188,6 +193,7 @@ public class DefaultJaxServerLongPullService implements JaxServerLongPullService
                         }
 
                     }catch (Exception e){
+                        logger.log(Log.LogType.ERROR,e);
 
                     }
                 }
@@ -226,7 +232,7 @@ public class DefaultJaxServerLongPullService implements JaxServerLongPullService
                             versionId = jaxRouteDefinitions.get(jaxRouteDefinitions.size()-1).getVersionId();
                         }
                     }catch(Exception e){
-
+                        logger.log(Log.LogType.ERROR,e);
                     }
                 }
             }

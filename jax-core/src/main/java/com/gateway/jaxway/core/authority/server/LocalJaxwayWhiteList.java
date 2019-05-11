@@ -52,9 +52,11 @@ public class LocalJaxwayWhiteList implements JaxwayWhiteList {
             e.printStackTrace();
             return ;
         }
-        if(!cachedWhiteList.contains(uriRegx)){
+
+        PathPattern pathPattern = pathPatternParser.parse(uriRegx);
+
+        if(!cachedWhiteList.contains(pathPattern)){
             log.log("add white url regx, value="+uriRegx);
-            PathPattern pathPattern = pathPatternParser.parse(uriRegx);
             cachedWhiteList.add(pathPattern);
         }
     }
@@ -63,9 +65,11 @@ public class LocalJaxwayWhiteList implements JaxwayWhiteList {
     public void remove(String uriRegx) {
         try {
             uriRegx = jaxwayCoder.decode(uriRegx);
-            log.log("remove white url regx, value="+uriRegx);
             PathPattern pathPattern = pathPatternParser.parse(uriRegx);
-            cachedWhiteList.remove(pathPattern);
+            if(cachedWhiteList.contains(pathPattern)) {
+                log.log("remove white url regx, value="+uriRegx);
+                cachedWhiteList.remove(pathPattern);
+            }
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
             return;
@@ -78,10 +82,10 @@ public class LocalJaxwayWhiteList implements JaxwayWhiteList {
         PathContainer path = parsePath(uri);
         Optional<PathPattern> optionalPathPattern = cachedWhiteList.stream().filter(pattern -> pattern.matches(path)).findFirst();
         if(optionalPathPattern.isPresent()) {
-            log.log(Log.LogType.TRACE, "uri=" + uri + " matched white app list");
+            log.log(Log.LogType.DEBUG, "uri=" + uri + " matched white app list");
             return true;
         }
-        log.log(Log.LogType.TRACE,"uri="+uri+" is black list");
+        log.log(Log.LogType.DEBUG,"uri="+uri+" is black list");
 
         return false;
     }

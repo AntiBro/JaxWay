@@ -1,6 +1,8 @@
 package com.gateway.jaxway.core.route;
 
 import com.gateway.common.beans.JaxRouteDefinition;
+import com.gateway.jaxway.log.Log;
+import com.gateway.jaxway.log.impl.DefaultLogImpl;
 import org.springframework.cloud.gateway.event.RefreshRoutesEvent;
 import org.springframework.cloud.gateway.route.RouteDefinitionWriter;
 import org.springframework.context.ApplicationEventPublisher;
@@ -14,6 +16,7 @@ import reactor.core.publisher.Mono;
  * @Description JaxRouteRefreshListener
  **/
 public class JaxRouteRefreshListener implements ApplicationListener<JaxRouteRefreshEvent>, ApplicationEventPublisherAware {
+    private Log logger = new DefaultLogImpl(getClass());
 
     private RouteDefinitionWriter routeDefinitionWriter;
 
@@ -30,15 +33,18 @@ public class JaxRouteRefreshListener implements ApplicationListener<JaxRouteRefr
         switch (jaxRouteDefinition.getOpType()){
             case ADD_ROUTE:
                 routeDefinitionWriter.save(Mono.just(jaxRouteDefinition)).subscribe();
+                logger.log("add route definition route={}",jaxRouteDefinition);
                 notifyChanged();
                 break;
             case DELETE_ROUTE:
                 routeDefinitionWriter.delete(Mono.just(jaxRouteDefinition.getId()));
+                logger.log("delete route definition route={}",jaxRouteDefinition);
                 notifyChanged();
                 break;
             case UPDATE_ROUTE:
                 routeDefinitionWriter.delete(Mono.just(jaxRouteDefinition.getId()));
                 routeDefinitionWriter.save(Mono.just(jaxRouteDefinition)).subscribe();
+                logger.log("update route definition route={}",jaxRouteDefinition);
                 notifyChanged();
                 break;
         }
