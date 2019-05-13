@@ -27,6 +27,10 @@ public class DefaultJaxRouteDefinitionRepository implements JaxRouteDefinitionRe
         ParameterizedTypeReference<JaxHttpResponseWrapper<List<JaxRouteDefinition>>> responseBodyType = new ParameterizedTypeReference<JaxHttpResponseWrapper<List<JaxRouteDefinition>>>() {};
         JaxHttpResponseWrapper<List<JaxRouteDefinition>> responseWrapper = httpUtil.doGet(jaxHttpRequest,responseBodyType);
 
+        if(responseWrapper == null){
+            return null;
+        }
+
         if (responseWrapper.getCode() == SUCCESS_CODE) {
             List<JaxRouteDefinition> jaxRouteDefinitionList = responseWrapper.getBody();
             Collections.sort(jaxRouteDefinitionList);

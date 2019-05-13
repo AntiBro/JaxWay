@@ -27,7 +27,7 @@ public interface AppInfoService {
      * @param versionId
      * @return
      */
-    JaxServerAuthentication getJaxServerAuthentication(String appId, Long versionId);
+    List<JaxServerAuthentication> getJaxServerAuthentication(String appId, Long versionId);
 
 
     /**
@@ -36,7 +36,7 @@ public interface AppInfoService {
      * @param versionId
      * @return
      */
-    JaxServerAuthentication getServerWhiteListInfo(String appId,Long versionId);
+    List<JaxServerAuthentication> getServerWhiteListInfo(String appId,Long versionId);
 
 
     /**

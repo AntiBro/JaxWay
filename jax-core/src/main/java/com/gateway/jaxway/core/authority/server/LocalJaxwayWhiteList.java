@@ -56,7 +56,7 @@ public class LocalJaxwayWhiteList implements JaxwayWhiteList {
         PathPattern pathPattern = pathPatternParser.parse(uriRegx);
 
         if(!cachedWhiteList.contains(pathPattern)){
-            log.log("add white url regx, value="+uriRegx);
+            log.log("server add white whiteList, value="+uriRegx);
             cachedWhiteList.add(pathPattern);
         }
     }
@@ -67,7 +67,7 @@ public class LocalJaxwayWhiteList implements JaxwayWhiteList {
             uriRegx = jaxwayCoder.decode(uriRegx);
             PathPattern pathPattern = pathPatternParser.parse(uriRegx);
             if(cachedWhiteList.contains(pathPattern)) {
-                log.log("remove white url regx, value="+uriRegx);
+                log.log("server remove whiteList, value="+uriRegx);
                 cachedWhiteList.remove(pathPattern);
             }
         } catch (UnsupportedEncodingException e) {

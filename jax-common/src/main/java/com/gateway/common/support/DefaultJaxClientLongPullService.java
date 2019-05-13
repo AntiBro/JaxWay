@@ -14,6 +14,7 @@ import org.springframework.beans.factory.DisposableBean;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.env.Environment;
 import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -109,7 +110,6 @@ public class DefaultJaxClientLongPullService implements JaxClientLongPullService
 
                         if (responseWrapper.getCode() == 200) {
                             List<JaxClientAuthentication> jaxClientAuthentications = responseWrapper.getBody();
-
 
                             if(jaxClientAuthentications == null){
                                 throw new NullPointerException("response JaxClientAuthentications is null");

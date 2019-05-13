@@ -18,6 +18,8 @@ public class JaxServerAuthentication extends JaxAuthentication {
 
     private String appId;
 
+    private String serverId;
+
 
     private Set<String> uriRegxSet;
 
@@ -37,5 +39,13 @@ public class JaxServerAuthentication extends JaxAuthentication {
 
     public void setUriRegxSet(Set<String> uriRegxSet) {
         this.uriRegxSet = uriRegxSet;
+    }
+
+    public String getServerId() {
+        return serverId;
+    }
+
+    public void setServerId(String serverId) {
+        this.serverId = serverId;
     }
 }

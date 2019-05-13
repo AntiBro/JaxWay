@@ -117,7 +117,7 @@ public class DefaultJaxServerLongPullService implements JaxServerLongPullService
 
         doLongPull(this.jaxwayWhiteList);
 //
-//        doLongPull(this.jaxwayServerAuthenticationDataStore);
+        doLongPull(this.jaxwayServerAuthenticationDataStore);
 
         doLongPull(this.jaxRouteDefinitionRepository);
 
@@ -143,16 +143,32 @@ public class DefaultJaxServerLongPullService implements JaxServerLongPullService
                     JaxHttpRequest jaxHttpRequest = JaxHttpRequest.newBuilder().requestUrl(requestUrl).connectionTimeOut(connectTimeout).readTimeOut(readTimeOut).build();
 
                     try{
-                        ParameterizedTypeReference<JaxHttpResponseWrapper<JaxServerAuthentication>> responseBodyType = new ParameterizedTypeReference<JaxHttpResponseWrapper<JaxServerAuthentication>>() {};
-                        JaxHttpResponseWrapper<JaxServerAuthentication> responseWrapper = httpUtil.doGet(jaxHttpRequest,responseBodyType);
+                        ParameterizedTypeReference<JaxHttpResponseWrapper<List<JaxServerAuthentication>>> responseBodyType = new ParameterizedTypeReference<JaxHttpResponseWrapper<List<JaxServerAuthentication>>>() {};
+                        JaxHttpResponseWrapper<List<JaxServerAuthentication>> responseWrapper = httpUtil.doGet(jaxHttpRequest,responseBodyType);
+
+                        if(responseWrapper == null){
+                            throw new NullPointerException("jaxwayWhiteList response is null");
+                        }
 
                         if(responseWrapper.getCode() == SUCCESS_CODE){
-                            JaxServerAuthentication jaxServerAuthentication = responseWrapper.getBody();
-                            if(VersionUtil.checkVerion(jaxServerAuthentication.getVersionId(),versionId)) {
-                                jaxwayWhiteListDataStore.updateWhiteList(jaxwayWhiteList, jaxServerAuthentication);
-                                // update local versionId
-                                versionId = jaxServerAuthentication.getVersionId();
+                            long tempVersionId = versionId;
+                            List<JaxServerAuthentication> jaxServerAuthentications = responseWrapper.getBody();
+
+                            if(jaxServerAuthentications == null){
+                                throw new NullPointerException("jaxwayWhiteList response is null");
                             }
+
+                            for(JaxServerAuthentication jaxServerAuthentication:jaxServerAuthentications) {
+                                if (VersionUtil.checkVerion(jaxServerAuthentication.getVersionId(), versionId)) {
+                                    jaxwayWhiteListDataStore.updateWhiteList(jaxwayWhiteList, jaxServerAuthentication);
+                                    // update temp versionId
+                                    if(jaxServerAuthentication.getVersionId() > tempVersionId) {
+                                        tempVersionId = jaxServerAuthentication.getVersionId();
+                                    }
+                                }
+                            }
+                            // update local versionId
+                            versionId = tempVersionId;
                         }
 
                     }catch (Exception e){
@@ -183,16 +199,32 @@ public class DefaultJaxServerLongPullService implements JaxServerLongPullService
                     JaxHttpRequest jaxHttpRequest = JaxHttpRequest.newBuilder().requestUrl(requestUrl).connectionTimeOut(connectTimeout).readTimeOut(readTimeOut).build();
 
                     try{
-                        ParameterizedTypeReference<JaxHttpResponseWrapper<JaxServerAuthentication>> responseBodyType = new ParameterizedTypeReference<JaxHttpResponseWrapper<JaxServerAuthentication>>() {};
-                        JaxHttpResponseWrapper<JaxServerAuthentication> responseWrapper = httpUtil.doGet(jaxHttpRequest,responseBodyType);
+                        ParameterizedTypeReference<JaxHttpResponseWrapper<List<JaxServerAuthentication>>> responseBodyType = new ParameterizedTypeReference<JaxHttpResponseWrapper<List<JaxServerAuthentication>>>() {};
+                        JaxHttpResponseWrapper<List<JaxServerAuthentication>> responseWrapper = httpUtil.doGet(jaxHttpRequest,responseBodyType);
+
+                        if(responseWrapper == null){
+                            throw new NullPointerException("response JaxServerAuthentications is null");
+                        }
 
                         if(responseWrapper.getCode() == SUCCESS_CODE){
-                            JaxServerAuthentication jaxserverAuthentication = responseWrapper.getBody();
-                            if(VersionUtil.checkVerion(jaxserverAuthentication.getVersionId(),versionId)) {
-                                jaxwayServerAuthenticationDataStore.updateAppAuthentications(responseWrapper.getBody());
-                                // update local versionId
-                                versionId = jaxserverAuthentication.getVersionId();
+                            List<JaxServerAuthentication> jaxServerAuthentications = responseWrapper.getBody();
+
+                            if(jaxServerAuthentications == null){
+                                throw new NullPointerException("response JaxServerAuthentications is null");
                             }
+
+                            long tempVerionId = versionId;
+                            for(JaxServerAuthentication jaxServerAuthentication:jaxServerAuthentications) {
+                                if (VersionUtil.checkVerion(jaxServerAuthentication.getVersionId(), versionId)) {
+                                    jaxwayServerAuthenticationDataStore.updateAppAuthentications(jaxServerAuthentication);
+                                    // update local versionId
+                                    if(jaxServerAuthentication.getVersionId() > tempVerionId) {
+                                        tempVerionId = jaxServerAuthentication.getVersionId();
+                                    }
+                                }
+                            }
+
+                            versionId = tempVerionId;
                         }
 
                     }catch (Exception e){
@@ -224,15 +256,24 @@ public class DefaultJaxServerLongPullService implements JaxServerLongPullService
 
                     try{
                         List<JaxRouteDefinition> jaxRouteDefinitions = jaxRouteDefinitionRepository.getJaxRouteDefinitions(jaxHttpRequest);
+
+                        if(jaxRouteDefinitions == null){
+                            throw new NullPointerException("response Route definition is null");
+                        }
+
                         if(!CollectionUtils.isEmpty(jaxRouteDefinitions)){
+                            long tempVersionId = versionId;
                             for(JaxRouteDefinition jaxRouteDefinition :jaxRouteDefinitions){
                                 if(VersionUtil.checkVerion(jaxRouteDefinition.getVersionId(),versionId)){
                                     // publish change event
                                     notifyChanged(jaxRouteDefinition);
+                                    if(jaxRouteDefinition.getVersionId() > tempVersionId){
+                                        tempVersionId = jaxRouteDefinition.getVersionId();
+                                    }
                                 }
                             }
                             // update local versionId to the Max versionId
-                            versionId = jaxRouteDefinitions.get(jaxRouteDefinitions.size()-1).getVersionId();
+                            versionId = tempVersionId;
                         }
                     }catch(Exception e){
                         logger.log(Log.LogType.ERROR,e);

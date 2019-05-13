@@ -1,7 +1,10 @@
 package com.gateway.common.defaults;
 
+import com.gateway.common.JaxwayCoder;
 import com.gateway.common.JaxwayServerAuthenticationDataStore;
 import com.gateway.common.beans.JaxServerAuthentication;
+import com.gateway.jaxway.log.Log;
+import com.gateway.jaxway.log.impl.DefaultLogImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
@@ -25,12 +28,15 @@ import static org.springframework.http.server.PathContainer.parsePath;
 public class LocalJaxwayAuthenticationServerDataStore implements JaxwayServerAuthenticationDataStore {
 
     private static JaxwayServerAuthenticationDataStore INSTANCE = new LocalJaxwayAuthenticationServerDataStore();
-    private Logger logger = LoggerFactory.getLogger(LocalJaxwayAuthenticationServerDataStore.class);
+
+    private Log logger = new DefaultLogImpl(LocalJaxwayAuthenticationServerDataStore.class);
 
     private PathPatternParser pathPatternParser = new PathPatternParser();
 
-    private LocalJaxwayAuthenticationServerDataStore(){
+    private JaxwayCoder jaxwayCoder;
 
+    private LocalJaxwayAuthenticationServerDataStore(){
+        this.jaxwayCoder = new Base64JaxwayCoder();
     }
 
     public static JaxwayServerAuthenticationDataStore create(){
@@ -38,25 +44,27 @@ public class LocalJaxwayAuthenticationServerDataStore implements JaxwayServerAut
     }
 
 
-    //private static volatile Map<String,Set<String>> cachedAppAuthMap = new ConcurrentHashMap<>();
-
     private static volatile Map<String,Set<PathPattern>> cachedAppAuthMapPathPattern = new ConcurrentHashMap<>();
 
     @Override
     public void updateAppAuthentications(JaxServerAuthentication jaxServerAuthentication) {
-        // todo
+
+        // decode the appid and uri sets
+        try{
+            jaxServerAuthentication.setAppId(jaxwayCoder.decode(jaxServerAuthentication.getAppId()));
+            Set<String> uriSet = jaxServerAuthentication.getUriRegxSet();
+            Set<String> decodeUriSets = new HashSet<>();
+            for(String uri:uriSet){
+                uri = jaxwayCoder.decode(uri);
+                decodeUriSets.add(uri);
+            }
+            jaxServerAuthentication.setUriRegxSet(decodeUriSets);
+        }catch(Exception e){
+            logger.log(Log.LogType.ERROR,e.getMessage());
+            return;
+        }
+
         switch (jaxServerAuthentication.getOpType()){
-            case DELETE_APP:
-                if(!CollectionUtils.isEmpty(cachedAppAuthMapPathPattern.get(jaxServerAuthentication.getAppId()))){
-//                    Set<String> uriRegx = cachedAppAuthMap.get(jaxServerAuthentication.getAppId());
-//                    uriRegx.removeAll(jaxServerAuthentication.getUriRegxSet());
-                    logger.trace("jax-way server delete app authentication info={}",jaxServerAuthentication.getUriRegxSet());
-
-                    Set<PathPattern> uriRegxPathPattern = cachedAppAuthMapPathPattern.get(jaxServerAuthentication.getAppId());
-                    uriRegxPathPattern.removeAll(parseUriSet(jaxServerAuthentication.getUriRegxSet()));
-                }
-
-                break;
             case ADD_APP:
                 Set<PathPattern> uriRegx;
                 if(CollectionUtils.isEmpty(cachedAppAuthMapPathPattern.get(jaxServerAuthentication.getAppId()))){
@@ -67,15 +75,21 @@ public class LocalJaxwayAuthenticationServerDataStore implements JaxwayServerAut
                 }
                 if( !CollectionUtils.isEmpty(jaxServerAuthentication.getUriRegxSet())) {
                     uriRegx.addAll(parseUriSet(jaxServerAuthentication.getUriRegxSet()));
-                    logger.trace("jax-way server add app authentication info={}",jaxServerAuthentication.getUriRegxSet());
+                    logger.log("jax-way server add app authentication appId={} uriSets={}",jaxServerAuthentication.getAppId(),jaxServerAuthentication.getUriRegxSet());
                 }
-
+                break;
+            case DELETE_APP:
+                if(!CollectionUtils.isEmpty(cachedAppAuthMapPathPattern.get(jaxServerAuthentication.getAppId()))){
+                    logger.log("jax-way server delete app authentication info={}",jaxServerAuthentication.getUriRegxSet());
+                    Set<PathPattern> uriRegxPathPattern = cachedAppAuthMapPathPattern.get(jaxServerAuthentication.getAppId());
+                    uriRegxPathPattern.removeAll(parseUriSet(jaxServerAuthentication.getUriRegxSet()));
+                }
                 break;
             case NONE:
-                logger.trace("jax-way server app authentication OpType=NONE");
+                logger.log("jax-way server app authentication OpType=NONE");
                 break;
             default:
-                logger.error("jax-way server inlegal app authentication OpType={}",jaxServerAuthentication.getOpType());
+                logger.log(Log.LogType.ERROR,"jax-way server inlegal app authentication OpType={}",jaxServerAuthentication.getOpType());
                 break;
         }
 

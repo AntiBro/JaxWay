@@ -3,6 +3,8 @@ package com.gateway.jaxway.core.authority.server;
 import com.gateway.common.JaxwayWhiteList;
 import com.gateway.common.JaxwayWhiteListDataStore;
 import com.gateway.common.beans.JaxServerAuthentication;
+import com.gateway.jaxway.log.Log;
+import com.gateway.jaxway.log.impl.DefaultLogImpl;
 
 /**
  * @Author huaili
@@ -10,6 +12,7 @@ import com.gateway.common.beans.JaxServerAuthentication;
  * @Description LocalJaxwayWhiteListDataStore
  **/
 public class LocalJaxwayWhiteListDataStore implements JaxwayWhiteListDataStore {
+
     @Override
     public void updateWhiteList(JaxwayWhiteList jaxwayWhiteList, JaxServerAuthentication jaxServerAuthentication) {
         switch (jaxServerAuthentication.getOpType()){

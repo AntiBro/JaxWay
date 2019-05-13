@@ -47,7 +47,6 @@ public class AppInfoController {
     @RequestMapping("/client/getAppInfo")
     public ResultVO getClientAppAuthorityInfo(String appid,Long versionId, ServerWebExchange exchange)  {
         log.info("getClientAppAuthorityInfo appid={} remoteIP={} versionId={}",appid, IpUtil.getIpAddr(exchange.getRequest()),versionId);
-
         return ResultVO.success(appInfoService.getJaxClientAuthentication(appid,versionId));
     }
 
@@ -61,29 +60,8 @@ public class AppInfoController {
      */
     @RequestMapping("/server/getAppInfo")
     public ResultVO getServerAppAuthorityInfo(String id,Long versionId, ServerWebExchange exchange) throws UnsupportedEncodingException {
-
-
         log.info("getServerAppAuthorityInfo appid={} remoteIP={} versionId={}",id, IpUtil.getIpAddr(exchange.getRequest()),versionId);
-
-
-        JaxServerAuthentication jaxAuthentication = new JaxServerAuthentication();
-        Set<String> uriSets = new HashSet<>();
-
-        String appId = "test";
-        uriSets.add(jaxwayCoder.decode("/sohu/**"));
-
-        jaxAuthentication.setUriRegxSet(uriSets);
-        jaxAuthentication.setOpType(OpType.ADD_APP);
-        jaxAuthentication.setAppId(jaxwayCoder.encode(appId));
-        jaxAuthentication.setPublishDate(new Date());
-        jaxAuthentication.setPublisher("lili");
-        jaxAuthentication.setVersionId(1);
-
-
-        if(id.equals("test2")){
-            return ResultVO.success(JaxClientAuthentication.NONE);
-        }
-        return ResultVO.success(jaxAuthentication);
+        return ResultVO.success(appInfoService.getJaxServerAuthentication(id,versionId));
     }
 
     /**
@@ -96,28 +74,8 @@ public class AppInfoController {
      */
     @RequestMapping("/server/getWhiteList")
     public ResultVO getServerWhiteListInfo(String id,Long versionId, ServerWebExchange exchange) throws UnsupportedEncodingException {
-
-
         log.info("getServerWhiteListInfo appid={} remoteIP={} versionId={}",id, IpUtil.getIpAddr(exchange.getRequest()),versionId);
-
-
-        JaxServerAuthentication jaxAuthentication = new JaxServerAuthentication();
-        Set<String> uriSets = new HashSet<>();
-
-        String appId = "test";
-        uriSets.add(jaxwayCoder.encode("/sogou/**"));
-        uriSets.add(jaxwayCoder.encode("/sohu/**"));
-        uriSets.add(jaxwayCoder.encode("/sohu"));
-
-        jaxAuthentication.setUriRegxSet(uriSets);
-        jaxAuthentication.setOpType(OpType.ADD_WHITE_SERVER_APP);
-        jaxAuthentication.setAppId(jaxwayCoder.encode(appId));
-        jaxAuthentication.setPublishDate(new Date());
-        jaxAuthentication.setPublisher("lili");
-        jaxAuthentication.setVersionId(1);
-
-
-        return ResultVO.success(jaxAuthentication);
+        return ResultVO.success(appInfoService.getServerWhiteListInfo(id,versionId));
     }
 
 
@@ -131,19 +89,7 @@ public class AppInfoController {
      */
     @RequestMapping("/server/getRouteInfo")
     public ResultVO getRouteInfo(String id,Long versionId, ServerWebExchange exchange) throws URISyntaxException {
-
-
         log.info("getRouteInfo appid={} remoteIP={} versionId={}",id, IpUtil.getIpAddr(exchange.getRequest()),versionId);
-
-        List<JaxRouteDefinition> jaxRouteDefinitions = new ArrayList<>();
-        JaxRouteDefinition jaxRouteDefinition = new JaxRouteDefinition();
-        jaxRouteDefinition.setVersionId(1);
-        jaxRouteDefinition.setOpType(OpType.ADD_ROUTE);
-
-        BeanUtils.copyProperties(RouteUtil.generatePathRouteDefition("http://m.sohu.com","/sohu,/sohu/**"),jaxRouteDefinition);
-
-        jaxRouteDefinitions.add(jaxRouteDefinition);
-
-        return ResultVO.success(jaxRouteDefinitions);
+        return ResultVO.success(appInfoService.getJaxRouteDefinitions(id,versionId));
     }
 }
