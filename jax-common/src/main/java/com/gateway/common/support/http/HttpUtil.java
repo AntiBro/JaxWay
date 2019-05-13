@@ -16,7 +16,10 @@ import java.nio.charset.Charset;
  **/
 public class HttpUtil {
 
-  public static HttpUtil newInstance() {
+    public static final int SUCCESS_CODE = 200;
+
+
+    public static HttpUtil newInstance() {
         return new HttpUtil();
     }
 

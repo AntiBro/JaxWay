@@ -38,6 +38,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import static com.gateway.common.support.http.HttpUtil.SUCCESS_CODE;
+
 /**
  * @Author huaili
  * @Date 2019/5/9 11:39
@@ -91,6 +93,7 @@ public class DefaultJaxServerLongPullService implements JaxServerLongPullService
     private JaxRouteDefinitionRepository jaxRouteDefinitionRepository;
 
     private JaxwayWhiteListDataStore jaxwayWhiteListDataStore;
+
 
     public DefaultJaxServerLongPullService(Environment env, LoadBalanceService loadBalanceService){
         Assert.notNull(env.getProperty(JAX_PORTAL_HOST_PROPERTIES_NAME), "jaxway.host for portal admin has not set ");
@@ -146,10 +149,12 @@ public class DefaultJaxServerLongPullService implements JaxServerLongPullService
                         ParameterizedTypeReference<JaxHttpResponseWrapper<JaxServerAuthentication>> responseBodyType = new ParameterizedTypeReference<JaxHttpResponseWrapper<JaxServerAuthentication>>() {};
                         JaxHttpResponseWrapper<JaxServerAuthentication> responseWrapper = httpUtil.doGet(jaxHttpRequest,responseBodyType);
 
-                        if(responseWrapper.getCode() == 200){
+                        if(responseWrapper.getCode() == SUCCESS_CODE){
                             JaxServerAuthentication jaxServerAuthentication = responseWrapper.getBody();
                             if(VersionUtil.checkVerion(jaxServerAuthentication.getVersionId(),versionId)) {
                                 jaxwayWhiteListDataStore.updateWhiteList(jaxwayWhiteList, jaxServerAuthentication);
+                                // update local versionId
+                                versionId = jaxServerAuthentication.getVersionId();
                             }
                         }
 
@@ -184,7 +189,7 @@ public class DefaultJaxServerLongPullService implements JaxServerLongPullService
                         ParameterizedTypeReference<JaxHttpResponseWrapper<JaxServerAuthentication>> responseBodyType = new ParameterizedTypeReference<JaxHttpResponseWrapper<JaxServerAuthentication>>() {};
                         JaxHttpResponseWrapper<JaxServerAuthentication> responseWrapper = httpUtil.doGet(jaxHttpRequest,responseBodyType);
 
-                        if(responseWrapper.getCode() == 200){
+                        if(responseWrapper.getCode() == SUCCESS_CODE){
                             JaxServerAuthentication jaxserverAuthentication = responseWrapper.getBody();
                             if(VersionUtil.checkVerion(jaxserverAuthentication.getVersionId(),versionId)) {
                                 jaxwayServerAuthenticationDataStore.updateAppAuthentications(responseWrapper.getBody());

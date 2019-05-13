@@ -10,6 +10,8 @@ import org.springframework.core.ParameterizedTypeReference;
 import java.util.Collections;
 import java.util.List;
 
+import static com.gateway.common.support.http.HttpUtil.SUCCESS_CODE;
+
 /**
  * @Author huaili
  * @Date 2019/5/9 15:46
@@ -25,7 +27,7 @@ public class DefaultJaxRouteDefinitionRepository implements JaxRouteDefinitionRe
         ParameterizedTypeReference<JaxHttpResponseWrapper<List<JaxRouteDefinition>>> responseBodyType = new ParameterizedTypeReference<JaxHttpResponseWrapper<List<JaxRouteDefinition>>>() {};
         JaxHttpResponseWrapper<List<JaxRouteDefinition>> responseWrapper = httpUtil.doGet(jaxHttpRequest,responseBodyType);
 
-        if (responseWrapper.getCode() == 200) {
+        if (responseWrapper.getCode() == SUCCESS_CODE) {
             List<JaxRouteDefinition> jaxRouteDefinitionList = responseWrapper.getBody();
             Collections.sort(jaxRouteDefinitionList);
             return jaxRouteDefinitionList;
