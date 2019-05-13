@@ -65,14 +65,14 @@ public class LocalJaxwayAuthenticationClientDataStore implements JaxwayClientAut
                     cachedWhiteAppPathPatternSets.put(appId,toAddTokenSet);
                 }
                 toAddTokenSet.add(token);
-                logger.trace("add info appId={} token={} ",appId,token);
+                logger.info("add info appId={} token={} ",appId,token);
                 break;
             case DELETE_APP:
                 Set<String> toDeleTokenSet = cachedWhiteAppPathPatternSets.get(appId);
                 if(!CollectionUtils.isEmpty(toDeleTokenSet)){
                     toDeleTokenSet.remove(token);
                 }
-                logger.trace("dele info appId={} token={} ",appId,token);
+                logger.info("dele info appId={} token={} ",appId,token);
                 break;
         }
     }

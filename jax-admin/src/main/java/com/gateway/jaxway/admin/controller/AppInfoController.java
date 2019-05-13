@@ -6,6 +6,7 @@ import com.gateway.common.beans.JaxServerAuthentication;
 import com.gateway.common.beans.OpType;
 import com.gateway.common.beans.ResultVO;
 import com.gateway.jaxway.admin.beans.JaxRouteDefinition;
+import com.gateway.jaxway.admin.service.AppInfoService;
 import com.gateway.jaxway.admin.util.IpUtil;
 import com.gateway.jaxway.admin.util.RouteUtil;
 import org.slf4j.Logger;
@@ -32,28 +33,32 @@ public class AppInfoController {
     @Autowired
     private JaxwayCoder jaxwayCoder;
 
+    @Autowired
+    private AppInfoService appInfoService;
+
+    /**
+     *  get the jax-way client authority information
+     * @param appid
+     * @param versionId
+     * @param exchange
+     * @return
+     * @throws UnsupportedEncodingException
+     */
     @RequestMapping("/client/getAppInfo")
-    public ResultVO getClientAppAuthorityInfo(String appid,Long versionId, ServerWebExchange exchange) throws UnsupportedEncodingException {
-
-
+    public ResultVO getClientAppAuthorityInfo(String appid,Long versionId, ServerWebExchange exchange)  {
         log.info("getClientAppAuthorityInfo appid={} remoteIP={} versionId={}",appid, IpUtil.getIpAddr(exchange.getRequest()),versionId);
 
-
-        JaxClientAuthentication jaxAuthentication = new JaxClientAuthentication();
-        String appId = "test";
-        jaxAuthentication.setOpType(OpType.ADD_APP);
-        jaxAuthentication.setAppId(jaxwayCoder.encode(appId));
-        jaxAuthentication.setPublishDate(new Date());
-        jaxAuthentication.setPublisher("lili");
-        jaxAuthentication.setToken(jaxwayCoder.encode("/sohu/**"));
-        jaxAuthentication.setVersionId(1);
-
-        if(appid.equals("test2")){
-            return ResultVO.success(JaxClientAuthentication.NONE);
-        }
-        return ResultVO.success(jaxAuthentication);
+        return ResultVO.success(appInfoService.getJaxClientAuthentication(appid,versionId));
     }
 
+    /**
+     * get the jax-way server app authority information
+     * @param id
+     * @param versionId
+     * @param exchange
+     * @return
+     * @throws UnsupportedEncodingException
+     */
     @RequestMapping("/server/getAppInfo")
     public ResultVO getServerAppAuthorityInfo(String id,Long versionId, ServerWebExchange exchange) throws UnsupportedEncodingException {
 
@@ -81,6 +86,14 @@ public class AppInfoController {
         return ResultVO.success(jaxAuthentication);
     }
 
+    /**
+     * get the white list for jax-way server through the serverId(${jaxway.server.id})
+     * @param id jax-way serverId
+     * @param versionId
+     * @param exchange
+     * @return
+     * @throws UnsupportedEncodingException
+     */
     @RequestMapping("/server/getWhiteList")
     public ResultVO getServerWhiteListInfo(String id,Long versionId, ServerWebExchange exchange) throws UnsupportedEncodingException {
 
@@ -108,6 +121,14 @@ public class AppInfoController {
     }
 
 
+    /**
+     * get the route definition for jax-server through the serverId(${jaxway.server.id})
+     * @param id
+     * @param versionId
+     * @param exchange
+     * @return
+     * @throws URISyntaxException
+     */
     @RequestMapping("/server/getRouteInfo")
     public ResultVO getRouteInfo(String id,Long versionId, ServerWebExchange exchange) throws URISyntaxException {
 
@@ -122,9 +143,7 @@ public class AppInfoController {
         BeanUtils.copyProperties(RouteUtil.generatePathRouteDefition("http://m.sohu.com","/sohu,/sohu/**"),jaxRouteDefinition);
 
         jaxRouteDefinitions.add(jaxRouteDefinition);
-//        if(id.equals("test2")){
-//            return ResultVO.success(JaxClientAuthentication.NONE);
-//        }
+
         return ResultVO.success(jaxRouteDefinitions);
     }
 }

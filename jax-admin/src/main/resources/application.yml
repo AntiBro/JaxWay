@@ -55,7 +55,15 @@ feign:
 ---
 spring:
   profiles: dev
-
+  redis:
+    #password: "93ae8276270448d688e4a427cf765cb5"
+    lettuce:
+      pool:
+        min-idle: 1
+        max-wait: 3000ms
+    cluster:
+      maxRedirects: 5
+      nodes: 127.0.0.1:6379,127.0.0.1:6380,127.0.0.1:6381,127.0.0.1:6382,127.0.0.1:6383,127.0.0.1:6384
 
 ---
 
