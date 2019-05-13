@@ -20,18 +20,14 @@ import com.gateway.jaxway.core.route.JaxServerLongPullService;
 import com.gateway.jaxway.log.Log;
 import com.gateway.jaxway.log.impl.DefaultLogImpl;
 import com.google.common.util.concurrent.RateLimiter;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.DisposableBean;
-import org.springframework.cloud.gateway.event.RefreshRoutesEvent;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.env.Environment;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -45,14 +41,15 @@ import static com.gateway.common.support.http.HttpUtil.SUCCESS_CODE;
  * @Date 2019/5/9 11:39
  * @Description DefaultJaxServerLongPullService
  **/
-public class DefaultJaxServerLongPullService implements JaxServerLongPullService, ApplicationContextAware, DisposableBean {
+public class DefaultJaxServerLongPullService implements JaxServerLongPullService, ApplicationEventPublisherAware, DisposableBean {
 
 
     private Log logger = new DefaultLogImpl(getClass());
 
     private ExecutorService executorService;
 
-    private ApplicationContext applicationContext;
+    private ApplicationEventPublisher publisher;
+
 
     private RateLimiter longPollRateLimiterForWhiteList;
 
@@ -254,8 +251,8 @@ public class DefaultJaxServerLongPullService implements JaxServerLongPullService
     }
 
     @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
+    public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
+        this.publisher = applicationEventPublisher;
     }
 
 
@@ -263,25 +260,13 @@ public class DefaultJaxServerLongPullService implements JaxServerLongPullService
         return loadBalanceService.selectServer(this.hosts);
     }
 
-    private String generateUrl(String template,String host) {
-        return String.format(template, host,this.appId);
-    }
+
     private String generateUrl(String template,String host,long verionId) {
         return String.format(template, host, this.appId,String.valueOf(verionId));
     }
-    private String getLocalServerIP(){
-        InetAddress address = null;
-        try {
-            address = InetAddress.getLocalHost();
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
-        return address.getHostAddress();
-    }
-
 
     private void notifyChanged(JaxRouteDefinition jaxRouteDefinition) {
-        applicationContext.publishEvent(new JaxRouteRefreshEvent(this,jaxRouteDefinition));
+        this.publisher.publishEvent(new JaxRouteRefreshEvent(this,jaxRouteDefinition));
 
     }
 

@@ -29,9 +29,9 @@ import static org.springframework.cloud.gateway.config.HttpClientProperties.Pool
 @RunWith(JUnit4.class)
 public class TestSuit {
 
-    String url = "http://m.sohu.com";
-    int n =1;
-    @Test
+    String url = "http://m.sohu.com/limit";
+    int n = 300;
+    //@Test
     public void testTcp(){
 //        String str = HttpClient.create().baseUrl("http://www.baidu.com")// Prepares an HTTP client ready for configuration
 //               // .port(8920)  // Obtains the server's port and provides it as a port to which this
@@ -149,7 +149,7 @@ public class TestSuit {
 
     }
 
-   // @Test
+    @Test
     public void testSpringHttoClient(){
         RestTemplate template = new RestTemplate();
 
@@ -157,8 +157,8 @@ public class TestSuit {
         long start = System.currentTimeMillis();
         for(int i=0;i<n;i++){
             try {
-               // template.getForEntity("http://www.baidu.com",String.class);
-                System.out.println(template.getForEntity(url,String.class).getBody());
+                template.getForEntity("http://www.baidu.com",String.class);
+                //System.out.println(template.getForEntity(url,String.class).getBody());
             }catch (Exception e){
                 e.printStackTrace();
                 System.err.println("i="+i);
@@ -166,7 +166,7 @@ public class TestSuit {
 
         }
 
-        System.out.println("cost time ="+(System.currentTimeMillis()-start)+"ms");
+        System.out.println("RestTemplate cost time ="+(System.currentTimeMillis()-start)+"ms");
     }
 
 
@@ -250,13 +250,32 @@ public class TestSuit {
     }
 
 
+    @Test
     public void test3(){
-        WebClient client = WebClient.create("http://localhost:8080");
-        Mono<String> employeeMono = client.get()
-                .uri("/employees/{id}", "1")
-                .retrieve()
-                .bodyToMono(String.class);
 
-        employeeMono.subscribe(System.out::println);
+
+        WebClient webClient = WebClient.create();
+        Mono<String> mono = webClient.get().uri("https://www.baidu.com").retrieve().bodyToMono(String.class);
+        mono.subscribe(System.out::println);
+
+        long start = System.currentTimeMillis();
+        WebClient client = WebClient.create();
+        for(int i=0;i<n;i++) {
+
+            Mono<String> body = client.get()
+                    .uri(url)
+                    //  .uri("/employees/{id}", "1")
+                    .retrieve()
+                    .bodyToMono(String.class);
+
+            body.subscribe(s->{
+                System.out.println("收到："+s);
+            });
+
+           // body.block();
+
+        }
+        long end = System.currentTimeMillis();
+        System.out.println("netty cost time = "+(end-start)+"ms");
     }
 }
