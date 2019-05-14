@@ -10,18 +10,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  **/
 @SpringBootApplication
 public class JaxAdmin {
-//    @Autowired
-//    private Log log;
-//
-//    @Autowired
-//    private TestService testService;
-//
-//    @PostConstruct
-//    public void test(){
-//        log.log("测试");
-//        testService.dotest();
-//    }
-
     public static void main(String[] ags){
         SpringApplication.run(JaxAdmin.class);
     }

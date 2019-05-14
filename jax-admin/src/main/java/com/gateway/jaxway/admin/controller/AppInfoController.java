@@ -3,8 +3,6 @@ package com.gateway.jaxway.admin.controller;
 import com.gateway.common.beans.ResultVO;
 import com.gateway.jaxway.admin.service.AppInfoService;
 import com.gateway.jaxway.admin.util.IpUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,8 +17,7 @@ import java.net.URISyntaxException;
  * @Description AppInfoController
  **/
 @RestController
-public class AppInfoController {
-    Logger log = LoggerFactory.getLogger(getClass());
+public class AppInfoController extends BaseController{
 
     @Autowired
     private AppInfoService appInfoService;

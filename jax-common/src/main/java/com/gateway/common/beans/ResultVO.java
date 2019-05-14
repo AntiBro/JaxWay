@@ -58,4 +58,8 @@ public class ResultVO {
     public static ResultVO success(Object content){
         return new ResultVO(HttpStatus.OK.value(),HttpStatus.OK.getReasonPhrase(),content);
     }
+
+    public static ResultVO error(Object content){
+        return new ResultVO(HttpStatus.INTERNAL_SERVER_ERROR.value(),HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),content);
+    }
 }
