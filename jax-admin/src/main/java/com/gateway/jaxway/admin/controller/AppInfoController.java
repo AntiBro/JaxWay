@@ -1,17 +1,10 @@
 package com.gateway.jaxway.admin.controller;
 
-import com.gateway.common.JaxwayCoder;
-import com.gateway.common.beans.JaxClientAuthentication;
-import com.gateway.common.beans.JaxServerAuthentication;
-import com.gateway.common.beans.OpType;
 import com.gateway.common.beans.ResultVO;
-import com.gateway.jaxway.admin.beans.JaxRouteDefinition;
 import com.gateway.jaxway.admin.service.AppInfoService;
 import com.gateway.jaxway.admin.util.IpUtil;
-import com.gateway.jaxway.admin.util.RouteUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,7 +12,6 @@ import org.springframework.web.server.ServerWebExchange;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
-import java.util.*;
 
 /**
  * @Author huaili
@@ -29,9 +21,6 @@ import java.util.*;
 @RestController
 public class AppInfoController {
     Logger log = LoggerFactory.getLogger(getClass());
-
-    @Autowired
-    private JaxwayCoder jaxwayCoder;
 
     @Autowired
     private AppInfoService appInfoService;
