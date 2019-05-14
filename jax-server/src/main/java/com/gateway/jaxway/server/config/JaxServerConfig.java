@@ -1,5 +1,6 @@
 package com.gateway.jaxway.server.config;
 
+import com.gateway.common.JaxwayConstant;
 import com.gateway.common.support.LoadBalanceService;
 import com.gateway.jaxway.core.authority.server.JaxwayServerWebFluxFilter;
 import com.gateway.jaxway.core.route.JaxRouteRefreshListener;
@@ -13,6 +14,8 @@ import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 import org.springframework.web.server.WebFilter;
 
+import static com.gateway.common.JaxwayConstant.JAX_WAY_FILTER_ENABLE_NAME;
+
 /**
  * @Author huaili
  * @Date 2019/5/6 18:43
@@ -23,7 +26,7 @@ public class JaxServerConfig {
 
     @Bean
     @Order(Integer.MIN_VALUE)
-    @ConditionalOnProperty(name = "spring.jaxway.filter.enable", havingValue = "true")
+    @ConditionalOnProperty(name = JAX_WAY_FILTER_ENABLE_NAME, havingValue = "true")
     public WebFilter serverWebFilter(){
         return new JaxwayServerWebFluxFilter();
     }

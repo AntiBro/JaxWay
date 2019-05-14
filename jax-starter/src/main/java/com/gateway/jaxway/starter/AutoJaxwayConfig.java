@@ -17,13 +17,15 @@ import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 import org.springframework.web.server.WebFilter;
 
+import static com.gateway.common.JaxwayConstant.JAX_WAY_FILTER_ENABLE_NAME;
+
 /**
  * @Author huaili
  * @Date 2019/4/22 10:51
  * @Description AutoJaxwayConfig for client
  **/
 @Configuration
-@ConditionalOnProperty(name = "spring.jaxway.filter.enable", havingValue = "true")
+@ConditionalOnProperty(name = JAX_WAY_FILTER_ENABLE_NAME, havingValue = "true")
 public class AutoJaxwayConfig {
 
     private Log log = new DefaultLogImpl(AutoJaxwayConfig.class);

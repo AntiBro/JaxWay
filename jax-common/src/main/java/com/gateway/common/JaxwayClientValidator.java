@@ -12,7 +12,7 @@ import java.io.UnsupportedEncodingException;
 public interface JaxwayClientValidator {
 
     /**
-     * 先从头部的 请求字段中解析出原始请求ip和经过网关的权限Token,然后进行请求的权限认证
+     * 先从头部的 请求字段中解析出原始请求ip和经过网关的权限PathPattern,然后进行请求的权限认证
      * @param jaxRequest
      * @return
      */
