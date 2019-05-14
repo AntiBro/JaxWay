@@ -56,7 +56,7 @@ public class TestAutoConfig {
         jaxAuthentication.setAppId(jaxwayCoder.encode(appId));
         jaxAuthentication.setPublishDate(new Date());
         jaxAuthentication.setPublisher("lili");
-        jaxAuthentication.setToken(jaxwayCoder.encode("/sohu/**"));
+        jaxAuthentication.setPathPattern(jaxwayCoder.encode("/sohu/**"));
         jaxAuthentication.setVersionId(versionId);
 
 
@@ -66,7 +66,7 @@ public class TestAutoConfig {
         jaxAuthentication2.setAppId(jaxwayCoder.encode(appId));
         jaxAuthentication2.setPublishDate(new Date());
         jaxAuthentication2.setPublisher("meme");
-        jaxAuthentication2.setToken(jaxwayCoder.encode("/testflux/**"));
+        jaxAuthentication2.setPathPattern(jaxwayCoder.encode("/testflux/**"));
         jaxAuthentication2.setVersionId(versionId);
 
         jaxClientAuthenticationList.add(jaxAuthentication);

@@ -49,7 +49,7 @@ public class LocalJaxwayAuthenticationClientDataStore implements JaxwayClientAut
         String token = null;
         String appId = null;
         try {
-            token = jaxwayCoder.decode(jaxAuthentication.getToken());
+            token = jaxwayCoder.decode(jaxAuthentication.getPathPattern());
             appId = jaxwayCoder.decode(jaxAuthentication.getAppId());
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
@@ -65,14 +65,14 @@ public class LocalJaxwayAuthenticationClientDataStore implements JaxwayClientAut
                     cachedWhiteAppPathPatternSets.put(appId,toAddTokenSet);
                 }
                 toAddTokenSet.add(token);
-                logger.info("add info appId={} token={} ",appId,token);
+                logger.info("add info appId={} pathPattern={} ",appId,token);
                 break;
             case DELETE_APP:
                 Set<String> toDeleTokenSet = cachedWhiteAppPathPatternSets.get(appId);
                 if(!CollectionUtils.isEmpty(toDeleTokenSet)){
                     toDeleTokenSet.remove(token);
                 }
-                logger.info("dele info appId={} token={} ",appId,token);
+                logger.info("dele info appId={} pathPattern={} ",appId,token);
                 break;
         }
     }

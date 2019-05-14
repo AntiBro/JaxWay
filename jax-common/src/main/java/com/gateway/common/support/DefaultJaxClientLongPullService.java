@@ -22,6 +22,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import static com.gateway.common.JaxwayConstant.JAX_WAY_FILTER_ENABLE_NAME;
+
 /**
  * @Author huaili
  * @Date 2019/4/23 17:58
@@ -45,6 +47,7 @@ public class DefaultJaxClientLongPullService implements JaxClientLongPullService
 
     private static String JAX_APP_ID_PROPERTIES_NAME = "jaxway.appid";
 
+
     private static String REQUEST_TEMPLATE = "%s/client/getAppInfo?appid=%s&versionId=%s";
 
     private Environment env;
@@ -55,13 +58,15 @@ public class DefaultJaxClientLongPullService implements JaxClientLongPullService
 
     private LoadBalanceService loadBalanceService;
 
-    private int connectTimeout = 800;
+    private int connectTimeout = 1500;
 
-    private int readTimeOut = 1500;
+    private int readTimeOut = 1200;
 
     public DefaultJaxClientLongPullService(Environment env, LoadBalanceService loadBalanceService) {
         Assert.notNull(env.getProperty(JAX_PORTAL_HOST_PROPERTIES_NAME), "jaxway.host has not set");
         Assert.notNull(env.getProperty(JAX_APP_ID_PROPERTIES_NAME), "jaxway.appid has not set");
+
+        Boolean isFilterMode = Boolean.parseBoolean(env.getProperty(JAX_WAY_FILTER_ENABLE_NAME,"false"));
 
         this.loadBalanceService = loadBalanceService;
         this.env = env;
@@ -74,7 +79,8 @@ public class DefaultJaxClientLongPullService implements JaxClientLongPullService
         /**
          * begin long pull for app authority info
          */
-        doLongPull(this.jaxwayAuthenticationDataStore);
+        if(isFilterMode)
+            doLongPull(this.jaxwayAuthenticationDataStore);
     }
 
     public DefaultJaxClientLongPullService(Environment env) {

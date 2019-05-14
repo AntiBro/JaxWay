@@ -5,8 +5,6 @@ import com.gateway.common.JaxwayServerAuthenticationDataStore;
 import com.gateway.common.beans.JaxServerAuthentication;
 import com.gateway.jaxway.log.Log;
 import com.gateway.jaxway.log.impl.DefaultLogImpl;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.util.pattern.PathPattern;

@@ -17,7 +17,7 @@ public class JaxClientAuthentication extends JaxAuthentication{
 
     private String appId;
 
-    private String token;
+    private String pathPattern;
 
     public String getAppId() {
         return appId;
@@ -29,11 +29,11 @@ public class JaxClientAuthentication extends JaxAuthentication{
     }
 
 
-    public String getToken() {
-        return token;
+    public String getPathPattern() {
+        return pathPattern;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setPathPattern(String pathPattern) {
+        this.pathPattern = pathPattern;
     }
 }

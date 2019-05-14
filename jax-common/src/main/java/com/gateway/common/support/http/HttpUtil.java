@@ -25,9 +25,10 @@ public class HttpUtil {
 
     private RestTemplate restTemplate = new RestTemplate();
 
+    private SimpleClientHttpRequestFactory simpleClientHttpRequestFactory;
+
     public <T> T doGet(JaxHttpRequest jaxHttpRequest, ParameterizedTypeReference<T> responseBodyType){
 
-        SimpleClientHttpRequestFactory simpleClientHttpRequestFactory = new SimpleClientHttpRequestFactory();
         if(simpleClientHttpRequestFactory == null){
             simpleClientHttpRequestFactory = new SimpleClientHttpRequestFactory();
         }

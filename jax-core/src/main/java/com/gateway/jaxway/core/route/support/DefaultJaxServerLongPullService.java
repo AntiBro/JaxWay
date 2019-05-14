@@ -34,6 +34,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import static com.gateway.common.JaxwayConstant.JAX_WAY_FILTER_ENABLE_NAME;
 import static com.gateway.common.support.http.HttpUtil.SUCCESS_CODE;
 
 /**
@@ -81,7 +82,7 @@ public class DefaultJaxServerLongPullService implements JaxServerLongPullService
 
     private int connectTimeout = 1500;
 
-    private int readTimeOut = 800;
+    private int readTimeOut = 1200;
 
     private JaxwayWhiteList jaxwayWhiteList;
 
@@ -96,6 +97,7 @@ public class DefaultJaxServerLongPullService implements JaxServerLongPullService
         Assert.notNull(env.getProperty(JAX_PORTAL_HOST_PROPERTIES_NAME), "jaxway.host for portal admin has not set ");
         Assert.notNull(env.getProperty(JAX_WAY_APPID_PROPERTIES_NAME), "jaxway.server.id for portal admin has not set ");
 
+        Boolean isFilterMode = Boolean.parseBoolean(env.getProperty(JAX_WAY_FILTER_ENABLE_NAME,"false"));
 
         this.env = env;
         this.loadBalanceService = loadBalanceService;
@@ -115,9 +117,10 @@ public class DefaultJaxServerLongPullService implements JaxServerLongPullService
 
         // begin long pull for server
 
-        doLongPull(this.jaxwayWhiteList);
-//
-        doLongPull(this.jaxwayServerAuthenticationDataStore);
+        if(isFilterMode)
+            doLongPull(this.jaxwayWhiteList);
+        if(isFilterMode)
+            doLongPull(this.jaxwayServerAuthenticationDataStore);
 
         doLongPull(this.jaxRouteDefinitionRepository);
 

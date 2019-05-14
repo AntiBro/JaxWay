@@ -16,4 +16,7 @@ public class JaxwayConstant {
     public static final String JAXWAY_APP_ID = "jax-way-app-id";
 
     public static final String JAXWAY_SERVER_APP_ID = "jax-way-server-app-id";
+
+    public static final String JAX_WAY_FILTER_ENABLE_NAME = "spring.jaxway.filter.enable";
+
 }
