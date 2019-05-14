@@ -62,18 +62,4 @@ public class AutoJaxwayConfig {
         return new DefaultJaxClientLongPullService(env);
     }
 
-    public void initApp(){
-        log.log("JaxClientLongPullService init for get appInfo");
-       // longPollService.doLongPull(LocalJaxwayAuthenticationClientDataStore.instance());
-//        JaxwayAuthenticationDataStore jaxwayAuthenticationDataStore = LocalJaxwayAuthenticationClientDataStore.instance();
-//        Map<String,String> map = new HashMap<String,String>();
-//        map.put("/testflux","123");
-//        jaxwayAuthenticationDataStore.updateAppAuthentications(map);
-
-      //  longPollService.doLongPull(LocalJaxwayAuthenticationClientDataStore.instance());
-    }
-
-
-
-
 }
