@@ -3,8 +3,6 @@ package com.gateway.jaxway.core.authority.server;
 import com.gateway.common.JaxwayWhiteList;
 import com.gateway.common.JaxwayWhiteListDataStore;
 import com.gateway.common.beans.JaxServerAuthentication;
-import com.gateway.jaxway.log.Log;
-import com.gateway.jaxway.log.impl.DefaultLogImpl;
 
 /**
  * @Author huaili

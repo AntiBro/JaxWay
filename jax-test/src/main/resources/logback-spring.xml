@@ -32,9 +32,9 @@
     </springProfile>
     <springProfile name="prd">
         <appender name="RunLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
-            <file>/tmp/mobile-site.log</file>
+            <file>/tmp/jax-test.log</file>
             <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-                <fileNamePattern>/tmp/mobile-site.log.%d{yyyyMMdd}</fileNamePattern>
+                <fileNamePattern>/tmp/jax-test.log.%d{yyyyMMdd}</fileNamePattern>
                 <maxHistory>7</maxHistory>
             </rollingPolicy>
             <encoder>
