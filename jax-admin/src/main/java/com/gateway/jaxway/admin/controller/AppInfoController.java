@@ -24,16 +24,17 @@ public class AppInfoController extends BaseController{
 
     /**
      *  get the jax-way client authority information
-     * @param appid
+     * @param jaxId ${jaxway.server.id}
+     * @param appId ${jaxway.appid}
      * @param versionId
      * @param exchange
      * @return
      * @throws UnsupportedEncodingException
      */
     @RequestMapping("/client/getAppInfo")
-    public ResultVO getClientAppAuthorityInfo(String appid,Long versionId, ServerWebExchange exchange)  {
-        log.info("getClientAppAuthorityInfo appid={} remoteIP={} versionId={}",appid, IpUtil.getIpAddr(exchange.getRequest()),versionId);
-        return ResultVO.success(appInfoService.getJaxClientAuthentication(appid,versionId));
+    public ResultVO getClientAppAuthorityInfo(String jaxId,String appId,Long versionId, ServerWebExchange exchange)  {
+        log.info("getClientAppAuthorityInfo appid={} remoteIP={} versionId={}",appId, IpUtil.getIpAddr(exchange.getRequest()),versionId);
+        return ResultVO.success(appInfoService.getJaxClientAuthentication(jaxId,appId,versionId));
     }
 
     /**

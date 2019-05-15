@@ -19,7 +19,7 @@ public interface AppInfoService {
      * @param versionId
      * @return
      */
-    List<JaxClientAuthentication> getJaxClientAuthentication(String appId, Long versionId);
+    List<JaxClientAuthentication> getJaxClientAuthentication(String jaxId,String appId, Long versionId);
 
     /**
      * server side app authority info

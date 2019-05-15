@@ -25,7 +25,7 @@ import static com.gateway.jaxway.admin.support.JaxAdminConstant.*;
  * @Description TestAutoConfig
  **/
 @Component
-public class TestAutoConfig {
+public class TestInitRedisDataConfig {
     @Resource(name = "redisTemplateProtoStuff")
     private RedisTemplate redisTemplate;
 
@@ -52,6 +52,8 @@ public class TestAutoConfig {
 
         JaxClientAuthentication jaxAuthentication = new JaxClientAuthentication();
         String appId = "test";
+        String serverappId = "jax-way-one";
+
         jaxAuthentication.setOpType(OpType.ADD_APP);
         jaxAuthentication.setAppId(jaxwayCoder.encode(appId));
         jaxAuthentication.setPublishDate(new Date());
@@ -72,7 +74,7 @@ public class TestAutoConfig {
         jaxClientAuthenticationList.add(jaxAuthentication);
         jaxClientAuthenticationList.add(jaxAuthentication2);
 
-        redisTemplate.opsForHash().put(CLIENT_APP_INFO_REDIS_KEY+appId,String.valueOf(versionId), jaxClientAuthenticationList);
+        redisTemplate.opsForHash().put(CLIENT_APP_INFO_REDIS_KEY+serverappId+":"+appId,String.valueOf(versionId), jaxClientAuthenticationList);
     }
 
 

@@ -23,6 +23,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import static com.gateway.common.JaxwayConstant.JAX_WAY_FILTER_ENABLE_NAME;
+import static com.gateway.common.support.http.HttpUtil.SUCCESS_CODE;
 
 /**
  * @Author huaili
@@ -47,14 +48,17 @@ public class DefaultJaxClientLongPullService implements JaxClientLongPullService
 
     private static String JAX_APP_ID_PROPERTIES_NAME = "jaxway.appid";
 
+    private static String JAX_SERVER_ID_NAME = "jaxway.server.id";
 
-    private static String REQUEST_TEMPLATE = "%s/client/getAppInfo?appid=%s&versionId=%s";
+    private static String REQUEST_TEMPLATE = "%s/client/getAppInfo?jaxId=%s&appId=%s&versionId=%s";
 
     private Environment env;
 
     private List<String> hosts;
 
     private String appId;
+
+    private String serverId;
 
     private LoadBalanceService loadBalanceService;
 
@@ -65,6 +69,8 @@ public class DefaultJaxClientLongPullService implements JaxClientLongPullService
     public DefaultJaxClientLongPullService(Environment env, LoadBalanceService loadBalanceService) {
         Assert.notNull(env.getProperty(JAX_PORTAL_HOST_PROPERTIES_NAME), "jaxway.host has not set");
         Assert.notNull(env.getProperty(JAX_APP_ID_PROPERTIES_NAME), "jaxway.appid has not set");
+        Assert.notNull(env.getProperty(JAX_SERVER_ID_NAME), "jaxway.server.id has not set");
+
 
         Boolean isFilterMode = Boolean.parseBoolean(env.getProperty(JAX_WAY_FILTER_ENABLE_NAME,"false"));
 
@@ -72,6 +78,8 @@ public class DefaultJaxClientLongPullService implements JaxClientLongPullService
         this.env = env;
         this.hosts = Arrays.asList(this.env.getProperty(JAX_PORTAL_HOST_PROPERTIES_NAME).split(","));
         this.appId = this.env.getProperty(JAX_APP_ID_PROPERTIES_NAME);
+        this.serverId = this.env.getProperty(JAX_SERVER_ID_NAME);
+
         this.executorService = Executors.newSingleThreadExecutor(JaxwayThreadFactory.create(GROUP_NAME, true));
         this.longPollRateLimiter = RateLimiter.create(longPullQPS);
         this.jaxwayAuthenticationDataStore = LocalJaxwayAuthenticationClientDataStore.instance();
@@ -114,7 +122,7 @@ public class DefaultJaxClientLongPullService implements JaxClientLongPullService
                             throw new NullPointerException("response JaxClientAuthentications is null");
                         }
 
-                        if (responseWrapper.getCode() == 200) {
+                        if (responseWrapper.getCode() == SUCCESS_CODE) {
                             List<JaxClientAuthentication> jaxClientAuthentications = responseWrapper.getBody();
 
                             if(jaxClientAuthentications == null){
@@ -157,11 +165,8 @@ public class DefaultJaxClientLongPullService implements JaxClientLongPullService
         return loadBalanceService.selectServer(this.hosts);
     }
 
-    private String generateUrl(String host) {
-        return String.format(REQUEST_TEMPLATE, host, this.appId);
-    }
     private String generateUrl(String host,long verionId) {
-        return String.format(REQUEST_TEMPLATE, host, this.appId,String.valueOf(verionId));
+        return String.format(REQUEST_TEMPLATE, host, this.serverId,this.appId,String.valueOf(verionId));
     }
 
 }

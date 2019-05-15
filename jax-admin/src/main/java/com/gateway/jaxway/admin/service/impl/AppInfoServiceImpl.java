@@ -5,7 +5,6 @@ import com.gateway.common.beans.JaxServerAuthentication;
 import com.gateway.jaxway.admin.beans.JaxRouteDefinition;
 import com.gateway.jaxway.admin.service.AppInfoService;
 import com.gateway.jaxway.admin.service.RedisService;
-import com.gateway.jaxway.admin.support.SerializeDeserializeWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -20,7 +19,7 @@ import static com.gateway.jaxway.admin.support.JaxAdminConstant.*;
 /**
  * @Author huaili
  * @Date 2019/5/13 15:20
- * @Description AppInfoServiceImpl
+ * @Description AppInfoServiceImpl by redis store
  **/
 @Service
 public class AppInfoServiceImpl implements AppInfoService {
@@ -31,8 +30,8 @@ public class AppInfoServiceImpl implements AppInfoService {
     @Autowired
     private RedisService redisService;
     @Override
-    public List<JaxClientAuthentication> getJaxClientAuthentication(String appId, Long versionId) {
-        String redisKey = CLIENT_APP_INFO_REDIS_KEY+appId;
+    public List<JaxClientAuthentication> getJaxClientAuthentication(String jaxId,String appId, Long versionId) {
+        String redisKey = CLIENT_APP_INFO_REDIS_KEY+jaxId+":"+appId;
         return getServerInfoFromRedis(redisKey,versionId,JaxClientAuthentication.class);
     }
 

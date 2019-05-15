@@ -44,12 +44,12 @@ public class RedisConfig {
     public RedisTemplate<String, Object> redisTemplateProtoStuff(RedisConnectionFactory redisConnectionFactory) {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(redisConnectionFactory);
-
+        ProtostuffRedisSerializer protostuffRedisSerializer = new ProtostuffRedisSerializer<>(SerializeDeserializeWrapper.class);
         // 设置value的序列化规则和 key的序列化规则
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.setHashKeySerializer(new StringRedisSerializer());
-        redisTemplate.setHashValueSerializer(new ProtostuffRedisSerializer<>(SerializeDeserializeWrapper.class));
-        redisTemplate.setValueSerializer(new ProtostuffRedisSerializer<>(SerializeDeserializeWrapper.class));
+        redisTemplate.setHashValueSerializer(protostuffRedisSerializer);
+        redisTemplate.setValueSerializer(protostuffRedisSerializer);
         redisTemplate.afterPropertiesSet();
         return redisTemplate;
     }

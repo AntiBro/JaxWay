@@ -39,7 +39,7 @@ spring.jaxway.filter.enable: true
 
 jaxway.host: http://127.0.0.1:8920
 jaxway.appid: test
-
+jaxway.server.id: jax-way-one
 #开启feign的GZIP压缩
 feign:
   compression:
