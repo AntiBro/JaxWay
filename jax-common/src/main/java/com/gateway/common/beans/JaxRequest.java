@@ -8,7 +8,7 @@ package com.gateway.common.beans;
 public class JaxRequest {
     private String id;
     private String url;
-    private String token;
+    private String token;// pathPattern shotted in jaxway server
 
     private long versionId;
 

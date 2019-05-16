@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gateway.jaxway.admin.dao.mapper.UserModelMapper">
+  <resultMap id="BaseResultMap" type="com.gateway.jaxway.admin.dao.model.UserModel">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="psw" jdbcType="VARCHAR" property="psw" />
+    <result column="avatar" jdbcType="VARCHAR" property="avatar" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="role_type" jdbcType="TINYINT" property="roleType" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_name, psw, avatar, email, role_type, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from User
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from User
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.gateway.jaxway.admin.dao.model.UserModel">
+    insert into User (id, user_name, psw, 
+      avatar, email, role_type, 
+      create_time, update_time)
+    values (#{id,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{psw,jdbcType=VARCHAR}, 
+      #{avatar,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{roleType,jdbcType=TINYINT}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.gateway.jaxway.admin.dao.model.UserModel">
+    insert into User
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userName != null">
+        user_name,
+      </if>
+      <if test="psw != null">
+        psw,
+      </if>
+      <if test="avatar != null">
+        avatar,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
+      <if test="roleType != null">
+        role_type,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="psw != null">
+        #{psw,jdbcType=VARCHAR},
+      </if>
+      <if test="avatar != null">
+        #{avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="roleType != null">
+        #{roleType,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.gateway.jaxway.admin.dao.model.UserModel">
+    update User
+    <set>
+      <if test="userName != null">
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="psw != null">
+        psw = #{psw,jdbcType=VARCHAR},
+      </if>
+      <if test="avatar != null">
+        avatar = #{avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="roleType != null">
+        role_type = #{roleType,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.gateway.jaxway.admin.dao.model.UserModel">
+    update User
+    set user_name = #{userName,jdbcType=VARCHAR},
+      psw = #{psw,jdbcType=VARCHAR},
+      avatar = #{avatar,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      role_type = #{roleType,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

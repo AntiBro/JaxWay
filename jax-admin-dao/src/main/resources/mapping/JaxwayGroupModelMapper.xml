@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gateway.jaxway.admin.dao.mapper.JaxwayGroupModelMapper">
+  <resultMap id="BaseResultMap" type="com.gateway.jaxway.admin.dao.model.JaxwayGroupModel">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="group_name" jdbcType="VARCHAR" property="groupName" />
+    <result column="group_despc" jdbcType="VARCHAR" property="groupDespc" />
+    <result column="jaxway_id" jdbcType="INTEGER" property="jaxwayId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, group_name, group_despc, jaxway_id, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from JaxwayGroup
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from JaxwayGroup
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.gateway.jaxway.admin.dao.model.JaxwayGroupModel">
+    insert into JaxwayGroup (id, group_name, group_despc, 
+      jaxway_id, create_time, update_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{groupName,jdbcType=VARCHAR}, #{groupDespc,jdbcType=VARCHAR}, 
+      #{jaxwayId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.gateway.jaxway.admin.dao.model.JaxwayGroupModel">
+    insert into JaxwayGroup
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="groupName != null">
+        group_name,
+      </if>
+      <if test="groupDespc != null">
+        group_despc,
+      </if>
+      <if test="jaxwayId != null">
+        jaxway_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="groupName != null">
+        #{groupName,jdbcType=VARCHAR},
+      </if>
+      <if test="groupDespc != null">
+        #{groupDespc,jdbcType=VARCHAR},
+      </if>
+      <if test="jaxwayId != null">
+        #{jaxwayId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.gateway.jaxway.admin.dao.model.JaxwayGroupModel">
+    update JaxwayGroup
+    <set>
+      <if test="groupName != null">
+        group_name = #{groupName,jdbcType=VARCHAR},
+      </if>
+      <if test="groupDespc != null">
+        group_despc = #{groupDespc,jdbcType=VARCHAR},
+      </if>
+      <if test="jaxwayId != null">
+        jaxway_id = #{jaxwayId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.gateway.jaxway.admin.dao.model.JaxwayGroupModel">
+    update JaxwayGroup
+    set group_name = #{groupName,jdbcType=VARCHAR},
+      group_despc = #{groupDespc,jdbcType=VARCHAR},
+      jaxway_id = #{jaxwayId,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

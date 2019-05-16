@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gateway.jaxway.admin.dao.mapper.JaxwayAppInfoModelMapper">
+  <resultMap id="BaseResultMap" type="com.gateway.jaxway.admin.dao.model.JaxwayAppInfoModel">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="app_name" jdbcType="VARCHAR" property="appName" />
+    <result column="app_despc" jdbcType="VARCHAR" property="appDespc" />
+    <result column="group_id" jdbcType="INTEGER" property="groupId" />
+    <result column="jaxway_server_id" jdbcType="INTEGER" property="jaxwayServerId" />
+    <result column="create_user_id" jdbcType="INTEGER" property="createUserId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, app_name, app_despc, group_id, jaxway_server_id, create_user_id, create_time, 
+    update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from JaxwayAppInfo
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from JaxwayAppInfo
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.gateway.jaxway.admin.dao.model.JaxwayAppInfoModel">
+    insert into JaxwayAppInfo (id, app_name, app_despc, 
+      group_id, jaxway_server_id, create_user_id, 
+      create_time, update_time)
+    values (#{id,jdbcType=INTEGER}, #{appName,jdbcType=VARCHAR}, #{appDespc,jdbcType=VARCHAR}, 
+      #{groupId,jdbcType=INTEGER}, #{jaxwayServerId,jdbcType=INTEGER}, #{createUserId,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.gateway.jaxway.admin.dao.model.JaxwayAppInfoModel">
+    insert into JaxwayAppInfo
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="appName != null">
+        app_name,
+      </if>
+      <if test="appDespc != null">
+        app_despc,
+      </if>
+      <if test="groupId != null">
+        group_id,
+      </if>
+      <if test="jaxwayServerId != null">
+        jaxway_server_id,
+      </if>
+      <if test="createUserId != null">
+        create_user_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="appName != null">
+        #{appName,jdbcType=VARCHAR},
+      </if>
+      <if test="appDespc != null">
+        #{appDespc,jdbcType=VARCHAR},
+      </if>
+      <if test="groupId != null">
+        #{groupId,jdbcType=INTEGER},
+      </if>
+      <if test="jaxwayServerId != null">
+        #{jaxwayServerId,jdbcType=INTEGER},
+      </if>
+      <if test="createUserId != null">
+        #{createUserId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.gateway.jaxway.admin.dao.model.JaxwayAppInfoModel">
+    update JaxwayAppInfo
+    <set>
+      <if test="appName != null">
+        app_name = #{appName,jdbcType=VARCHAR},
+      </if>
+      <if test="appDespc != null">
+        app_despc = #{appDespc,jdbcType=VARCHAR},
+      </if>
+      <if test="groupId != null">
+        group_id = #{groupId,jdbcType=INTEGER},
+      </if>
+      <if test="jaxwayServerId != null">
+        jaxway_server_id = #{jaxwayServerId,jdbcType=INTEGER},
+      </if>
+      <if test="createUserId != null">
+        create_user_id = #{createUserId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.gateway.jaxway.admin.dao.model.JaxwayAppInfoModel">
+    update JaxwayAppInfo
+    set app_name = #{appName,jdbcType=VARCHAR},
+      app_despc = #{appDespc,jdbcType=VARCHAR},
+      group_id = #{groupId,jdbcType=INTEGER},
+      jaxway_server_id = #{jaxwayServerId,jdbcType=INTEGER},
+      create_user_id = #{createUserId,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

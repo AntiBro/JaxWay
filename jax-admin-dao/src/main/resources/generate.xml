@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <!-- 数据库驱动包位置 -->
+    <classPathEntry
+            location="C:\Users\huaili\.m2\repository\mysql\mysql-connector-java\8.0.15\mysql-connector-java-8.0.15.jar" />
+    <context id="context1">
+        <commentGenerator>
+            <property name="suppressDate" value="true"/>
+            <!-- 是否去除自动生成的注释 true：是 ： false:否 -->
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+        <jdbcConnection connectionURL="jdbc:mysql://10.16.57.182:3316/JaxwayDB" driverClass="com.mysql.jdbc.Driver" password="111111" userId="root" />
+        <!-- 模型所在包名 -->
+        <javaModelGenerator targetPackage="com.gateway.jaxway.admin.dao.model"  targetProject="src/main/java"/>
+        <!-- 生成的映射文件报名和位置 -->
+        <sqlMapGenerator targetPackage="mapping"  targetProject="src/main/resources" />
+        <!-- Dao所在包名 -->
+        <javaClientGenerator targetPackage="com.gateway.jaxway.admin.dao.mapper" targetProject="src/main/java"  type="XMLMAPPER"  />
+
+
+        <table schema="JaxwayDB" tableName="User"  domainObjectName="UserModel" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+             <columnOverride column="role_type" property="roleType"  javaType="java.lang.Integer" jdbcType="TINYINT" />
+        </table>
+
+        <!--<table schema="JaxwayDB" tableName="UserRoles"  domainObjectName="UserRolesModel" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
+            <!--<columnOverride column="role_type" property="roleType"  javaType="java.lang.Integer" jdbcType="TINYINT" />-->
+        <!--</table>-->
+
+        <!--<table schema="JaxwayDB" tableName="GroupUserLink"  domainObjectName="GroupUserLinkModel" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
+
+        <!--</table>-->
+
+        <!--<table schema="JaxwayDB" tableName="JaxwayAppInfo"  domainObjectName="JaxwayAppInfoModel" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
+
+        <!--</table>-->
+
+
+        <!--<table schema="JaxwayDB" tableName="JaxwayGroup"  domainObjectName="JaxwayGroupModel" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
+
+        <!--</table>-->
+
+        <!--<table schema="JaxwayDB" tableName="JaxwayRoute"  domainObjectName="JaxwayRouteModel" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
+            <!--<columnOverride column="op_type" property="opType"  javaType="java.lang.Integer" jdbcType="TINYINT" />-->
+
+        <!--</table>-->
+
+
+        <!--<table schema="JaxwayDB" tableName="JaxwayAuthority"  domainObjectName="JaxwayAuthorityModel" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
+            <!--<columnOverride column="op_type" property="opType"  javaType="java.lang.Integer" jdbcType="TINYINT" />-->
+
+        <!--</table>-->
+
+        <!--<table schema="JaxwayDB" tableName="JaxwayServer"  domainObjectName="JaxwayServerModel" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
+
+        <!--</table>-->
+        <!--<table schema="JaxwayDB" tableName="JaxwayWhiteList"  domainObjectName="JaxwayWhiteListModel" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
+            <!--<columnOverride column="op_type" property="opType"  javaType="java.lang.Integer" jdbcType="TINYINT" />-->
+
+        <!--</table>-->
+
+    </context>
+</generatorConfiguration>

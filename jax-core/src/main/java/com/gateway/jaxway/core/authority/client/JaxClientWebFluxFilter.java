@@ -56,8 +56,7 @@ public class JaxClientWebFluxFilter implements WebFilter {
             e.printStackTrace();
         }
         log.log(Log.LogType.WARN,"found illegal webflux request ip="+request.getRemoteAddress()+" uri="+request.getURI().getPath());
-
-        DataBuffer wrap = serverWebExchange.getResponse().bufferFactory().wrap(JSON.toJSONString(ResultVO.NOT_AUTHORIZED_REQUEST).getBytes());
+        DataBuffer wrap = serverWebExchange.getResponse().bufferFactory().wrap(JSON.toJSONString(ResultVO.notAuthoried("jaxway client found illegal webflux")).getBytes());
         return  response.writeWith(Flux.just(wrap));
     }
 }

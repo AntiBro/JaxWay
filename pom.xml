@@ -10,6 +10,7 @@
         <module>jax-server</module>
         <module>jax-test</module>
         <module>jax-common</module>
+        <module>jax-admin-dao</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

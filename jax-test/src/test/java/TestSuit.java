@@ -16,7 +16,13 @@ import reactor.netty.http.client.HttpClientResponse;
 import reactor.netty.resources.ConnectionProvider;
 import reactor.netty.tcp.ProxyProvider;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.channels.FileChannel;
+import java.nio.channels.SocketChannel;
 import java.security.cert.X509Certificate;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.springframework.cloud.gateway.config.HttpClientProperties.Pool.PoolType.DISABLED;
 import static org.springframework.cloud.gateway.config.HttpClientProperties.Pool.PoolType.FIXED;
@@ -30,9 +36,19 @@ import static org.springframework.cloud.gateway.config.HttpClientProperties.Pool
 public class TestSuit {
 
     String url = "http://m.sohu.com/limit";
-    int n = 300;
+    int n = 10;
     //@Test
     public void testTcp(){
+        try {
+            SocketChannel sc = SocketChannel.open();
+            FileChannel fc = new FileInputStream("").getChannel();
+            fc.tryLock();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 //        String str = HttpClient.create().baseUrl("http://www.baidu.com")// Prepares an HTTP client ready for configuration
 //               // .port(8920)  // Obtains the server's port and provides it as a port to which this
 //                // client should connect
@@ -157,8 +173,8 @@ public class TestSuit {
         long start = System.currentTimeMillis();
         for(int i=0;i<n;i++){
             try {
-                template.getForEntity("http://www.baidu.com",String.class);
-                //System.out.println(template.getForEntity(url,String.class).getBody());
+               // template.getForEntity(url,String.class);
+                System.out.println(template.getForEntity(url,String.class).getBody());
             }catch (Exception e){
                 e.printStackTrace();
                 System.err.println("i="+i);
@@ -255,11 +271,12 @@ public class TestSuit {
 
 
         WebClient webClient = WebClient.create();
-        Mono<String> mono = webClient.get().uri("https://www.baidu.com").retrieve().bodyToMono(String.class);
+        Mono<String> mono = webClient.get().uri(url).retrieve().bodyToMono(String.class);
         mono.subscribe(System.out::println);
 
         long start = System.currentTimeMillis();
         WebClient client = WebClient.create();
+        AtomicInteger sum = new AtomicInteger();
         for(int i=0;i<n;i++) {
 
             Mono<String> body = client.get()
@@ -270,9 +287,13 @@ public class TestSuit {
 
             body.subscribe(s->{
                 System.out.println("收到："+s);
+                sum.incrementAndGet();
             });
 
            // body.block();
+
+        }
+        while(sum.get()<n){
 
         }
         long end = System.currentTimeMillis();
