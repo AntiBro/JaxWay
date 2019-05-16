@@ -14,6 +14,15 @@
   <sql id="Base_Column_List">
     id, user_name, psw, avatar, email, role_type, create_time, update_time
   </sql>
+
+
+  <select id="selectUserByNameAndPsw" parameterType="com.gateway.jaxway.admin.dao.model.UserModel" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from User
+    where user_name = #{userName,jdbcType=VARCHAR}  and  psw= #{psw,jdbcType=VARCHAR}
+  </select>
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
@@ -26,11 +35,9 @@
   </delete>
   <insert id="insert" parameterType="com.gateway.jaxway.admin.dao.model.UserModel">
     insert into User (id, user_name, psw, 
-      avatar, email, role_type, 
-      create_time, update_time)
+      avatar, email, role_type)
     values (#{id,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{psw,jdbcType=VARCHAR}, 
-      #{avatar,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{roleType,jdbcType=TINYINT}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+      #{avatar,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{roleType,jdbcType=TINYINT})
   </insert>
   <insert id="insertSelective" parameterType="com.gateway.jaxway.admin.dao.model.UserModel">
     insert into User

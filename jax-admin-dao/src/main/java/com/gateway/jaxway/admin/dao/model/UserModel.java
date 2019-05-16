@@ -1,12 +1,16 @@
 package com.gateway.jaxway.admin.dao.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Date;
 
 public class UserModel {
+    @JsonIgnore
     private Integer id;
 
     private String userName;
 
+    @JsonIgnore
     private String psw;
 
     private String avatar;

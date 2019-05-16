@@ -51,10 +51,21 @@ feign:
   httpclient:
     enabled: true
 
+mybatis:
+  type-aliases-package: com.gateway.jaxway.admin.dao.model
+  mapper-locations: classpath*:mapping/*.xml
+  configuration:
+    cache-enabled: true
 
 ---
 spring:
   profiles: dev
+  datasource:
+    url: jdbc:mysql://10.16.57.182:3316/JaxwayDB?allowMultiQueries=true
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 111111
   redis:
     #password: "93ae8276270448d688e4a427cf765cb5"
     lettuce:

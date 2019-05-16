@@ -11,6 +11,8 @@ public interface UserModelMapper {
 
     UserModel selectByPrimaryKey(Integer id);
 
+    UserModel selectUserByNameAndPsw(UserModel record);
+
     int updateByPrimaryKeySelective(UserModel record);
 
     int updateByPrimaryKey(UserModel record);
