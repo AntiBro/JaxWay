@@ -18,6 +18,10 @@ public enum FiltersEnum {
         this.descriptions = descriptions;
     }
 
+    public String getFilterName(){
+        return this.filterName;
+    }
+
     public static String defaultStripPrefixValueOf(){
         return STRIP_PREFIX.filterName+"="+STRIP_PREFIX.demoValue;
     }

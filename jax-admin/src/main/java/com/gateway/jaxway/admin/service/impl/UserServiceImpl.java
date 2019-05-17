@@ -4,8 +4,10 @@ import com.gateway.common.JaxwayCoder;
 import com.gateway.jaxway.admin.dao.mapper.UserModelMapper;
 import com.gateway.jaxway.admin.dao.model.UserModel;
 import com.gateway.jaxway.admin.service.UserService;
+import com.gateway.jaxway.admin.vo.UserInfoVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.UnsupportedEncodingException;
 
@@ -39,5 +41,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean checkUserAuthority(String username, String path) {
         return false;
+    }
+
+
+    @Transactional
+    @Override
+    public void insertUser(UserInfoVO userInfoVO) {
+        UserModel userModel = userInfoVO.transferToCommonUserModel();
+        try {
+           // userModel.setPsw(jaxwayCoder.encode(userModel.getUserName()+jaxwayCoder.decode(userModel.getPsw())));
+            userModelMapper.insert(userModel);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

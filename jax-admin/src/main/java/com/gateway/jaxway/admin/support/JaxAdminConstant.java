@@ -16,4 +16,7 @@ public class JaxAdminConstant {
     public static final String SERVER_WHITE_LIST_REDIS_KEY = "jax-way-server-white-list:";
 
     public static final String SERVER_ROUTES_INFO_REDIS_KEY = "jax-way-server-route-info:";
+
+
+    public static final String SESSION_USER_ID_KEY = "jax-admin-user-id";
 }

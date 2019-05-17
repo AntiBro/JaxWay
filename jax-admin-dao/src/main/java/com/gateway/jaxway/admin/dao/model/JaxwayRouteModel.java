@@ -5,6 +5,8 @@ import java.util.Date;
 public class JaxwayRouteModel {
     private Integer id;
 
+    private String routeId;
+
     private Integer jaxwayServerId;
 
     private String routeContent;
@@ -26,6 +28,14 @@ public class JaxwayRouteModel {
     private Date createTime;
 
     private Date updateTime;
+
+    public String getRouteId() {
+        return routeId;
+    }
+
+    public void setRouteId(String routeId) {
+        this.routeId = routeId;
+    }
 
     public Integer getId() {
         return id;

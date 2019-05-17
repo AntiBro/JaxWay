@@ -3,6 +3,7 @@
 <mapper namespace="com.gateway.jaxway.admin.dao.mapper.JaxwayRouteModelMapper">
   <resultMap id="BaseResultMap" type="com.gateway.jaxway.admin.dao.model.JaxwayRouteModel">
     <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="route_id" jdbcType="VARCHAR" property="routeId" />
     <result column="jaxway_server_id" jdbcType="INTEGER" property="jaxwayServerId" />
     <result column="route_content" jdbcType="VARCHAR" property="routeContent" />
     <result column="predicate_type" jdbcType="VARCHAR" property="predicateType" />
@@ -16,9 +17,16 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, jaxway_server_id, route_content, predicate_type, predicete_value, filter_type, 
+    id, jaxway_server_id,route_id, route_content, predicate_type, predicete_value, filter_type,
     filter_value, url, op_type, create_user_id, create_time, update_time
   </sql>
+
+  <select id="selecRoutesInfoByJaxServerId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from JaxwayRoute
+    where jaxway_server_id = #{jaxwayServerId,jdbcType=VARCHAR}
+  </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
@@ -30,15 +38,15 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.gateway.jaxway.admin.dao.model.JaxwayRouteModel">
-    insert into JaxwayRoute (id, jaxway_server_id, route_content, 
+    insert into JaxwayRoute (id, jaxway_server_id,route_id ,route_content,
       predicate_type, predicete_value, filter_type, 
       filter_value, url, op_type, 
-      create_user_id, create_time, update_time
+      create_user_id
       )
-    values (#{id,jdbcType=INTEGER}, #{jaxwayServerId,jdbcType=INTEGER}, #{routeContent,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=INTEGER}, #{jaxwayServerId,jdbcType=INTEGER},#{routeId,jdbcType=VARCHAR}, #{routeContent,jdbcType=VARCHAR},
       #{predicateType,jdbcType=VARCHAR}, #{prediceteValue,jdbcType=VARCHAR}, #{filterType,jdbcType=VARCHAR}, 
       #{filterValue,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, #{opType,jdbcType=TINYINT}, 
-      #{createUserId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      #{createUserId,jdbcType=INTEGER}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.gateway.jaxway.admin.dao.model.JaxwayRouteModel">

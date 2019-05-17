@@ -1,6 +1,7 @@
 package com.gateway.jaxway.admin.service;
 
 import com.gateway.jaxway.admin.dao.model.UserModel;
+import com.gateway.jaxway.admin.vo.UserInfoVO;
 
 /**
  * @Author huaili
@@ -12,5 +13,7 @@ public interface UserService {
     UserModel checkUser(String username, String pwd);
 
     boolean checkUserAuthority(String username,String path);
+
+    void insertUser(UserInfoVO userInfoVO);
 
 }

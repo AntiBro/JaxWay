@@ -1,6 +1,7 @@
 package com.gateway.jaxway.admin.dao.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.core.style.ToStringCreator;
 
 import java.util.Date;
 
@@ -85,5 +86,16 @@ public class UserModel {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+
+    @Override
+    public String toString() {
+        return new ToStringCreator(this)
+                .append("username",getUserName())
+                .append("psw",getPsw())
+                .append("email",getEmail())
+                .append("roleType",getRoleType())
+                .toString();
     }
 }
