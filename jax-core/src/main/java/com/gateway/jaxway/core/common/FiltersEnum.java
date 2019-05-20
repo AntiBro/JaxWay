@@ -25,4 +25,21 @@ public enum FiltersEnum {
     public static String defaultStripPrefixValueOf(){
         return STRIP_PREFIX.filterName+"="+STRIP_PREFIX.demoValue;
     }
+
+
+    public String getDemoValue() {
+        return demoValue;
+    }
+
+    public void setDemoValue(String demoValue) {
+        this.demoValue = demoValue;
+    }
+
+    public String getDescriptions() {
+        return descriptions;
+    }
+
+    public void setDescriptions(String descriptions) {
+        this.descriptions = descriptions;
+    }
 }

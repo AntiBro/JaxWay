@@ -59,6 +59,22 @@ public enum PredicatesEnum {
         this.descriptions = descriptions;
     }
 
+    public String getDemoValue() {
+        return demoValue;
+    }
+
+    public void setDemoValue(String demoValue) {
+        this.demoValue = demoValue;
+    }
+
+    public String getDescriptions() {
+        return descriptions;
+    }
+
+    public void setDescriptions(String descriptions) {
+        this.descriptions = descriptions;
+    }
+
     public static String getPathPredicateValue(String path){
         return PATH.predicateFactoryName+"="+path;
     }
@@ -66,8 +82,5 @@ public enum PredicatesEnum {
     public String FactoryName(){
         return this.predicateFactoryName;
     }
-
-
-
 
 }

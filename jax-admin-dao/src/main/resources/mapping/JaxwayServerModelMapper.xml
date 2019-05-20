@@ -12,6 +12,16 @@
   <sql id="Base_Column_List">
     id, jaxway_name, jaxway_despc, create_user_id, create_time, update_time
   </sql>
+
+  <!--通过用户Id来 查询对应的 JaxwayServer的附属关系 -->
+  <select id="selectJaxwayServersByUserId"  parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    SELECT js.* FROM GroupUserLink gul
+LEFT JOIN JaxwayGroup jg
+ ON gul.`group_id` = jg.`id`
+LEFT JOIN JaxwayServer js
+ ON jg.`jaxway_id` = js.`id`
+ WHERE gul.`user_id` =#{id,jdbcType=INTEGER}
+  </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />

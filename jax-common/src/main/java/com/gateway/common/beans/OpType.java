@@ -6,12 +6,12 @@ package com.gateway.common.beans;
  * @Description OpType
  **/
 public enum OpType {
-    NONE,
-    ADD_APP,
-    DELETE_APP,
-    ADD_WHITE_SERVER_APP,
-    DELETE_WHITE_SERVER_APP,
-    ADD_ROUTE,
-    DELETE_ROUTE,
-    UPDATE_ROUTE;
+    NONE,// 0
+    ADD_APP,// 1
+    DELETE_APP,// 2
+    ADD_WHITE_SERVER_APP, // 3
+    DELETE_WHITE_SERVER_APP,// 4
+    ADD_ROUTE,// 5
+    DELETE_ROUTE,// 6
+    UPDATE_ROUTE;// 7
 }
