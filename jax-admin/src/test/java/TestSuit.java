@@ -62,7 +62,7 @@ public class TestSuit {
         jaxwayRouteModel.setJaxwayServerId(1);
         jaxwayRouteModel.setUrl("http://127.0.0.1:8720");
         jaxwayRouteModel.setPredicateType(PredicatesEnum.PATH.FactoryName());
-        jaxwayRouteModel.setPrediceteValue("/testflux,/testflux/**");
+        jaxwayRouteModel.setPredicateValue("/testflux,/testflux/**");
 
         jaxwayRouteModel.setFilterType(FiltersEnum.STRIP_PREFIX.getFilterName());
         jaxwayRouteModel.setFilterValue("1");

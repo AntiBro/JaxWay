@@ -39,4 +39,18 @@ public class RouteUtil {
     public static RouteDefinition generatePathRouteDefition(String url,String path) throws URISyntaxException {
         return generatePathRouteDefition(url,path,null,null);
     }
+
+
+    public static RouteDefinition generateRouteDefition(String routeId,String url,String predicateValue,String filterValue) throws URISyntaxException {
+        RouteDefinition rdf = new RouteDefinition();
+        PredicateDefinition pd = new PredicateDefinition(predicateValue);
+        FilterDefinition filter = new FilterDefinition(filterValue);
+
+        rdf.setId(routeId);
+        rdf.setUri(new URI(url));
+        rdf.setPredicates(new ArrayList<>(Arrays.asList(pd)));
+        rdf.setFilters(new ArrayList<>(Arrays.asList(filter)));
+
+        return rdf;
+    }
 }

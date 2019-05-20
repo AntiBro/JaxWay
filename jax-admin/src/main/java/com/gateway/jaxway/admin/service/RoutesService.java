@@ -2,6 +2,7 @@ package com.gateway.jaxway.admin.service;
 
 import com.gateway.jaxway.admin.dao.model.JaxwayRouteModel;
 
+import java.net.URISyntaxException;
 import java.util.List;
 
 /**
@@ -12,4 +13,6 @@ import java.util.List;
 public interface RoutesService {
 
     List<JaxwayRouteModel> getTotalRoutesInfo(String jaxServerId);
+
+    boolean insertRouteDefinition(JaxwayRouteModel jaxwayRouteModel) throws URISyntaxException;
 }

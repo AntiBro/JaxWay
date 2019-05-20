@@ -4,11 +4,14 @@ import com.gateway.common.beans.ResultVO;
 import com.gateway.jaxway.admin.aspcet.PreAcquireAdminRole;
 import com.gateway.jaxway.admin.aspcet.PreCheckJaxwayOwnAuthority;
 import com.gateway.jaxway.admin.dao.model.JaxwayRouteModel;
+import com.gateway.jaxway.admin.service.RoutesService;
 import com.gateway.jaxway.admin.service.UserService;
 import com.gateway.jaxway.admin.vo.UserInfoVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ServerWebExchange;
+
+import java.net.URISyntaxException;
 
 /**
  * @Author huaili
@@ -23,6 +26,8 @@ public class AdminController extends BaseController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private RoutesService routesService;
 
 
     @PreAcquireAdminRole
@@ -35,7 +40,8 @@ public class AdminController extends BaseController {
 
     @PreCheckJaxwayOwnAuthority
     @PostMapping("/insertRouteDefinition")
-    public ResultVO insertRouteDefinition(@RequestBody JaxwayRouteModel jaxwayRouteModel,ServerWebExchange exchange){
+    public ResultVO insertRouteDefinition(@RequestBody JaxwayRouteModel jaxwayRouteModel,ServerWebExchange exchange) throws URISyntaxException {
+        routesService.insertRouteDefinition(jaxwayRouteModel);
         return ResultVO.success("插入成功");
     }
 

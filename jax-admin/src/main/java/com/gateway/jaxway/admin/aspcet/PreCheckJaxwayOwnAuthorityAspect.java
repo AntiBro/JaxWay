@@ -4,14 +4,10 @@ import com.gateway.common.beans.ResultVO;
 import com.gateway.jaxway.admin.dao.mapper.JaxwayServerModelMapper;
 import com.gateway.jaxway.admin.dao.model.JaxwayRouteModel;
 import com.gateway.jaxway.admin.dao.model.JaxwayServerModel;
-import com.gateway.jaxway.admin.dao.model.UserModel;
-import com.gateway.jaxway.admin.dao.support.RoleType;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +28,6 @@ import static com.gateway.jaxway.admin.support.JaxAdminConstant.SESSION_USER_ID_
 @Aspect
 @Component
 public class PreCheckJaxwayOwnAuthorityAspect {
-    public static String JAX_WAY_SERVER_ID_KEY = "jaxwayServerId";
 
     @Autowired
     private JaxwayServerModelMapper jaxwayServerModelMapper;
@@ -47,10 +42,11 @@ public class PreCheckJaxwayOwnAuthorityAspect {
             Logger logger = LoggerFactory.getLogger(pjp.getTarget().getClass());
             Object[] args = pjp.getArgs();
             Integer jaxwayServerId = new Integer(0);
+            JaxwayRouteModel jaxwayRouteModel = new JaxwayRouteModel();
             for(Object object:args){
 
                 if (object instanceof JaxwayRouteModel) {
-                    JaxwayRouteModel jaxwayRouteModel = (JaxwayRouteModel)object;
+                    jaxwayRouteModel = (JaxwayRouteModel)object;
                     jaxwayServerId = jaxwayRouteModel.getJaxwayServerId();
                     if(jaxwayServerId == null){
                         logger.warn("PreCheckJaxwayOwnAuthorityAspect jaxServerId in Aop cannot be null");
@@ -70,6 +66,8 @@ public class PreCheckJaxwayOwnAuthorityAspect {
                     if(!CollectionUtils.isEmpty(jaxwayOwnLists)){
                         for(JaxwayServerModel jaxwayServerModel:jaxwayOwnLists){
                             if(jaxwayServerModel.getId().equals(jaxwayServerId)){
+                                // fill createUserId
+                                jaxwayRouteModel.setCreateUserId(userId);
                                 return pjp.proceed();
                             }
                         }
@@ -77,7 +75,7 @@ public class PreCheckJaxwayOwnAuthorityAspect {
                 }
             }
             logger.warn("PreCheckJaxwayOwnAuthorityAspect find ilegal request");
-            return ResultVO.notAuthoried("无管理员权限");
+            return ResultVO.notAuthoried("当前Jaxway Server 该用户无权限");
         } catch (Throwable throwable) {
             // throwable.printStackTrace();
             throw throwable;

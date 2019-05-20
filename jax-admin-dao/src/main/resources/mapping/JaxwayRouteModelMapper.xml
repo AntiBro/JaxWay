@@ -7,7 +7,7 @@
     <result column="jaxway_server_id" jdbcType="INTEGER" property="jaxwayServerId" />
     <result column="route_content" jdbcType="VARCHAR" property="routeContent" />
     <result column="predicate_type" jdbcType="VARCHAR" property="predicateType" />
-    <result column="predicete_value" jdbcType="VARCHAR" property="prediceteValue" />
+    <result column="predicate_value" jdbcType="VARCHAR" property="predicateValue" />
     <result column="filter_type" jdbcType="VARCHAR" property="filterType" />
     <result column="filter_value" jdbcType="VARCHAR" property="filterValue" />
     <result column="url" jdbcType="VARCHAR" property="url" />
@@ -17,7 +17,7 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, jaxway_server_id,route_id, route_content, predicate_type, predicete_value, filter_type,
+    id, jaxway_server_id,route_id, route_content, predicate_type, predicate_value, filter_type,
     filter_value, url, op_type, create_user_id, create_time, update_time
   </sql>
 
@@ -38,13 +38,13 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.gateway.jaxway.admin.dao.model.JaxwayRouteModel">
-    insert into JaxwayRoute (id, jaxway_server_id,route_id ,route_content,
-      predicate_type, predicete_value, filter_type, 
+    insert into JaxwayRoute (jaxway_server_id,route_id ,route_content,
+      predicate_type, predicate_value, filter_type,
       filter_value, url, op_type, 
       create_user_id
       )
-    values (#{id,jdbcType=INTEGER}, #{jaxwayServerId,jdbcType=INTEGER},#{routeId,jdbcType=VARCHAR}, #{routeContent,jdbcType=VARCHAR},
-      #{predicateType,jdbcType=VARCHAR}, #{prediceteValue,jdbcType=VARCHAR}, #{filterType,jdbcType=VARCHAR}, 
+    values ( #{jaxwayServerId,jdbcType=INTEGER},#{routeId,jdbcType=VARCHAR}, #{routeContent,jdbcType=VARCHAR},
+      #{predicateType,jdbcType=VARCHAR}, #{predicateValue,jdbcType=VARCHAR}, #{filterType,jdbcType=VARCHAR},
       #{filterValue,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, #{opType,jdbcType=TINYINT}, 
       #{createUserId,jdbcType=INTEGER}
       )
@@ -64,8 +64,8 @@
       <if test="predicateType != null">
         predicate_type,
       </if>
-      <if test="prediceteValue != null">
-        predicete_value,
+      <if test="predicateValue != null">
+        predicate_value,
       </if>
       <if test="filterType != null">
         filter_type,
@@ -102,8 +102,8 @@
       <if test="predicateType != null">
         #{predicateType,jdbcType=VARCHAR},
       </if>
-      <if test="prediceteValue != null">
-        #{prediceteValue,jdbcType=VARCHAR},
+      <if test="predicateValue != null">
+        #{predicateValue,jdbcType=VARCHAR},
       </if>
       <if test="filterType != null">
         #{filterType,jdbcType=VARCHAR},
@@ -140,8 +140,8 @@
       <if test="predicateType != null">
         predicate_type = #{predicateType,jdbcType=VARCHAR},
       </if>
-      <if test="prediceteValue != null">
-        predicete_value = #{prediceteValue,jdbcType=VARCHAR},
+      <if test="predicateValue != null">
+        predicate_value = #{predicateValue,jdbcType=VARCHAR},
       </if>
       <if test="filterType != null">
         filter_type = #{filterType,jdbcType=VARCHAR},
@@ -172,7 +172,7 @@
     set jaxway_server_id = #{jaxwayServerId,jdbcType=INTEGER},
       route_content = #{routeContent,jdbcType=VARCHAR},
       predicate_type = #{predicateType,jdbcType=VARCHAR},
-      predicete_value = #{prediceteValue,jdbcType=VARCHAR},
+      predicate_value = #{predicateValue,jdbcType=VARCHAR},
       filter_type = #{filterType,jdbcType=VARCHAR},
       filter_value = #{filterValue,jdbcType=VARCHAR},
       url = #{url,jdbcType=VARCHAR},

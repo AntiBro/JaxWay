@@ -13,7 +13,7 @@ public class JaxwayRouteModel {
 
     private String predicateType;
 
-    private String prediceteValue;
+    private String predicateValue;
 
     private String filterType;
 
@@ -69,12 +69,12 @@ public class JaxwayRouteModel {
         this.predicateType = predicateType;
     }
 
-    public String getPrediceteValue() {
-        return prediceteValue;
+    public String getPredicateValue() {
+        return predicateValue;
     }
 
-    public void setPrediceteValue(String prediceteValue) {
-        this.prediceteValue = prediceteValue;
+    public void setPredicateValue(String predicateValue) {
+        this.predicateValue = predicateValue;
     }
 
     public String getFilterType() {
