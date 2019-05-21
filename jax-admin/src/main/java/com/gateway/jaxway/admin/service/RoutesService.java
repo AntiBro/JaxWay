@@ -12,7 +12,12 @@ import java.util.List;
  **/
 public interface RoutesService {
 
-    List<JaxwayRouteModel> getTotalRoutesInfo(String jaxServerId);
+    List<JaxwayRouteModel> getTotalRoutesInfo(Integer jaxServerId);
 
     boolean insertRouteDefinition(JaxwayRouteModel jaxwayRouteModel) throws URISyntaxException;
+
+
+    boolean insertDeleRouteDefinition(JaxwayRouteModel jaxwayRouteModel) throws URISyntaxException;
+
+
 }

@@ -20,13 +20,22 @@
     id, jaxway_server_id,route_id, route_content, predicate_type, predicate_value, filter_type,
     filter_value, url, op_type, create_user_id, create_time, update_time
   </sql>
-
-  <select id="selecRoutesInfoByJaxServerId" parameterType="java.lang.String" resultMap="BaseResultMap">
+ <!-- 查询Jaxway Server 对应的 Route信息 -->
+  <select id="selecRoutesInfoByJaxServerId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from JaxwayRoute
-    where jaxway_server_id = #{jaxwayServerId,jdbcType=VARCHAR}
+    where jaxway_server_id = #{jaxwayServerId,jdbcType=INTEGER}
   </select>
+
+  <!-- 查询Jaxway Server 对应的 Route信息 -->
+  <select id="selecTotalRoutesCountByJaxServerId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select
+    count(id)
+    from JaxwayRoute
+    where jaxway_server_id = #{jaxwayServerId,jdbcType=INTEGER}
+  </select>
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />

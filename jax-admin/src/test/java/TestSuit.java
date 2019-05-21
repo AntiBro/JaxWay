@@ -13,20 +13,26 @@ import com.gateway.jaxway.core.common.FiltersEnum;
 import com.gateway.jaxway.core.common.PredicatesEnum;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
+import java.util.Stack;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @Author huaili
  * @Date 2019/5/16 17:29
  * @Description SpringBootTest
  **/
-@SpringBootTest(classes = JaxAdmin.class)
-@RunWith(SpringRunner.class)
+//@SpringBootTest(classes = JaxAdmin.class)
+//@RunWith(SpringRunner.class)
+@RunWith(JUnit4.class)
 public class TestSuit {
 
     @Autowired
@@ -53,7 +59,7 @@ public class TestSuit {
     }
 
 
-    @Test
+   // @Test
     public void insertRoute1() throws URISyntaxException {
         JaxwayRouteModel jaxwayRouteModel = new JaxwayRouteModel();
         RouteDefinition routeDefinition = RouteUtil.generatePathRouteDefition("http://127.0.0.1:8720","/testflux,/testflux/**");
@@ -72,5 +78,39 @@ public class TestSuit {
         jaxwayRouteModel.setCreateUserId(1);
         jaxwayRouteModel.setRouteContent(JSON.toJSONString(routeDefinition));
         jaxwayRouteModelMapper.insert(jaxwayRouteModel);
+    }
+
+
+    public int longestValidParentheses(String s) {
+        int ans = 0;
+        int n = s.length();
+        Stack st = new Stack();
+        int index = 0;
+        for (int i = 0; i <n ; i++) {
+            if (s.charAt(i) == '(')
+                st.push(i);
+            else if (st.size() == 0){
+                index = i + 1;
+                continue;
+            }else {
+                st.pop();
+                if (st.empty()){
+                    ans = Math.max(ans,i - index + 1);
+                }else {
+                    ans = Math.max(ans,i - (int)st.peek());
+                }
+            }
+        }
+
+
+        return ans;
+    }
+
+    @Test
+    public void testJunit(){
+        System.out.println(longestValidParentheses(")()())"));
+
+        ThreadPoolExecutor poolExecutor = new ThreadPoolExecutor(3,3,100, TimeUnit.MILLISECONDS,new LinkedBlockingDeque<>());
+        //poolExecutor.submit(null);
     }
 }

@@ -1,5 +1,6 @@
 package com.gateway.jaxway.admin.controller;
 
+import com.gateway.common.beans.OpType;
 import com.gateway.common.beans.ResultVO;
 import com.gateway.jaxway.admin.aspcet.PreAcquireAdminRole;
 import com.gateway.jaxway.admin.aspcet.PreCheckJaxwayOwnAuthority;
@@ -43,6 +44,15 @@ public class AdminController extends BaseController {
     public ResultVO insertRouteDefinition(@RequestBody JaxwayRouteModel jaxwayRouteModel,ServerWebExchange exchange) throws URISyntaxException {
         routesService.insertRouteDefinition(jaxwayRouteModel);
         return ResultVO.success("插入成功");
+    }
+
+
+    @PreCheckJaxwayOwnAuthority
+    @PostMapping("/removeRouteDefinition")
+    public ResultVO removeRouteDefinition(@RequestBody JaxwayRouteModel jaxwayRouteModel,ServerWebExchange exchange) throws URISyntaxException {
+        jaxwayRouteModel.setOpType(OpType.DELETE_ROUTE.ordinal());
+        routesService.insertDeleRouteDefinition(jaxwayRouteModel);
+        return ResultVO.success("删除成功");
     }
 
 }

@@ -21,11 +21,13 @@ public class RouteUtil {
 
     public static RouteDefinition generatePathRouteDefition(String url, String path, String Id, Integer order) throws URISyntaxException {
         RouteDefinition rdf = new RouteDefinition();
+
         PredicateDefinition pd = new PredicateDefinition(PredicatesEnum.getPathPredicateValue(path));
-        rdf.setPredicates(new ArrayList<>(Arrays.asList(pd)));
         FilterDefinition filter = new FilterDefinition(FiltersEnum.defaultStripPrefixValueOf());
+
         rdf.setFilters(new ArrayList<>(Arrays.asList(filter)));
         rdf.setUri(new URI(url));
+        rdf.setPredicates(new ArrayList<>(Arrays.asList(pd)));
 
         if(!StringUtils.isEmpty(Id))
             rdf.setId(Id);
@@ -46,7 +48,8 @@ public class RouteUtil {
         PredicateDefinition pd = new PredicateDefinition(predicateValue);
         FilterDefinition filter = new FilterDefinition(filterValue);
 
-        rdf.setId(routeId);
+        if(!StringUtils.isEmpty(routeId))
+            rdf.setId(routeId);
         rdf.setUri(new URI(url));
         rdf.setPredicates(new ArrayList<>(Arrays.asList(pd)));
         rdf.setFilters(new ArrayList<>(Arrays.asList(filter)));

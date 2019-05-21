@@ -1,5 +1,7 @@
 package com.gateway.jaxway.admin.dao.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class JaxwayRouteModel {
@@ -24,9 +26,9 @@ public class JaxwayRouteModel {
     private Integer opType;
 
     private Integer createUserId;
-
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT-5")
     private Date createTime;
-
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT-5")
     private Date updateTime;
 
     public String getRouteId() {

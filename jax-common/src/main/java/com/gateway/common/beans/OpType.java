@@ -14,4 +14,13 @@ public enum OpType {
     ADD_ROUTE,// 5
     DELETE_ROUTE,// 6
     UPDATE_ROUTE;// 7
+
+    public static OpType valueOf(int val){
+        for(OpType opType:OpType.values()){
+            if(opType.ordinal() == val){
+                return opType;
+            }
+        }
+        return NONE;
+    }
 }

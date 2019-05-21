@@ -1,10 +1,16 @@
 package com.gateway.jaxway.admin.controller;
 
 import com.gateway.common.beans.ResultVO;
+import com.gateway.jaxway.admin.service.RoutesService;
+import com.gateway.jaxway.admin.service.UserService;
 import com.gateway.jaxway.admin.vo.GatewayVO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ServerWebExchange;
+
+import static com.gateway.jaxway.admin.support.JaxAdminConstant.SESSION_USER_ID_KEY;
 
 /**
  * @Author huaili
@@ -16,7 +22,11 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin
 public class SupportController extends BaseController {
 
+    @Autowired
+    private UserService userService;
 
+    @Autowired
+    private RoutesService routesService;
 
     @RequestMapping("/getPredicatesInfo")
     public ResultVO getPredicatesFactoryInfos(){
@@ -28,4 +38,30 @@ public class SupportController extends BaseController {
     public ResultVO getFilterInfos(){
         return ResultVO.success(GatewayVO.getAllFilterInfo());
     }
+
+
+    @RequestMapping("/getOwnJaxwayServers")
+    public ResultVO getOwnJaxwayServers(ServerWebExchange exchange){
+        Integer userId = exchange.getSession().block().getAttribute(SESSION_USER_ID_KEY);
+        if(userId == null){
+            return ResultVO.notAuthoried("登录失效,请重新登录");
+        }
+        return ResultVO.success(userService.getJaxwayServersByUserId(userId));
+    }
+
+
+    @RequestMapping("/getOwnJaxwayServersRouteDefinitions")
+    public ResultVO getOwnJaxwayServersRouteDefinitions(Integer jaxwayServerId,ServerWebExchange exchange){
+        Integer userId = exchange.getSession().block().getAttribute(SESSION_USER_ID_KEY);
+        if(userId == null){
+            return ResultVO.notAuthoried("登录失效,请重新登录");
+        }
+
+        if(userService.checkJaxwayServerAuthority(jaxwayServerId,userId)) {
+            return ResultVO.success(routesService.getTotalRoutesInfo(jaxwayServerId));
+        }
+
+        return ResultVO.notAuthoried("无权限");
+    }
+
 }
