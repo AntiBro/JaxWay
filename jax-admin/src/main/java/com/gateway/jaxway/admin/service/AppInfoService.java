@@ -19,7 +19,7 @@ public interface AppInfoService {
      * @param versionId
      * @return
      */
-    List<JaxClientAuthentication> getJaxClientAuthentication(String jaxId,String appId, Long versionId);
+    List<JaxClientAuthentication> getJaxClientAuthentication(String jaxId,String appId, Integer versionId);
 
     /**
      * server side app authority info
@@ -27,7 +27,7 @@ public interface AppInfoService {
      * @param versionId
      * @return
      */
-    List<JaxServerAuthentication> getJaxServerAuthentication(String appId, Long versionId);
+    List<JaxServerAuthentication> getJaxServerAuthentication(String appId, Integer versionId);
 
 
     /**
@@ -36,7 +36,7 @@ public interface AppInfoService {
      * @param versionId
      * @return
      */
-    List<JaxServerAuthentication> getServerWhiteListInfo(String appId,Long versionId);
+    List<JaxServerAuthentication> getServerWhiteListInfo(String appId,Integer versionId);
 
 
     /**
@@ -45,5 +45,5 @@ public interface AppInfoService {
      * @param versionId
      * @return
      */
-    List<JaxRouteDefinition> getJaxRouteDefinitions(String appId,Long versionId);
+    List<JaxRouteDefinition> getJaxRouteDefinitions(String appId,Integer versionId);
 }

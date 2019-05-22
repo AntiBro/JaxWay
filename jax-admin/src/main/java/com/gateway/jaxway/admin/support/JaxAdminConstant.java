@@ -19,4 +19,6 @@ public class JaxAdminConstant {
 
 
     public static final String SESSION_USER_ID_KEY = "jax-admin-user-id";
+
+    public static final String REDIS_ROUTE_VERSION_ID_KEY = "jax-way-route-version-id";
 }

@@ -7,6 +7,8 @@ import java.util.Date;
 public class JaxwayRouteModel {
     private Integer id;
 
+    private Integer versionId;
+
     private String routeId;
 
     private Integer jaxwayServerId;
@@ -30,6 +32,14 @@ public class JaxwayRouteModel {
     private Date createTime;
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT-5")
     private Date updateTime;
+
+    public Integer getVersionId() {
+        return versionId;
+    }
+
+    public void setVersionId(Integer versionId) {
+        this.versionId = versionId;
+    }
 
     public String getRouteId() {
         return routeId;

@@ -14,7 +14,7 @@ public interface JaxwayRouteModelMapper {
     JaxwayRouteModel selectByPrimaryKey(Integer id);
 
 
-    List<JaxwayRouteModel> selecRoutesInfoByJaxServerId(Integer jaxwayServerId);
+    List<JaxwayRouteModel> selecRoutesInfoByJaxServerId(JaxwayRouteModel record);
 
     Integer selecTotalRoutesCountByJaxServerId(Integer jaxwayServerId);
 

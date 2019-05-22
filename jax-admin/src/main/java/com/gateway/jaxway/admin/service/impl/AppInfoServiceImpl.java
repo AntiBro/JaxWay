@@ -5,7 +5,9 @@ import com.gateway.common.beans.JaxServerAuthentication;
 import com.gateway.jaxway.admin.beans.JaxRouteDefinition;
 import com.gateway.jaxway.admin.service.AppInfoService;
 import com.gateway.jaxway.admin.service.RedisService;
+import org.omg.CORBA.INTERNAL;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,7 @@ import static com.gateway.jaxway.admin.support.JaxAdminConstant.*;
  * @Description AppInfoServiceImpl by redis store
  **/
 @Service
+
 public class AppInfoServiceImpl implements AppInfoService {
 
     @Resource(name = "redisTemplateProtoStuff")
@@ -30,36 +33,36 @@ public class AppInfoServiceImpl implements AppInfoService {
     @Autowired
     private RedisService redisService;
     @Override
-    public List<JaxClientAuthentication> getJaxClientAuthentication(String jaxId,String appId, Long versionId) {
+    public List<JaxClientAuthentication> getJaxClientAuthentication(String jaxId,String appId, Integer versionId) {
         String redisKey = CLIENT_APP_INFO_REDIS_KEY+jaxId+":"+appId;
         return getServerInfoFromRedis(redisKey,versionId,JaxClientAuthentication.class);
     }
 
     @Override
-    public List<JaxServerAuthentication> getJaxServerAuthentication(String appId, Long versionId) {
+    public List<JaxServerAuthentication> getJaxServerAuthentication(String appId, Integer versionId) {
         String redisKey = SERVER_APP_INFO_REDIS_KEY+appId;
         return getServerInfoFromRedis(redisKey,versionId,JaxServerAuthentication.class);
     }
 
     @Override
-    public List<JaxServerAuthentication> getServerWhiteListInfo(String appId, Long versionId) {
+    public List<JaxServerAuthentication> getServerWhiteListInfo(String appId, Integer versionId) {
         String redisKey = SERVER_WHITE_LIST_REDIS_KEY+appId;
         return getServerInfoFromRedis(redisKey,versionId,JaxServerAuthentication.class);
     }
 
     @Override
-    public List<JaxRouteDefinition> getJaxRouteDefinitions(String appId, Long versionId) {
+    public List<JaxRouteDefinition> getJaxRouteDefinitions(String appId, Integer versionId) {
         String redisKey = SERVER_ROUTES_INFO_REDIS_KEY+appId;
 
         return getServerInfoFromRedis(redisKey,versionId,JaxRouteDefinition.class);
     }
 
 
-    <T> List<T> getServerInfoFromRedis(String key,Long versionId,Class<T> clazz){
+    <T> List<T> getServerInfoFromRedis(String key,Integer versionId,Class<T> clazz){
 
         List<T> list = new ArrayList<>();
         Set<String> versionIds = redisTemplate.opsForHash().keys(key);
-        versionIds.stream().filter(e-> Long.parseLong(e)>versionId).forEach(e->{
+        versionIds.stream().filter(e-> Integer.parseInt(e)>versionId).forEach(e->{
             list.addAll(redisService.getObject(key,e,List.class));
         });
 

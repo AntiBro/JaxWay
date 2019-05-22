@@ -30,6 +30,8 @@ public class JaxRouteRefreshListener implements ApplicationListener<JaxRouteRefr
     @Override
     public void onApplicationEvent(JaxRouteRefreshEvent jaxRouteRefreshEvent) {
         JaxRouteDefinition jaxRouteDefinition = jaxRouteRefreshEvent.getJaxRouteDefinition();
+
+        //  save or delete RouteDefinitionWriter must end with subscribe(),otherwise routedifinition will not take effect
         switch (jaxRouteDefinition.getOpType()){
             case ADD_ROUTE:
                 routeDefinitionWriter.save(Mono.just(jaxRouteDefinition)).subscribe();
@@ -37,12 +39,12 @@ public class JaxRouteRefreshListener implements ApplicationListener<JaxRouteRefr
                 notifyChanged();
                 break;
             case DELETE_ROUTE:
-                routeDefinitionWriter.delete(Mono.just(jaxRouteDefinition.getId()));
-                logger.log("delete route definition route={}",jaxRouteDefinition);
+                routeDefinitionWriter.delete(Mono.just(jaxRouteDefinition.getId())).subscribe();
+                logger.log("delete route definition routeId={} route={}",jaxRouteDefinition.getId(),jaxRouteDefinition);
                 notifyChanged();
                 break;
             case UPDATE_ROUTE:
-                routeDefinitionWriter.delete(Mono.just(jaxRouteDefinition.getId()));
+                routeDefinitionWriter.delete(Mono.just(jaxRouteDefinition.getId())).subscribe();
                 routeDefinitionWriter.save(Mono.just(jaxRouteDefinition)).subscribe();
                 logger.log("update route definition route={}",jaxRouteDefinition);
                 notifyChanged();

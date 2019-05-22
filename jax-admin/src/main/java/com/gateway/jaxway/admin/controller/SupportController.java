@@ -58,7 +58,7 @@ public class SupportController extends BaseController {
         }
 
         if(userService.checkJaxwayServerAuthority(jaxwayServerId,userId)) {
-            return ResultVO.success(routesService.getTotalRoutesInfo(jaxwayServerId));
+            return ResultVO.success(routesService.getTotalRoutesInfo(jaxwayServerId,-1, RoutesService.RouteType.FINAL));
         }
 
         return ResultVO.notAuthoried("无权限");

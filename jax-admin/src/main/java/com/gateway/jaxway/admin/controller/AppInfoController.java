@@ -32,7 +32,7 @@ public class AppInfoController extends BaseController{
      * @throws UnsupportedEncodingException
      */
     @RequestMapping("/client/getAppInfo")
-    public ResultVO getClientAppAuthorityInfo(String jaxId,String appId,Long versionId, ServerWebExchange exchange)  {
+    public ResultVO getClientAppAuthorityInfo(String jaxId,String appId,Integer versionId, ServerWebExchange exchange)  {
         log.info("getClientAppAuthorityInfo appid={} remoteIP={} versionId={}",appId, IpUtil.getIpAddr(exchange.getRequest()),versionId);
         return ResultVO.success(appInfoService.getJaxClientAuthentication(jaxId,appId,versionId));
     }
@@ -46,7 +46,7 @@ public class AppInfoController extends BaseController{
      * @throws UnsupportedEncodingException
      */
     @RequestMapping("/server/getAppInfo")
-    public ResultVO getServerAppAuthorityInfo(String id,Long versionId, ServerWebExchange exchange) throws UnsupportedEncodingException {
+    public ResultVO getServerAppAuthorityInfo(String id,Integer versionId, ServerWebExchange exchange) throws UnsupportedEncodingException {
         log.info("getServerAppAuthorityInfo appid={} remoteIP={} versionId={}",id, IpUtil.getIpAddr(exchange.getRequest()),versionId);
         return ResultVO.success(appInfoService.getJaxServerAuthentication(id,versionId));
     }
@@ -60,7 +60,7 @@ public class AppInfoController extends BaseController{
      * @throws UnsupportedEncodingException
      */
     @RequestMapping("/server/getWhiteList")
-    public ResultVO getServerWhiteListInfo(String id,Long versionId, ServerWebExchange exchange) throws UnsupportedEncodingException {
+    public ResultVO getServerWhiteListInfo(String id,Integer versionId, ServerWebExchange exchange) throws UnsupportedEncodingException {
         log.info("getServerWhiteListInfo appid={} remoteIP={} versionId={}",id, IpUtil.getIpAddr(exchange.getRequest()),versionId);
         return ResultVO.success(appInfoService.getServerWhiteListInfo(id,versionId));
     }
@@ -75,7 +75,7 @@ public class AppInfoController extends BaseController{
      * @throws URISyntaxException
      */
     @RequestMapping("/server/getRouteInfo")
-    public ResultVO getRouteInfo(String id,Long versionId, ServerWebExchange exchange) throws URISyntaxException {
+    public ResultVO getRouteInfo(String id,Integer versionId, ServerWebExchange exchange) throws URISyntaxException {
         log.info("getRouteInfo appid={} remoteIP={} versionId={}",id, IpUtil.getIpAddr(exchange.getRequest()),versionId);
         return ResultVO.success(appInfoService.getJaxRouteDefinitions(id,versionId));
     }
