@@ -19,7 +19,7 @@ public interface RoutesService {
 
     List<JaxwayRouteModel> getTotalRoutesInfo(Integer jaxServerId,Integer versionId,RouteType routeType);
 
-    boolean insertRouteDefinition(JaxwayRouteModel jaxwayRouteModel) throws URISyntaxException;
+    boolean insertRouteDefinition(JaxwayRouteModel jaxwayRouteModel) throws Exception;
 
 
     boolean insertDeleRouteDefinition(JaxwayRouteModel jaxwayRouteModel) throws URISyntaxException;

@@ -15,21 +15,27 @@ import com.gateway.common.support.http.JaxHttpResponseWrapper;
 import com.gateway.common.util.VersionUtil;
 import com.gateway.jaxway.core.authority.server.LocalJaxwayWhiteList;
 import com.gateway.jaxway.core.authority.server.LocalJaxwayWhiteListDataStore;
+import com.gateway.jaxway.core.common.PredicatesEnum;
+import com.gateway.jaxway.core.common.RouteUtil;
 import com.gateway.jaxway.core.route.JaxRouteRefreshEvent;
 import com.gateway.jaxway.core.route.JaxServerLongPullService;
 import com.gateway.jaxway.log.Log;
 import com.gateway.jaxway.log.impl.DefaultLogImpl;
 import com.google.common.util.concurrent.RateLimiter;
 import org.springframework.beans.factory.DisposableBean;
+import org.springframework.cloud.gateway.handler.predicate.PredicateDefinition;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.env.Environment;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.util.pattern.PathPatternParser;
+import org.springframework.web.util.pattern.PatternParseException;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -269,7 +275,13 @@ public class DefaultJaxServerLongPullService implements JaxServerLongPullService
                             for(JaxRouteDefinition jaxRouteDefinition :jaxRouteDefinitions){
                                 if(VersionUtil.checkVerion(jaxRouteDefinition.getVersionId(),versionId)){
                                     // publish change event
-                                    notifyChanged(jaxRouteDefinition);
+                                    try {
+                                        if(RouteUtil.checkPathPatternList(jaxRouteDefinition.getPredicates())) {
+                                            notifyChanged(jaxRouteDefinition);
+                                        }
+                                    }catch (Exception e){
+                                        logger.log(Log.LogType.ERROR,"JaxRouteDefinition format error="+e);
+                                    }
                                     if(jaxRouteDefinition.getVersionId() > tempVersionId){
                                         tempVersionId = jaxRouteDefinition.getVersionId();
                                     }
@@ -313,5 +325,6 @@ public class DefaultJaxServerLongPullService implements JaxServerLongPullService
         this.publisher.publishEvent(new JaxRouteRefreshEvent(this,jaxRouteDefinition));
 
     }
+
 
 }

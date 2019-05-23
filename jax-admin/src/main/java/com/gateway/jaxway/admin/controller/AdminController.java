@@ -41,7 +41,7 @@ public class AdminController extends BaseController {
 
     @PreCheckJaxwayOwnAuthority
     @PostMapping("/insertRouteDefinition")
-    public ResultVO insertRouteDefinition(@RequestBody JaxwayRouteModel jaxwayRouteModel,ServerWebExchange exchange) throws URISyntaxException {
+    public ResultVO insertRouteDefinition(@RequestBody JaxwayRouteModel jaxwayRouteModel,ServerWebExchange exchange) throws Exception {
         routesService.insertRouteDefinition(jaxwayRouteModel);
         return ResultVO.success("插入成功");
     }

@@ -95,12 +95,16 @@ public class RoutesServiceImpl implements RoutesService {
 
     @Override
     @Transactional
-    public boolean insertRouteDefinition(JaxwayRouteModel jaxwayRouteModel) throws URISyntaxException {
+    public boolean insertRouteDefinition(JaxwayRouteModel jaxwayRouteModel) throws Exception {
         RouteDefinition rdf = RouteUtil.generateRouteDefition(jaxwayRouteModel.getRouteId(),
                 jaxwayRouteModel.getUrl(),
                 jaxwayRouteModel.getPredicateType()+"="+ jaxwayRouteModel.getPredicateValue(),
                 jaxwayRouteModel.getFilterType()+"="+jaxwayRouteModel.getFilterValue());
         jaxwayRouteModel.setRouteContent(JSON.toJSONString(rdf));
+
+        if(!RouteUtil.checkPathPatternList(rdf.getPredicates())){
+            throw new Exception("predicate path value error");
+        }
         int ret = jaxwayRouteModelMapper.insert(jaxwayRouteModel);
         if(ret==1){
             // update versionId redis cache
