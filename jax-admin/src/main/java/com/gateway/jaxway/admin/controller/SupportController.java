@@ -20,6 +20,7 @@ import static com.gateway.jaxway.admin.support.JaxAdminConstant.SESSION_USER_ID_
 @RestController
 @RequestMapping("/portal/support")
 @CrossOrigin
+// todo: 使用注解切面来验证 权限，以及登录状态
 public class SupportController extends BaseController {
 
     @Autowired
