@@ -47,9 +47,11 @@ public class AdminController extends BaseController {
     }
 
 
+    // delete route definition,check the jaxway server own authority
     @PreCheckJaxwayOwnAuthority
     @PostMapping("/removeRouteDefinition")
     public ResultVO removeRouteDefinition(@RequestBody JaxwayRouteModel jaxwayRouteModel,ServerWebExchange exchange) throws URISyntaxException {
+       // change to delete_route Optype
         jaxwayRouteModel.setOpType(OpType.DELETE_ROUTE.ordinal());
         routesService.insertDeleRouteDefinition(jaxwayRouteModel);
         return ResultVO.success("删除成功");

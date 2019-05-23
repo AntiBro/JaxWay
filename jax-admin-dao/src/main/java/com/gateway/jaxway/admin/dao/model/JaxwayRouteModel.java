@@ -28,10 +28,22 @@ public class JaxwayRouteModel {
     private Integer opType;
 
     private Integer createUserId;
+
+    private String userName;
+
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT-5")
     private Date createTime;
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT-5")
     private Date updateTime;
+
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
     public Integer getVersionId() {
         return versionId;

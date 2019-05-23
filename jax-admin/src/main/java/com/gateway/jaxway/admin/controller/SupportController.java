@@ -40,6 +40,7 @@ public class SupportController extends BaseController {
     }
 
 
+    // 根据登录的用户信息来获取 jaxway server 信息
     @RequestMapping("/getOwnJaxwayServers")
     public ResultVO getOwnJaxwayServers(ServerWebExchange exchange){
         Integer userId = exchange.getSession().block().getAttribute(SESSION_USER_ID_KEY);
@@ -50,6 +51,7 @@ public class SupportController extends BaseController {
     }
 
 
+    // 根据 jaxway server id 和 userinfo 信息来判断 jaxway server 的归属权限
     @RequestMapping("/getOwnJaxwayServersRouteDefinitions")
     public ResultVO getOwnJaxwayServersRouteDefinitions(Integer jaxwayServerId,ServerWebExchange exchange){
         Integer userId = exchange.getSession().block().getAttribute(SESSION_USER_ID_KEY);

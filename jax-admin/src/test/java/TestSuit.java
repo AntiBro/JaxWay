@@ -21,6 +21,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.util.Stack;
+import java.util.WeakHashMap;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -112,5 +113,6 @@ public class TestSuit {
 
         ThreadPoolExecutor poolExecutor = new ThreadPoolExecutor(3,3,100, TimeUnit.MILLISECONDS,new LinkedBlockingDeque<>());
         //poolExecutor.submit(null);
+        WeakHashMap weakHashMap;
     }
 }

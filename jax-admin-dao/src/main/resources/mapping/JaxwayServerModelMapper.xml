@@ -6,6 +6,7 @@
     <result column="jaxway_name" jdbcType="VARCHAR" property="jaxwayName" />
     <result column="jaxway_despc" jdbcType="VARCHAR" property="jaxwayDespc" />
     <result column="create_user_id" jdbcType="INTEGER" property="createUserId" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
@@ -15,11 +16,13 @@
 
   <!--通过用户Id来 查询对应的 JaxwayServer的附属关系 -->
   <select id="selectJaxwayServersByUserId"  parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    SELECT js.* FROM GroupUserLink gul
+    SELECT js.*,user.user_name FROM GroupUserLink gul
 LEFT JOIN JaxwayGroup jg
  ON gul.`group_id` = jg.`id`
 LEFT JOIN JaxwayServer js
  ON jg.`jaxway_id` = js.`id`
+   left join  User user
+   on user.id= #{id,jdbcType=INTEGER}
  WHERE gul.`user_id` =#{id,jdbcType=INTEGER}
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">

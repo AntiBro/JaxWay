@@ -13,6 +13,7 @@
     <result column="url" jdbcType="VARCHAR" property="url" />
     <result column="op_type" jdbcType="TINYINT" property="opType" />
     <result column="create_user_id" jdbcType="INTEGER" property="createUserId" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
@@ -23,9 +24,10 @@
  <!-- 查询Jaxway Server 对应的 Route信息 -->
   <select id="selecRoutesInfoByJaxServerId" parameterType="com.gateway.jaxway.admin.dao.model.JaxwayRouteModel" resultMap="BaseResultMap">
     select
-    <include refid="Base_Column_List" />
-    from JaxwayRoute
-    where jaxway_server_id = #{jaxwayServerId,jdbcType=INTEGER} and id <![CDATA[>]]> #{id,jdbcType=INTEGER}
+    jr.*,user.user_name as user_name
+    from JaxwayRoute jr
+    left join  User user on  user.id= jr.create_user_id
+    where jr.jaxway_server_id = #{jaxwayServerId,jdbcType=INTEGER} and jr.id <![CDATA[>]]> #{id,jdbcType=INTEGER}
   </select>
 
   <!-- 查询Jaxway Server 对应的 Route信息 -->

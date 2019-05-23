@@ -3,6 +3,7 @@ package test;
 import org.openjdk.jmh.annotations.*;
 
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.LongAdder;
 
 /**
  * @Author huaili
@@ -32,5 +33,6 @@ public class BenchMarkTest {
 
     @Benchmark
     public void dotest() throws InterruptedException {
+        LongAdder longAdder;
     }
 }

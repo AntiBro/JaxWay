@@ -1,5 +1,7 @@
 package com.gateway.jaxway.admin.dao.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class JaxwayServerModel {
@@ -10,10 +12,20 @@ public class JaxwayServerModel {
     private String jaxwayDespc;
 
     private Integer createUserId;
-
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT-5")
     private Date createTime;
-
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT-5")
     private Date updateTime;
+
+    private String userName;
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
     public Integer getId() {
         return id;
