@@ -22,6 +22,18 @@ public class JaxRouteRefreshListener implements ApplicationListener<JaxRouteRefr
 
     private ApplicationEventPublisher publisher;
 
+    public RouteDefinitionWriter getRouteDefinitionWriter() {
+        return routeDefinitionWriter;
+    }
+
+    public void setRouteDefinitionWriter(RouteDefinitionWriter routeDefinitionWriter) {
+        this.routeDefinitionWriter = routeDefinitionWriter;
+    }
+
+    public JaxRouteRefreshListener(){
+
+    }
+
     public JaxRouteRefreshListener(RouteDefinitionWriter routeDefinitionWriter){
         this.routeDefinitionWriter = routeDefinitionWriter;
     }

@@ -28,6 +28,17 @@
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
+            <groupId>com.gateway</groupId>
+            <artifactId>jax-support</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.gateway</groupId>
+            <artifactId>jax-server-validator</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webflux</artifactId>
         </dependency>

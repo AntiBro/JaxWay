@@ -11,6 +11,8 @@
         <module>jax-test</module>
         <module>jax-common</module>
         <module>jax-admin-dao</module>
+        <module>jax-server-validator</module>
+        <module>jax-support</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

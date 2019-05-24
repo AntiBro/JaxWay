@@ -1,12 +1,12 @@
-package com.gateway.jaxway.admin.util;
+package com.gateway.jaxway.support.util;
 
-import com.gateway.jaxway.admin.beans.FilterDefinition;
-import com.gateway.jaxway.admin.beans.PredicateDefinition;
-import com.gateway.jaxway.admin.beans.RouteDefinition;
-import com.gateway.jaxway.core.common.FiltersEnum;
-import com.gateway.jaxway.core.common.PredicatesEnum;
 import com.gateway.jaxway.log.Log;
 import com.gateway.jaxway.log.impl.DefaultLogImpl;
+import com.gateway.jaxway.support.beans.FilterDefinition;
+import com.gateway.jaxway.support.beans.PredicateDefinition;
+import com.gateway.jaxway.support.beans.RouteDefinition;
+import com.gateway.jaxway.support.common.FiltersEnum;
+import com.gateway.jaxway.support.common.PredicatesEnum;
 import org.springframework.util.StringUtils;
 import org.springframework.web.util.pattern.PathPatternParser;
 
@@ -23,7 +23,7 @@ import java.util.Map;
  * @Description RouteUtil for JaxWay
  **/
 public class RouteUtil {
-    private static Log logger = new DefaultLogImpl(com.gateway.jaxway.core.common.RouteUtil.class);
+    private static Log logger = new DefaultLogImpl(RouteUtil.class);
 
     public static RouteDefinition generatePathRouteDefition(String url, String path, String Id, Integer order) throws URISyntaxException {
         RouteDefinition rdf = new RouteDefinition();

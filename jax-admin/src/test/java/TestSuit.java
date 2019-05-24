@@ -2,18 +2,21 @@ import com.alibaba.fastjson.JSON;
 import com.gateway.common.JaxwayCoder;
 import com.gateway.common.beans.OpType;
 import com.gateway.jaxway.admin.JaxAdmin;
-import com.gateway.jaxway.admin.beans.RouteDefinition;
 import com.gateway.jaxway.admin.dao.mapper.JaxwayRouteModelMapper;
 import com.gateway.jaxway.admin.dao.mapper.UserModelMapper;
 import com.gateway.jaxway.admin.dao.model.JaxwayRouteModel;
 import com.gateway.jaxway.admin.dao.model.UserModel;
 import com.gateway.jaxway.admin.dao.support.RoleType;
-import com.gateway.jaxway.admin.util.RouteUtil;
 import com.gateway.jaxway.core.common.FiltersEnum;
 import com.gateway.jaxway.core.common.PredicatesEnum;
+import com.gateway.jaxway.server.validator.JaxServerRouteDefinitionValidator;
+import com.gateway.jaxway.support.beans.JaxRouteDefinition;
+import com.gateway.jaxway.support.beans.RouteDefinition;
+import com.gateway.jaxway.support.util.RouteUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -31,10 +34,13 @@ import java.util.concurrent.TimeUnit;
  * @Date 2019/5/16 17:29
  * @Description SpringBootTest
  **/
-//@SpringBootTest(classes = JaxAdmin.class)
-//@RunWith(SpringRunner.class)
-@RunWith(JUnit4.class)
+@SpringBootTest(classes = JaxAdmin.class)
+@RunWith(SpringRunner.class)
+//@RunWith(JUnit4.class)
 public class TestSuit {
+
+    @Autowired
+    JaxServerRouteDefinitionValidator jaxServerRouteDefinitionValidator;
 
     @Autowired
     private UserModelMapper userModelMapper;
@@ -60,25 +66,34 @@ public class TestSuit {
     }
 
 
-   // @Test
+    @Test
     public void insertRoute1() throws URISyntaxException {
         JaxwayRouteModel jaxwayRouteModel = new JaxwayRouteModel();
         RouteDefinition routeDefinition = RouteUtil.generatePathRouteDefition("http://127.0.0.1:8720","/testflux,/testflux/**");
 
-        jaxwayRouteModel.setRouteId(routeDefinition.getId());
-        jaxwayRouteModel.setJaxwayServerId(1);
-        jaxwayRouteModel.setUrl("http://127.0.0.1:8720");
-        jaxwayRouteModel.setPredicateType(PredicatesEnum.PATH.FactoryName());
-        jaxwayRouteModel.setPredicateValue("/testflux,/testflux/**");
+        JaxRouteDefinition jaxRouteDefinition = new JaxRouteDefinition();
+        BeanUtils.copyProperties(routeDefinition,jaxRouteDefinition);
+        jaxRouteDefinition.setOpType(OpType.ADD_ROUTE);
 
-        jaxwayRouteModel.setFilterType(FiltersEnum.STRIP_PREFIX.getFilterName());
-        jaxwayRouteModel.setFilterValue("1");
+        String appId = "app-one";
 
-        jaxwayRouteModel.setOpType(OpType.ADD_ROUTE.ordinal());
+        jaxServerRouteDefinitionValidator.addJaxServer(appId);
+        System.out.println(jaxServerRouteDefinitionValidator.verifyRouteDenifion(appId,jaxRouteDefinition));
 
-        jaxwayRouteModel.setCreateUserId(1);
-        jaxwayRouteModel.setRouteContent(JSON.toJSONString(routeDefinition));
-        jaxwayRouteModelMapper.insert(jaxwayRouteModel);
+//        jaxwayRouteModel.setRouteId(routeDefinition.getId());
+//        jaxwayRouteModel.setJaxwayServerId(1);
+//        jaxwayRouteModel.setUrl("http://127.0.0.1:8720");
+//        jaxwayRouteModel.setPredicateType(PredicatesEnum.PATH.FactoryName());
+//        jaxwayRouteModel.setPredicateValue("/testflux,/testflux/**");
+//
+//        jaxwayRouteModel.setFilterType(FiltersEnum.STRIP_PREFIX.getFilterName());
+//        jaxwayRouteModel.setFilterValue("1");
+//
+//        jaxwayRouteModel.setOpType(OpType.ADD_ROUTE.ordinal());
+//
+//        jaxwayRouteModel.setCreateUserId(1);
+//        jaxwayRouteModel.setRouteContent(JSON.toJSONString(routeDefinition));
+//        jaxwayRouteModelMapper.insert(jaxwayRouteModel);
     }
 
 
@@ -107,7 +122,7 @@ public class TestSuit {
         return ans;
     }
 
-    @Test
+  //  @Test
     public void testJunit(){
         System.out.println(longestValidParentheses(")()())"));
 

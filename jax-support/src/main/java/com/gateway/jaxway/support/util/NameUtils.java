@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.gateway.jaxway.admin.util;
+package com.gateway.jaxway.support.util;
 
 /**
  * @author Spencer Gibb

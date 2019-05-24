@@ -1,4 +1,4 @@
-package com.gateway.jaxway.admin.beans;
+package com.gateway.jaxway.support.beans;
 
 import com.gateway.common.beans.OpType;
 

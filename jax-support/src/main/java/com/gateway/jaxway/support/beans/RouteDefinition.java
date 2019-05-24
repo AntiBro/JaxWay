@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.gateway.jaxway.admin.beans;
+package com.gateway.jaxway.support.beans;
 
 import org.springframework.validation.annotation.Validated;
 

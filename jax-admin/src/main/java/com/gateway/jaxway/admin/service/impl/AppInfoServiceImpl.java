@@ -2,12 +2,10 @@ package com.gateway.jaxway.admin.service.impl;
 
 import com.gateway.common.beans.JaxClientAuthentication;
 import com.gateway.common.beans.JaxServerAuthentication;
-import com.gateway.jaxway.admin.beans.JaxRouteDefinition;
 import com.gateway.jaxway.admin.service.AppInfoService;
 import com.gateway.jaxway.admin.service.RedisService;
-import org.omg.CORBA.INTERNAL;
+import com.gateway.jaxway.support.beans.JaxRouteDefinition;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 

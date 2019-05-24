@@ -2,6 +2,7 @@ package com.gateway.jaxway.core.common;
 
 import com.gateway.jaxway.log.Log;
 import com.gateway.jaxway.log.impl.DefaultLogImpl;
+
 import org.springframework.cloud.gateway.filter.FilterDefinition;
 import org.springframework.cloud.gateway.handler.predicate.PredicateDefinition;
 import org.springframework.cloud.gateway.route.RouteDefinition;

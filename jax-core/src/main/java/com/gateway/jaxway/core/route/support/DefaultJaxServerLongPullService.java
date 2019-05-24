@@ -83,7 +83,7 @@ public class DefaultJaxServerLongPullService implements JaxServerLongPullService
 
     private int connectTimeout = 1500;
 
-    private int readTimeOut = 1200;
+    private int readTimeOut = 3000;
 
     private JaxwayWhiteList jaxwayWhiteList;
 

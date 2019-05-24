@@ -14,12 +14,14 @@
  * limitations under the License.
  */
 
-package com.gateway.jaxway.admin.beans;
+package com.gateway.jaxway.support.beans;
 
-import com.gateway.jaxway.admin.util.NameUtils;
+
+import com.gateway.jaxway.support.util.NameUtils;
+import com.sun.istack.internal.NotNull;
 import org.springframework.validation.annotation.Validated;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.ValidationException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -30,21 +32,21 @@ import static org.springframework.util.StringUtils.tokenizeToStringArray;
  * @author Spencer Gibb
  */
 @Validated
-public class FilterDefinition {
+public class PredicateDefinition {
 
 	@NotNull
 	private String name;
 
 	private Map<String, String> args = new LinkedHashMap<>();
 
-	public FilterDefinition() {
+	public PredicateDefinition() {
 	}
 
-	public FilterDefinition(String text) {
+	public PredicateDefinition(String text) {
 		int eqIdx = text.indexOf('=');
 		if (eqIdx <= 0) {
-			setName(text);
-			return;
+			throw new ValidationException("Unable to parse PredicateDefinition text '"
+					+ text + "'" + ", must be of the form name=value");
 		}
 		setName(text.substring(0, eqIdx));
 
@@ -83,7 +85,7 @@ public class FilterDefinition {
 		if (o == null || getClass() != o.getClass()) {
 			return false;
 		}
-		FilterDefinition that = (FilterDefinition) o;
+		PredicateDefinition that = (PredicateDefinition) o;
 		return Objects.equals(name, that.name) && Objects.equals(args, that.args);
 	}
 
@@ -94,7 +96,7 @@ public class FilterDefinition {
 
 	@Override
 	public String toString() {
-		final StringBuilder sb = new StringBuilder("FilterDefinition{");
+		final StringBuilder sb = new StringBuilder("PredicateDefinition{");
 		sb.append("name='").append(name).append('\'');
 		sb.append(", args=").append(args);
 		sb.append('}');

@@ -2,7 +2,7 @@ package com.gateway.jaxway.admin.service;
 
 import com.gateway.common.beans.JaxClientAuthentication;
 import com.gateway.common.beans.JaxServerAuthentication;
-import com.gateway.jaxway.admin.beans.JaxRouteDefinition;
+import com.gateway.jaxway.support.beans.JaxRouteDefinition;
 
 import java.util.List;
 
@@ -45,5 +45,5 @@ public interface AppInfoService {
      * @param versionId
      * @return
      */
-    List<JaxRouteDefinition> getJaxRouteDefinitions(String appId,Integer versionId);
+    List<JaxRouteDefinition> getJaxRouteDefinitions(String appId, Integer versionId);
 }
