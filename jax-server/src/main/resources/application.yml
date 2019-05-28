@@ -6,6 +6,7 @@ server:
 spring:
   application:
     name: jax-way-server
+  profiles:
     active: dev
   freemarker:
     cache: false
