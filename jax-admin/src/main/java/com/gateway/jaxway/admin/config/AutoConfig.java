@@ -7,6 +7,7 @@ import com.gateway.jaxway.server.validator.JaxServerRouteDefinitionValidator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 /**
  * @Author huaili
@@ -14,6 +15,7 @@ import org.springframework.core.env.Environment;
  * @Description config
  **/
 @Configuration
+@EnableAsync(proxyTargetClass = true)
 public class AutoConfig {
 
     @Bean

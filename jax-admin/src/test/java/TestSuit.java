@@ -67,7 +67,7 @@ public class TestSuit {
 
 
     @Test
-    public void insertRoute1() throws URISyntaxException {
+    public void insertRoute1() throws URISyntaxException, InterruptedException {
         JaxwayRouteModel jaxwayRouteModel = new JaxwayRouteModel();
         RouteDefinition routeDefinition = RouteUtil.generatePathRouteDefition("http://127.0.0.1:8720","/testflux,/testflux/**");
 
@@ -78,7 +78,7 @@ public class TestSuit {
         String appId = "app-one";
 
         jaxServerRouteDefinitionValidator.addJaxServer(appId);
-        System.out.println(jaxServerRouteDefinitionValidator.verifyRouteDenifion(appId,jaxRouteDefinition));
+        System.out.println(jaxServerRouteDefinitionValidator.verifyRouteDefintion(appId,jaxRouteDefinition));
 
 //        jaxwayRouteModel.setRouteId(routeDefinition.getId());
 //        jaxwayRouteModel.setJaxwayServerId(1);

@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 /**
  * @Author huaili
  * @Date 2019/5/20 16:05
- * @Description 检查
+ * @Description 检查是否拥有目前JaxwayServer的权限
  **/
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

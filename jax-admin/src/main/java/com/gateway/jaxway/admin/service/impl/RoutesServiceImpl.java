@@ -5,7 +5,8 @@ import com.gateway.common.beans.OpType;
 import com.gateway.jaxway.admin.dao.mapper.JaxwayRouteModelMapper;
 import com.gateway.jaxway.admin.dao.model.JaxwayRouteModel;
 import com.gateway.jaxway.admin.service.RoutesService;
-
+import com.gateway.jaxway.server.validator.JaxServerRouteDefinitionValidator;
+import com.gateway.jaxway.support.beans.JaxRouteDefinition;
 import com.gateway.jaxway.support.beans.RouteDefinition;
 import com.gateway.jaxway.support.util.RouteUtil;
 import com.github.pagehelper.PageHelper;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import static com.gateway.jaxway.admin.support.JaxAdminConstant.REDIS_ROUTE_VERSION_ID_KEY;
 
@@ -35,6 +37,9 @@ public class RoutesServiceImpl implements RoutesService {
 
     @Autowired
     private RedisTemplate redisTemplate;
+
+    @Autowired
+    private JaxServerRouteDefinitionValidator jaxServerRouteDefinitionValidator;
 
     @Override
     public List<JaxwayRouteModel> getTotalRoutesInfo(Integer jaxServerId,Integer verionId,RouteType routeType) {
@@ -97,22 +102,40 @@ public class RoutesServiceImpl implements RoutesService {
     @Override
     @Transactional
     public boolean insertRouteDefinition(JaxwayRouteModel jaxwayRouteModel) throws Exception {
+
         RouteDefinition rdf = RouteUtil.generateRouteDefition(jaxwayRouteModel.getRouteId(),
                 jaxwayRouteModel.getUrl(),
                 jaxwayRouteModel.getPredicateType()+"="+ jaxwayRouteModel.getPredicateValue(),
                 jaxwayRouteModel.getFilterType()+"="+jaxwayRouteModel.getFilterValue());
-        jaxwayRouteModel.setRouteContent(JSON.toJSONString(rdf));
-
+        // check pathPattern Firstly
         if(!RouteUtil.checkPathPatternList(rdf.getPredicates())){
             throw new Exception("predicate path value error");
         }
+        jaxwayRouteModel.setRouteContent(JSON.toJSONString(rdf));
         int ret = jaxwayRouteModelMapper.insert(jaxwayRouteModel);
+
         if(ret==1){
+            JaxRouteDefinition jaxRouteDefinition = new JaxRouteDefinition(rdf);
+            jaxRouteDefinition.setVersionId(jaxwayRouteModel.getId());
+            jaxRouteDefinition.setOpType(OpType.valueOf(jaxwayRouteModel.getOpType()));
+            // verify route definition
+            CompletableFuture<Boolean> future = jaxServerRouteDefinitionValidator.verifyRouteDefintion(jaxwayRouteModel.getJaxwayServerId().toString(), jaxRouteDefinition);
+            try{
+                if(!future.get()){
+                    throw new Exception("validate routedefinition failed");
+                }
+            }catch (Exception e){
+                throw new Exception("validate routedefinition failed,exception="+e.getMessage());
+            }
+//            if(!jaxServerRouteDefinitionValidator.verifyRouteDefintion(jaxwayRouteModel.getJaxwayServerId().toString(), jaxRouteDefinition)){
+//                throw new Exception("validate routedefinition failed");
+//            }
             // update versionId redis cache
             updateVerionIdInRedis(jaxwayRouteModel.getId());
             return true;
+        }else {
+            throw new Exception("insert routedifinition Mysql exception");
         }
-        return false;
     }
 
     @Override

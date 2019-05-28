@@ -1,0 +1,2 @@
+# EnvironmentPostProcessor to Start Jaxway Server in different port
+org.springframework.boot.env.EnvironmentPostProcessor=com.gateway.jaxway.server.validator.JaxServerValidatorApplication
