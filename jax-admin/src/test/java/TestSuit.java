@@ -28,6 +28,7 @@ import java.util.WeakHashMap;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 /**
  * @Author huaili
@@ -125,7 +126,8 @@ public class TestSuit {
   //  @Test
     public void testJunit(){
         System.out.println(longestValidParentheses(")()())"));
-
+        Integer.numberOfLeadingZeros(12);
+       // AtomicReferenceFieldUpdater t = AtomicReferenceFieldUpdater.newUpdater(,,);
         ThreadPoolExecutor poolExecutor = new ThreadPoolExecutor(3,3,100, TimeUnit.MILLISECONDS,new LinkedBlockingDeque<>());
         //poolExecutor.submit(null);
         WeakHashMap weakHashMap;
