@@ -4,19 +4,6 @@ server:
     enabled: true
 
 spring:
-  application:
-    name: jax-way-test
-  cloud:
-    gateway:
-      proxy:
-        headers: {my:123}
-      routes:
-        - id: sohu
-          uri: https://m.sohu.com
-          predicates:
-          - Path=/sohu
-          filters:
-          - StripPrefix=1
   profiles:
     active: dev
   freemarker:
@@ -29,7 +16,6 @@ spring:
       number_format: 0.######
       date_format: yyyy-MM-dd
       template_exception_handler: rethrow
-      #template_exception_handler: com.sohu.wap.exception.FreemarkerExceptionHandler
   http:
     encoding:
       charset: UTF-8
@@ -87,7 +73,7 @@ spring:
 
 
 spring:
-  profiles: prod-bx
+  profiles: prod
 
 
 

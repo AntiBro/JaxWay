@@ -53,11 +53,11 @@ public class TestController {
     }
 
 
-    @RequestMapping("/sohu")
+    @RequestMapping("/baidu")
     public ResultVO getTestSohu(){
-        log.log("sohu");
+        log.log("baidu");
 
-        return ResultVO.success("sohu success");
+        return ResultVO.success("baidu success");
     }
 //
 //    @GetMapping("/test")

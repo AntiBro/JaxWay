@@ -29,7 +29,6 @@ spring:
       number_format: 0.######
       date_format: yyyy-MM-dd
       template_exception_handler: rethrow
-      #template_exception_handler: com.sohu.wap.exception.FreemarkerExceptionHandler
   http:
     encoding:
       charset: UTF-8
@@ -69,7 +68,7 @@ spring:
 
 
 spring:
-  profiles: prod-bx
+  profiles: prod
 
 
 
