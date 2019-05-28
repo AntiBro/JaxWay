@@ -1,6 +1,5 @@
 package com.gateway.jaxway.server.config;
 
-import com.gateway.common.JaxwayConstant;
 import com.gateway.common.support.LoadBalanceService;
 import com.gateway.jaxway.core.authority.server.JaxwayServerWebFluxFilter;
 import com.gateway.jaxway.core.route.JaxRouteRefreshListener;

@@ -16,7 +16,7 @@ import java.net.URISyntaxException;
  * @Description RouteService for test
  **/
 @Service
-public class RouteService implements ApplicationEventPublisherAware {
+public class TestDynamicRouteService implements ApplicationEventPublisherAware {
 
     @Autowired
     private RouteDefinitionWriter routeDefinitionWriter;
