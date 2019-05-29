@@ -52,7 +52,6 @@ public class  JaxServerValidatorApplication implements EnvironmentPostProcessor 
 
     private int getAvailablePort(int port) {
         try {
-            SpringApplicationAdminJmxAutoConfiguration springApplicationAdminJmxAutoConfiguration;
             ServerSocket socket = new ServerSocket(port);
             socket.close();
             return port;
