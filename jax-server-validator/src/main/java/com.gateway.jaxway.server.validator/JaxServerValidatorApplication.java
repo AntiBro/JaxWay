@@ -1,10 +1,8 @@
 package com.gateway.jaxway.server.validator;
 
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.admin.SpringApplicationAdminJmxAutoConfiguration;
-import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.env.EnvironmentPostProcessor;
 import org.springframework.core.env.ConfigurableEnvironment;
 
@@ -27,7 +25,7 @@ public class  JaxServerValidatorApplication implements EnvironmentPostProcessor 
     }
     private static PortMode DEFAULT_PORT_MODE = PortMode.FROM_PROPERTIES;
 
-    private static int INNER_BASE_GATE_WAY_FOR = 9000;
+    private static int INNER_BASE_GATE_WAY_PORT = 9000;
 
     private static ThreadLocal<String> springBootApplicationName = new ThreadLocal<>();
 
@@ -48,7 +46,7 @@ public class  JaxServerValidatorApplication implements EnvironmentPostProcessor 
         //必须在SystemProperties 中设置server.port 的值否则会使用 配置文件的 port 导致无法启动 springboot 应用
         if(DEFAULT_PORT_MODE == PortMode.FROM_INNER_GATEWAY) {
             environment.getSystemProperties().put("spring.application.name",springBootApplicationName.get());
-            environment.getSystemProperties().put("server.port",getAvailablePort(INNER_BASE_GATE_WAY_FOR));
+            environment.getSystemProperties().put("server.port",getAvailablePort(INNER_BASE_GATE_WAY_PORT));
         }
     }
 
