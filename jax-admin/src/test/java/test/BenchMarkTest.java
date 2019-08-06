@@ -2,6 +2,7 @@ package test;
 
 import org.openjdk.jmh.annotations.*;
 
+import java.util.SortedSet;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.LongAdder;
 
@@ -28,6 +29,7 @@ public class BenchMarkTest {
 
     @Setup
     public void init(){
+        SortedSet e;
 
     }
 

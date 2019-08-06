@@ -3,6 +3,7 @@ package com.gateway.jaxway.admin;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Scope;
@@ -18,6 +19,7 @@ import org.springframework.session.data.redis.config.annotation.web.server.Enabl
 @SpringBootApplication
 @MapperScan("com.gateway.jaxway.admin.dao.mapper")
 @EnableRedisWebSession(redisNamespace = "spring:${spring.profiles}:session",maxInactiveIntervalInSeconds = 6*60*60)
+@EnableFeignClients
 public class JaxAdmin {
     public static void main(String[] ags){
         SpringApplication.run(JaxAdmin.class);

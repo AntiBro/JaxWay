@@ -7,6 +7,7 @@ import com.gateway.jaxway.admin.dao.mapper.UserModelMapper;
 import com.gateway.jaxway.admin.dao.model.JaxwayRouteModel;
 import com.gateway.jaxway.admin.dao.model.UserModel;
 import com.gateway.jaxway.admin.dao.support.RoleType;
+import com.gateway.jaxway.admin.feignApi.TsApi;
 import com.gateway.jaxway.core.common.FiltersEnum;
 import com.gateway.jaxway.core.common.PredicatesEnum;
 import com.gateway.jaxway.server.validator.JaxServerRouteDefinitionValidator;
@@ -19,12 +20,19 @@ import org.junit.runners.JUnit4;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 
+import javax.management.MBeanServer;
 import java.io.UnsupportedEncodingException;
+import java.lang.management.ManagementFactory;
 import java.net.URISyntaxException;
 import java.util.Stack;
 import java.util.WeakHashMap;
+import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -52,8 +60,13 @@ public class TestSuit {
     @Autowired
     private JaxwayCoder jaxwayCoder;
 
+    @Autowired
+    private DataSourceTransactionManager dataSourceTransactionManager;
 
-    //@Test
+    @Autowired
+    TsApi tsApi;
+
+    @Test
     public void insertUser1() throws UnsupportedEncodingException {
         String username = "admin";
         String psw = "123456";
@@ -63,11 +76,42 @@ public class TestSuit {
         userModel.setAvatar("http://img.qqzhi.com/uploads/2018-12-02/020417940.jpg");
         userModel.setEmail("123456@qq.com");
         userModel.setRoleType(RoleType.COMMON_USER.valueOf());
-        userModelMapper.insert(userModel);
+
+        // 手动的提交和回滚事务
+        DefaultTransactionDefinition def = tsApi.getTs();
+//        def.setName("test1");
+//        def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+       // ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) Executors.newFixedThreadPool(4);
+       // must get
+        dataSourceTransactionManager.getTransaction(def);
+        try {
+            for(int i=0;i<3;i++) {
+                userModelMapper.insert(userModel);
+                if (i == 2) {
+                    throw new Exception("测试异常");
+                }
+            }
+            //dataSourceTransactionManager.commit(status);
+            tsApi.commit(def);
+        }catch (Exception e){
+            tsApi.rollback(def);
+        }
+//            threadPoolExecutor.execute(new Runnable() {
+//                @Override
+//                public void run() {
+//                    userModelMapper.insert(userModel);
+//                }
+//            });
+
+//        MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
+
+//        while(!threadPoolExecutor.getQueue().isEmpty()){
+//
+//        }
     }
 
 
-    @Test
+   // @Test
     public void insertRoute1() throws URISyntaxException, InterruptedException {
         JaxwayRouteModel jaxwayRouteModel = new JaxwayRouteModel();
         RouteDefinition routeDefinition = RouteUtil.generatePathRouteDefition("http://127.0.0.1:8720","/testflux,/testflux/**");

@@ -47,11 +47,11 @@ mybatis:
 spring:
   profiles: dev
   datasource:
-    url: jdbc:mysql://10.16.57.182:3316/JaxwayDB?allowMultiQueries=true
+    url: jdbc:mysql://localhost:3306/JaxwayDB?allowMultiQueries=true&serverTimezone=GMT%2B8
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
-    password: 111111
+    password: 123456
   redis:
     #password: "93ae8276270448d688e4a427cf765cb5"
     lettuce:
