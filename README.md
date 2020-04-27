@@ -24,7 +24,7 @@ Jaxway 目前有2种定义的运行模式
 4. 在Jaxway Admin后台中添加动态路由信息
  
 ### 架构图
-![image](https://github.com/AntiBro/JaxWay/blob/master/doc/jg.png)
+![image](https://github.com/AntiBro/JaxWay/doc/jg.png)
 
 
 
