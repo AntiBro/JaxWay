@@ -30,7 +30,7 @@ import static com.gateway.jaxway.admin.support.JaxAdminConstant.REDIS_ROUTE_VERS
  * @Description RoutesServiceImpl
  **/
 @Service
-public class RoutesServiceImpl implements RoutesService {
+public class MysqlRoutesServiceImpl implements RoutesService {
 
     @Autowired
     private JaxwayRouteModelMapper jaxwayRouteModelMapper;

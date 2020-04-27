@@ -23,7 +23,7 @@ import static com.gateway.jaxway.admin.support.JaxAdminConstant.*;
  **/
 @Service
 
-public class AppInfoServiceImpl implements AppInfoService {
+public class RedisAppInfoServiceImpl implements AppInfoService {
 
     @Resource(name = "redisTemplateProtoStuff")
     private RedisTemplate redisTemplate;
