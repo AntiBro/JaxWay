@@ -23,6 +23,7 @@ Jaxway 目前有2种定义的运行模式
 3. 部署Jaxway Server(jax-server模块),使用通用模式下 需要 将 spring.jaxway.filter.enable 设置为false,同时需要使用 jaxway.host 来指定Jaxway Admin的后端地址,以及jaxway.server.id即当前Jaxway Server在Jaxway Admin中的id信息
 4. 在Jaxway Admin后台中添加动态路由信息
  
+### 架构图
 ![image](https://s33.aconvert.com/convert/p3r68-cdx67/1nqu4-yfk3l.gif)
 
 
