@@ -65,7 +65,7 @@ public class MysqlRoutesServiceImpl implements RoutesService {
             List<JaxwayRouteModel> historyList = jaxwayRouteModelMapper.selecRoutesInfoByJaxServerId(record);
 
             for(JaxwayRouteModel jaxwayRouteModel:historyList){
-                // get the final routes
+                // cacl the final routes by the history opType
                 if(routeType == RouteType.FINAL) {
                     OpType type = OpType.valueOf(jaxwayRouteModel.getOpType());
                     switch (type) {

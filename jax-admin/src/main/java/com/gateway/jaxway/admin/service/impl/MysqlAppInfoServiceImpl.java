@@ -39,16 +39,19 @@ public class MysqlAppInfoServiceImpl implements AppInfoService {
     private RedisTemplate redisTemplate;
 
 
+    // todo:
     @Override
     public List<JaxClientAuthentication> getJaxClientAuthentication(String jaxId, String appId, Integer versionId) {
         return Collections.emptyList();
     }
 
+    // todo:
     @Override
     public List<JaxServerAuthentication> getJaxServerAuthentication(String appId, Integer versionId) {
         return Collections.emptyList();
     }
 
+    // todo:
     @Override
     public List<JaxServerAuthentication> getServerWhiteListInfo(String appId, Integer versionId) {
         return Collections.emptyList();
