@@ -14,7 +14,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
-            <version>RELEASE</version>
+            <version>3.2.5.RELEASE</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
